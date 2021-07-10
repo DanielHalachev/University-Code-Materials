@@ -1,0 +1,7 @@
+Kotaka's Deck|2|3|1
+Gajev|Does 6.00|100|50
+Dichev|Does exams|50|0
+Sariev|Automates automata|BUFF
+Eugenius|Solves integrals|SPELL
+Natali|Gives homework|TRAP
+Tsankov|Draws nicely|50|50|13|SPELL
