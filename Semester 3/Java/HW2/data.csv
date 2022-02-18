@@ -1,0 +1,6 @@
+id;details.maxPlayers;details.minAge;details.minPlayers;details.name;details.playingTime;attributes.boardGameCategory;attributes.boardGameMechanic;details.description
+0;2;0;1;Game0;2;Category0,Category1;Mechanics0,Mechanics1;woRd1 word2 word3
+1;4;1;2;Game1;3;Category1,Category2;Mechanics1,Mechanics2;word2 wOrd3 word4
+2;6;2;3;Game2;4;Category2,Category3;Mechanics2,Mechanics3;word1 word4 Word5
+3;8;3;4;Game3;5;Category3,Category4;Mechanics3,Mechanics4;word1 worD5 word7
+4;10;4;5;Game4;6;Category4,Category5;Mechanics4,Mechanics5;Word1 word5 word8
