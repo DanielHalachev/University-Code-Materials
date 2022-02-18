@@ -1,0 +1,11 @@
+name,platform,release_date,summary,meta_score,user_review
+Game1,Platform1,23-Nov-1998,GameDescription1,99,9.5
+Game2,Platform1,20-Sep-2000,GameDescription2,98,9.0
+Game3,Platform2,29-Apr-2008,GameDescription3,97,8.5
+Game4,Platform2,08-Sep-1999,GameDescription4,96,8.0
+Game5,Platform3,29-Apr-2008,GameDescription5,95,7.5
+Game6,Platform3,12-Nov-2007,GameDescription6,94,7.0
+Game7,Platform4,23-May-2010,GameDescription7,93,6.5
+Game8,Platform4,26-Oct-2018,GameDescription8,92,6.0
+Game9,Platform5,18-Nov-2014,GameDescription9,91,5.5
+Game10,Platform5,17-Sep-2013,GameDescription10,90,5.0
