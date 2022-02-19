@@ -1,4 +1,4 @@
-https://www.hackerrank.com/contests/sda-hw-2/challenges/challenge-3089/problem
+https://www.hackerrank.com/contests/sda-hw-2/challenges/challenge-3089
 
 #include <algorithm>
 #include <iostream>
