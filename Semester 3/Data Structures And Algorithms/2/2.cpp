@@ -1,4 +1,4 @@
-https://www.hackerrank.com/contests/sda-hw-2/challenges/logging-monitoring-alerting/submissions/code/1337711820
+https://www.hackerrank.com/contests/sda-hw-2/challenges/logging-monitoring-alerting/
 
 #include <algorithm>
 #include <iostream>
