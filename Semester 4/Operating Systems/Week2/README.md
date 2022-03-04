@@ -1,6 +1,5 @@
 # Добре дошли в ада
-## Командите са писани и тествани на локалния ми компютър
-### Linux Mint for the win
+## Linux Mint FTW
 
 #### 1. Направете копие на файла /etc/passwd във вашата home директория под името my_passwd.
 ```
@@ -95,7 +94,7 @@ find . -type f -newermm ~/dir1/f1 #this works but newermm means "edited after, n
 ```
 #### 18. Изтрийте файловете в home директорията си по-нови от practice/01/f3 (подайте на rm опция -i за да може да изберете само тези които искате да изтриете).
 ```
-rm -i ??????
+find . -type f -maxdepth 1- newermm ~/practice/01/f3 | xargs -I {} rm -i {}
 ```
 #### 19. Намерете файловете в /bin, които могат да се четат, пишат и изпълняват от всички.
 ```
@@ -109,7 +108,19 @@ find /etc -maxdepth 1 -type f -perm /0004 -exec cp {} ~/myetc \; # /; shows that
 find /etc -maxdepth 1 -type f -perm /0004 | xargs -I {} cp {} ~/myetc # -I and the placeholder {} allow the same thing
 ```
 #### 21. от предната задача: когато вече сте получили myetc с файлове, архивирайте всички от тях, които започват с 'c' в архив, който се казва c_start.tar. Изтрийте директорията myetc и цялото ѝ съдържание. Изтрийте архива c_start.tar
-?????
+```bash
+find ~/myetc -name "c*" -type f | xargs -I {} tar cfv "c_start.tar" {}
+rm -rf myetc
+rm "c_start.tar"
+```
 #### 22. Използвайки едно извикване на командата find, отпечатайте броя на редовете във всеки обикновен файл в /etc директорията.
-?????
+```bash
+find /etc -maxdepth 1 -type f | xargs -I {} wc -l {}
+```
+```bash
+find /etc -maxdepth 1 -type f | xargs -I {} grep -c ^ {} # POSIX-compliant solution
+```
 #### 23. Копирайте най-малкия файл от тези, намиращи се в /etc, в home директорията си.
+```bash
+ls -Sr /etc | head -n 1 | xargs -I {} cp /etc/{} ~/{}
+```
