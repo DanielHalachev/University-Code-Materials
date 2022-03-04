@@ -91,14 +91,16 @@ find . -maxdepth 1 -type f -size +42c
 ```
 #### 16. Изведете всички обикновени файлове в директорията /tmp които са от вашата група, които имат write права за достъп за група или за останалите(o=w)
 ```bash
-find /tmp -type f - group "students" -perm g=w,o=w
+find /tmp -type f - group "students" -perm /g=w,o=w
+```
 ```bash
 find /tmp -type f - group "students" -perm /0022
 ```
 #### 17. Изведете всички файлове, които са по-нови от practice/01/f1 ( би трябвало да е създаден като част от по-ранна задача ).
 ???? Какво означава "по-нови"?! С по-късна дата на създаване или по-късна дата на последна промяна?
-```bash
+```sh
 find . -type f -newerBB ~/dir1/f1 #not supported ???
+```
 ```bash
 find . -type f -newermm ~/dir1/f1 #this works but newermm means "edited after, not created after"
 ```
@@ -114,6 +116,7 @@ find /bin -maxdepth 1 -type f -perm 777
 директория myetc в home директорията ви. Направете такава, ако нямате.
 ```bash
 find /etc -maxdepth 1 -type f -perm /0004 -exec cp {} ~/myetc \; # /; shows that the subcommand end there
+```
 ```bash
 find /etc -maxdepth 1 -type f -perm /0004 -exec cp -n {} ~/myetc \; so that already existing files with the same name won't be replaced by the new ones
 ```
