@@ -1,5 +1,7 @@
 # Добре дошли в ада
 ## Командите са писани и тествани на локалния ми компютър
+### Linux Mint for the win
+
 #### 1. Направете копие на файла /etc/passwd във вашата home директория под името my_passwd.
 ```
 cp /etc/passwd my_passwd
@@ -74,7 +76,6 @@ ls -d /etc/*/
 #### 14. Създайте файл, който да съдържа само последните 10 реда от изхода на 13.
 ```
 ls -d /etc/*/ | head -n 10 > bullshit.txt
-
 ```
 #### 15. Изведете обикновените файлове по-големи от 42 байта в home директорията ви
 ```
@@ -85,23 +86,30 @@ find . -maxdepth 1 -type f -size +42c
 ```
 find /tmp -type f - group "students" -perm g=w,o=w
 find /tmp -type f - group "students" -perm /0022
-
 ```
 #### 17. Изведете всички файлове, които са по-нови от practice/01/f1 ( би трябвало да е създаден като част от по-ранна задача ).
 ???? Какво означава "по-нови"?! С по-късна дата на създаване или по-късна дата на последна промяна?
 ```
 find . -type f -newerBB ~/dir1/f1
+find . -type f -newermm ~/dir1/f1 #this works but newermm means "edited after, not created after"
 ```
 #### 18. Изтрийте файловете в home директорията си по-нови от practice/01/f3 (подайте на rm опция -i за да може да изберете само тези които искате да изтриете).
-?????
+```
+rm -i ??????
+```
 #### 19. Намерете файловете в /bin, които могат да се четат, пишат и изпълняват от всички.
-?????
+```
+find /bin -maxdepth 1 -type f -perm 777
+```
 #### 20. Копирайте всички файлове от /etc, които могат да се четат от всички, в
 директория myetc в home директорията ви. Направете такава, ако нямате.
-??????
+```
+find /etc -maxdepth 1 -type f -perm /0004 -exec cp {} ~/myetc \; # /; shows that the subcommand end there
+# find /etc -maxdepth 1 -type f -perm /0004 -exec cp -n {} ~/myetc \; so that already existing files with the same name won't be replaced by the new ones
+find /etc -maxdepth 1 -type f -perm /0004 | xargs -I {} cp {} ~/myetc # -I and the placeholder {} allow the same thing
+```
 #### 21. от предната задача: когато вече сте получили myetc с файлове, архивирайте всички от тях, които започват с 'c' в архив, който се казва c_start.tar. Изтрийте директорията myetc и цялото ѝ съдържание. Изтрийте архива c_start.tar
 ?????
 #### 22. Използвайки едно извикване на командата find, отпечатайте броя на редовете във всеки обикновен файл в /etc директорията.
 ?????
 #### 23. Копирайте най-малкия файл от тези, намиращи се в /etc, в home директорията си.
-?????
