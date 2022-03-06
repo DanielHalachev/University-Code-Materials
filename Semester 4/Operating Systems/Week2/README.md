@@ -114,10 +114,10 @@ find /bin -maxdepth 1 -type f -perm 777
 ```
 #### 20. Копирайте всички файлове от /etc, които могат да се четат от всички, в директория myetc в home директорията ви. Направете такава, ако нямате.
 ```bash
-find /etc -maxdepth 1 -type f -perm /0004 -exec cp {} ~/myetc \; # /; shows that the subcommand end there
+find /etc -maxdepth 1 -type f -perm /0004 -exec cp {} ~/myetc \;      # /; shows that the subcommand end there
 ```
 ```bash
-find /etc -maxdepth 1 -type f -perm /0004 -exec cp -n {} ~/myetc \; so that already existing files with the same name won't be replaced by the new ones
+find /etc -maxdepth 1 -type f -perm /0004 -exec cp -n {} ~/myetc \;   # so that already existing files with the same name won't be replaced by the new ones
 ```
 ```bash
 find /etc -maxdepth 1 -type f -perm /0004 | xargs -I {} cp {} ~/myetc # -I and the placeholder {} allow the same thing
