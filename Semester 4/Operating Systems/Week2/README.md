@@ -112,8 +112,7 @@ find . -type f -maxdepth 1 -newermm ~/practice/01/f3 | xargs -I {} rm -i {}
 ```bash
 find /bin -maxdepth 1 -type f -perm 777
 ```
-#### 20. Копирайте всички файлове от /etc, които могат да се четат от всички, в
-директория myetc в home директорията ви. Направете такава, ако нямате.
+#### 20. Копирайте всички файлове от /etc, които могат да се четат от всички, в директория myetc в home директорията ви. Направете такава, ако нямате.
 ```bash
 find /etc -maxdepth 1 -type f -perm /0004 -exec cp {} ~/myetc \; # /; shows that the subcommand end there
 ```
