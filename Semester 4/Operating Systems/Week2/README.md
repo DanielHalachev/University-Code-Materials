@@ -106,7 +106,7 @@ find . -type f -newermm ~/dir1/f1 #this works but newermm means "edited after, n
 ```
 #### 18. Изтрийте файловете в home директорията си по-нови от practice/01/f3 (подайте на rm опция -i за да може да изберете само тези които искате да изтриете).
 ```bash
-find . -type f -maxdepth 1- newermm ~/practice/01/f3 | xargs -I {} rm -i {}
+find . -type f -maxdepth 1 -newermm ~/practice/01/f3 | xargs -I {} rm -i {}
 ```
 #### 19. Намерете файловете в /bin, които могат да се четат, пишат и изпълняват от всички.
 ```bash
