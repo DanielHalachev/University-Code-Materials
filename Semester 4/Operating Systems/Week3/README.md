@@ -1,36 +1,46 @@
 #### 1. Сортирайте /etc/passwd лексикографски по поле UserID.
 ```bash
-
+sort -t: -k 3 /etc/passwd
 ```
+```bash
+cat /etc/passwd | sort -t: -k 3
+```
+- Защо `cat /etc/passwd | sort -t 3` (без -к) не работи?
 #### 2. Сортирайте /etc/passwd числово по поле UserID. (Открийте разликите с лексикографската сортировка)
 ```bash
-
+sort -n -t: -k 3 /etc/passwd
+```
+```bash
+cat /etc/passwd | sort -n -t: -k 3
 ```
 #### 3. Изведете само 1-ва и 5-та колона на файла /etc/passwd спрямо разделител ":".
 ```bash
-
+cut -d: -f1,5 /etc/passwd
+```
+```bash
+cut -d : -f 1,5 /etc/passwd
 ```
 #### 4. Изведете съдържанието на файла /etc/passwd от 2-ри до 6-ти символ.
 ```bash
-
+head -1 /etc/passwd | cut -c 2-7 # includes 6-th symbol
 ```
 #### 5. Отпечатайте потребителските имена и техните home директории от /etc/passwd.
 ```bash
-
+cut -d: -f1,6 /etc/passwd
 ```
 #### 6. Отпечатайте втората колона на /etc/passwd, разделена спрямо символ '/'.
 ```bash
-
+cut -d/ -f2 /etc/passwd
 ```
-#### 7. Изведете броя на байтовете в /etc/passwd. Изведете броя на символите в /etc/passwd. Изведете броя на редовете  в /etc/passwd.
+#### 7. Изведете броя на байтовете в /etc/passwd. Изведете броя на символите в /etc/passwd. Изведете броя на редовете в /etc/passwd.
 ```bash
-
-```
-```bash
-
+cat /etc/passwd | wc -c # байтове
 ```
 ```bash
-
+cat /etc/passwd | wc -m # символи
+```
+```bash
+cat /etc/passwd | wc -l # редове
 ```
 #### 8. С отделни команди, извадете от файл /etc/passwd:
 - първите 12 реда
@@ -40,15 +50,29 @@
 - 151-я ред (или друг произволен, ако нямате достатъчно редове)
 - последните 4 символа от 13-ти ред (символът за нов ред не е част от реда)
 ```bash
-
+head -12 /etc/passwd
+```
+```bash
+word=$(cat /etc/passwd)
+echo ${word:0:8}
+```
+```bash
+head -n -4 /etc/passwd
+```
+```bash
+tail -n 17 /etc/passwd
+```
+```bash
+head -n 151 /etc/passwd | tail -n 1
 ```
 #### 9. Запаметете във файл в своята home директория резултатът от командата `df -P`. Напишете команда, която извежда на екрана съдържанието на този файл, без първия ред (хедъра), сортирано по второ поле (numeric).
 ```bash
-
+sudo df -P > output.txt
+cat output.txt | tail -n + 2 | sort -nrk2
 ```
 #### 10. Запазете само потребителските имена от /etc/passwd във файл users във вашата home директория.
 ```bash
-
+cat /etc/passwd | cut -d: -f1 > users
 ```
 #### 11. Изпишете всички usernames от /etc/passwd с главни букви.
 ```bash
