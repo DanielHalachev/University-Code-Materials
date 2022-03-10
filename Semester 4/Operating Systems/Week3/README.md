@@ -55,7 +55,7 @@ head -12 /etc/passwd
 ```
 ```bash
 word=$(cat /etc/passwd)
-echo ${word:0:8}
+echo ${word:0:26}
 ```
 ```bash
 head -n -4 /etc/passwd
