@@ -124,7 +124,7 @@ find /etc -maxdepth 1 -type f -perm /0004 | xargs -I {} cp {} ~/myetc # -I and t
 ```
 #### 21. от предната задача: когато вече сте получили myetc с файлове, архивирайте всички от тях, които започват с 'c' в архив, който се казва c_start.tar. Изтрийте директорията myetc и цялото ѝ съдържание. Изтрийте архива c_start.tar
 ```bash
-find ~/myetc -name "c*" -type f | xargs -I {} tar cfv "c_start.tar" {}
+find ~/myetc -name "c*" -type f | xargs -I {} tar rfv "c_start.tar" {}
 rm -rf myetc
 rm "c_start.tar"
 ```
