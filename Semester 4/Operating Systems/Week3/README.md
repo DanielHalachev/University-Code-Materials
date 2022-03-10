@@ -57,6 +57,8 @@ head -12 /etc/passwd
 word=$(cat /etc/passwd)
 echo ${word:0:26}
 ```
+или ```cut -z -c 0-26 /etc/passwd  #-z за да разделя на \0, -c символи до 26ти``` 
+
 ```bash
 head -n -4 /etc/passwd
 ```
@@ -68,6 +70,7 @@ head -n 151 /etc/passwd | tail -n 1
 ```
 ```bash
 head -14 /etc/passwd |tail -n 1 |????
+```
 #### 9. Запаметете във файл в своята home директория резултатът от командата `df -P`. Напишете команда, която извежда на екрана съдържанието на този файл, без първия ред (хедъра), сортирано по второ поле (numeric).
 ```bash
 sudo df -P > output.txt
