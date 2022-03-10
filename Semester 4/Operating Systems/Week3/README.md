@@ -5,7 +5,6 @@ sort -t: -k 3 /etc/passwd
 ```bash
 cat /etc/passwd | sort -t: -k 3
 ```
-- Защо `cat /etc/passwd | sort -t 3` (без -к) не работи?
 #### 2. Сортирайте /etc/passwd числово по поле UserID. (Открийте разликите с лексикографската сортировка)
 ```bash
 sort -n -t: -k 3 /etc/passwd
