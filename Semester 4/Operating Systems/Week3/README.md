@@ -82,23 +82,33 @@ cat /etc/passwd | cut -d: -f1 > users
 ```
 #### 11. Изпишете всички usernames от /etc/passwd с главни букви.
 ```bash
-
+cat /etc/passwd | cut -d : -f 1 | tr a-z A-Z
 ```
-#### 12. Изведете реда от /etc/passwd, на който има информация за вашия потребител.
+#### 12. 
+- Изведете реда от /etc/passwd, на който има информация за вашия потребител.
 - Изведедете този ред и двата реда преди него.
 - Изведете този ред, двата преди него, и трите след него.
 - Изведете *само* реда, който се намира 2 реда преди реда, съдържащ информация за вашия потребител.
 ```bash
-
+cat /etc/passwd | grep daniel
+```
+```bash
+cat /etc/passwd | grep -B 2 daniel
+```
+```bash
+cat /etc/passwd | grep -B 2 -A 3 daniel
+```
+```bash
+cat /etc/passwd | grep -B 2 daniel | head -1
 ```
 #### 13. Изведете колко потребители не изпозват /bin/bash за login shell според /etc/passwd
-- (hint: 'man 5 passwd' за информация какъв е форматът на /etc/passwd)
 ```bash
-
+cat /etc/passwd | grep -v bash | wc -l
 ```
 #### 14. Изведете само имената на хората с второ име по-дълго от 6 (>6) символа според /etc/passwd
+???
 ```bash
-
+cat /etc/passwd | cut -d : -f 1 | grep ???????*
 ```
 #### 15. Изведете имената на хората с второ име по-късо от 8 (<=7) символа според /etc/passwd // !(>7) = ?
 ```bash
