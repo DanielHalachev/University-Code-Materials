@@ -108,15 +108,15 @@ cat /etc/passwd | grep -v bash | wc -l
 #### 14. Изведете само имената на хората с второ име по-дълго от 6 (>6) символа според /etc/passwd
 ???
 ```bash
-cat /etc/passwd | cut -d : -f 1 | grep ???????*
+cat /etc/passwd | cut -d : -f 5 | cut -d , -f 1 | awk 'length($2) > 6 {print $2}'
 ```
 #### 15. Изведете имената на хората с второ име по-късо от 8 (<=7) символа според /etc/passwd // !(>7) = ?
 ```bash
-
+cat /etc/passwd | cut -d : -f 5 | cut -d , -f 1 | awk 'length($2) < 8 {print $2}'
 ```
 #### 16. Изведете целите редове от /etc/passwd за хората от 15.
 ```bash
-
+WHY ARE YOU GAE
 ```
 #### 17. Копирайте <РЕПО>/exercises/data/emp.data във вашата home директория.
 ##### Посредством awk, използвайки копирания файл за входнни данни, изведете:
@@ -139,7 +139,61 @@ cat /etc/passwd | cut -d : -f 1 | grep ???????*
 - за всеки ред, сумата от второ и трето поле
 - сумата на второ и трето поле от всеки ред
 ```bash
-
+awk 'END {print NR}' emp.data
+```
+```bash
+awk 'NR == 3 {print $0}' emp.data
+```
+```bash
+awk '{print $NF}' emp.data
+```
+```bash
+awk 'END {print $NF}' emp.data
+# OR awk '{last = $0} END { print $3 }' emp.data
+```
+```bash
+awk 'NF > 4' emp.data 
+```
+```bash
+awk '$NF > 4' emp.data
+```
+```bash
+awk -v SUM=0 '{SUM += NF} END{print SUM}' emp.data
+```
+```bash
+awk '/Beth/ {print}' emp.data
+```
+```bash
+awk -v MAX=0 -v LINE='' '$NF > MAX{MAX=$NF; LINE=$R} END{print MAX," - ",LINE}' emp.data
+```
+```bash
+awk 'NR >= 1' emp.data
+```
+```bash
+awk 'length($R)>17' emp.data
+```
+```bash
+awk '{print NF, $0}' emp.data
+```
+```bash
+awk -v OFS='\t' '{print $2,$1}' emp.data
+```
+```bash
+awk -v OFS='\t' '{print $2,$1,$3}' emp.data
+```
+```bash
+awk -v OFS='\t' '{print NR,$2,$3}' emp.data
+```
+```bash
+awk -v OFS='\t' '{$2=""; print $0 }' emp.data #lazy
+#OR
+awk -v OFS='\t' '{printf "%s%s",$1,OFS}; {for(i=3; i<=NF; i++){printf "%i",$i}}; {print ""}' emp.data
+```
+```bash
+awk '{print $2 + $3}' emp.data
+```
+```bash
+awk -v SUM=0 '{SUM += ($2 + $3)} END {print SUM}' emp.data
 ```
 #### 18. Намерете само Group ID-то си от файлa /etc/passwd.
 ```bash
