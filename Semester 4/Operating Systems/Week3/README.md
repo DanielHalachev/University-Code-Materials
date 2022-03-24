@@ -209,7 +209,7 @@ find /bin/ -maxdepth 1 -type f | xargs -I {} file {} | grep 'shell script' | wc 
 ```
 #### 21. Направете списък с директориите на вашата файлова система, до които нямате достъп. Понеже файловата система може да е много голяма, търсете до 3 нива на дълбочина.
 ```bash
-
+find / -maxdepth 3 -type d -readable 
 ```
 #### 22. Създайте следната файлова йерархия в home директорията ви:
 dir5/file1
@@ -314,74 +314,71 @@ cat /etc/services | tr -c '[:alnum:]' '[\n*]' | sort | uniq -c | sort -nr | head
 #### 36. Вземете факултетните номера на студентите (описани във файла <РЕПО>/exercises/data/mypasswd.txt) от СИ и ги запишете във файл si.txt сортирани.
 - Студент е част от СИ, ако home директорията на този потребител (според <РЕПО>/exercises/data/mypasswd.txt) се намира в /home/SI директорията.
 ```bash
-
+cat mypasswd | grep '/home/SI' | cut -d : -f 1| tr -d 's' > si.txt
 ```
 #### 37. За всяка група от /etc/group изпишете "Hello, <група>", като ако това е вашата група, напишете "Hello, <група> - I am here!".
 ```bash
-
+awk -F : '{print "Hello,", $1}' /etc/group
 ```
 #### 38. Shell Script-овете са файлове, които по конвенция имат разширение .sh. Всеки такъв файл започва с `"#!<interpreter>"` , където `<interpreter>` указва на операционната система какъв интерпретатор да пусне (пр: "#!/bin/bash", "#!/usr/bin/python3 -u"). Намерете всички .sh файлове в директорията `/usr` и нейните поддиректории, и проверете кой е най-често използваният интерпретатор.
 ```bash
-
+find /usr -type f -name "*.sh" | xargs -I {} head -1 {} | grep '#!' | tr -d ' ' | awk -F '\/' '{print $(NF)}' 2>/dev/null | sort | uniq -c | sort -nr -k 1 | head -1 | awk '{print $2}'
 ```
 #### 39. 
 #### A). Изведете GID-овете на 5-те най-големи групи спрямо броя потребители, за които съответната група е основна (primary).
 #### Б). (*) Изведете имената на съответните групи.
-- Hint: /etc/passwd
+```bash
+awk -F: '{print $4}' /etc/passwd | sort | uniq -c | sort -nr -k 1 | head -5 | awk '{print $2}'
+```
 ```bash
 
 ```
 #### 40. Направете файл eternity. Намерете всички файлове, намиращи се във вашата home директория и нейните поддиректории, които са били модифицирани в последните 15мин (по възможност изключете .).  Запишете във eternity името (път) на файла и времето (unix time) на последната промяна.
 ```bash
-
+find . -mindepth 2 -type f -mmin 15 -printf '%p %T@\n' > eternity
 ```
 #### 41. Копирайте файл <РЕПО>/exercises/data/population.csv във вашата home директория.
-```bash
-
-```
 #### 42. Използвайки файл population.csv, намерете колко е общото население на света през 2008 година. А през 2016?
 ```bash
-
+cat population.csv | tail -n +2 | awk -F , '$3==1980 {pop+=$NF} END {print pop}'
 ```
 #### 43. Използвайки файл population.csv, намерете през коя година в България има най-много население.
 ```bash
-
+cat population.csv | tail -n +2 | awk -F , '$1=="Bulgaria"' | sort -nr -t, -k 4 | head -1 | cut -d , -f 3
 ```
 #### 44. Използвайки файл population.csv, намерете коя държава има най-много население през 2016. А коя е с най-малко население? (Hint: Погледнете имената на държавите)
 ```bash
-
+cat population.csv | tail -n +2 | awk -F , '$3==2016' | sort -nr -t, -k 4 | head -1 | cut -d, -f 1
 ```
 #### 45. Използвайки файл population.csv, намерете коя държава е на 42-ро място по население през 1969. Колко е населението й през тази година?
 ```bash
-
+cat population.csv | awk -F , '$3==1969' | sort -nr -t, -k 4 | cat population.csv | awk -F , '$3==1969' | sort -nr -t, -k 4 | head -42 | tail -1 | cut -d, -f 1,4
 ```
 #### 46. В home директорията си изпълнете командата `curl -o songs.tar.gz "http://fangorn.uni-sofia.bg/misc/songs.tar.gz"`
-```bash
-
-```
 #### 47. Да се разархивира архивът songs.tar.gz в директория songs във вашата home директория.
 ```bash
-
+mkdir songs
+tar -xvf songs.tar.gz --directory=songs
 ```
 #### 48. Да се изведат само имената на песните.
 ```bash
-
+find songs -type f -name *.ogg | awk -F/ '{print $2}' | awk -F ' \\(' '{print $1}'
 ```
 #### 49. Имената на песните да се направят с малки букви, да се заменят спейсовете с долни черти и да се сортират.
 ```bash
-
+find songs -type f -name *.ogg | awk -F/ '{print $2}' | awk -F ' \\(' '{print $1}' | awk '{print tolower($0)}' | tr ' ' '_'
 ```
 #### 50. Да се изведат всички албуми, сортирани по година.
 ```bash
-
+find songs -type f -name *.ogg | awk -F '(' '{print $2}' | awk -F ')' '{print $1}' | sort -n -t',' -k 2 | cut -d, -f 1
 ```
 #### 51. Да се преброят/изведат само песните на Beatles и Pink.
 ```bash
-
+find songs -type f -name *.ogg | grep 'Beatles\|Pink' | awk -F '/' '{print $2}' | awk -F ' \\(' '{print $1}'
 ```
 #### 52. Да се направят директории с имената на уникалните групи. За улеснение, имената от две думи да се напишат слято: Beatles, PinkFloyd, Madness
 ```bash
-
+find songs -type f -name *.ogg | awk -F '/' '{print $2}' | awk -F ' -' '{print $1}' | sort | uniq | tr -d ' ' | xargs mkdir 
 ```
 #### 53. Напишете серия от команди, които извеждат детайли за файловете и директориите в текущата директория, които имат същите права за достъп както най-големият файл в /etc директорията.
 ```bash
