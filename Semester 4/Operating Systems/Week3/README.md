@@ -255,11 +255,22 @@ cat file{1,2,3} | wc -l
 ```
 #### 23. Във file2 (inplace) подменете всички малки букви с главни.
 ```bash
-
+cat file2 | tr '[a-z]' '[A-Z]' > temp && mv temp file2
+```
+или
+```bash
+cat file2 | awk '{print toupper($0)}' > temp && mv temp file2
+```
+или 
+```bash
+sed -i 's/[[:lower:]]/\u&/' file2
 ```
 #### 24. Във file3 (inplace) изтрийте всички "1"-ци.
 ```bash
-
+sed -i '/1/d' file3   #трие редовете с 1ци
+```
+```bash
+sed -i 's/1//g' file3 #трие само 1ци
 ```
 #### 25. Изведете статистика за най-често срещаните символи в трите файла.
 ```bash
