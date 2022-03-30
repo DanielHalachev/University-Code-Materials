@@ -116,7 +116,7 @@ cat /etc/passwd | cut -d : -f 5 | cut -d , -f 1 | awk 'length($2) < 8 {print $2}
 ```
 #### 16. Изведете целите редове от /etc/passwd за хората от 15.
 ```bash
-WHY ARE YOU GAE
+cat /etc/passwd | egrep '^([^:]+:){4}[^ ]+ [^, ]{1,7},'
 ```
 #### 17. Копирайте <РЕПО>/exercises/data/emp.data във вашата home директория.
 ##### Посредством awk, използвайки копирания файл за входнни данни, изведете:
