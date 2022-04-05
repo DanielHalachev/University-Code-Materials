@@ -429,10 +429,10 @@ just"not"right@example.com
 this\ is"really"not\allowed@example.com
 ```
 ```bash
-
+egrep --color "^([a-zA-Z0-9]+\.)*[a-zA-Z0-9_-]+@([a-zA-Z0-9]+[a-zA-Z0-9-]*[a-zA-Z0-9]+\.)*[a-zA-Z0-9]+$" <списък>
 ```
 #### 55. Посредством awk, използвайки emp.data (от 03-a-6000.txt) за входнни данни, изведете:
 - всеки ред, като полетата са в обратен ред (Разгледайте for цикли в awk)
 ```bash
-
+awk '{for (i = NF; i>0; i--){printf "%s\t",$i}}{printf "\n"}' emp.data
 ```
