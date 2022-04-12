@@ -1,0 +1,41 @@
+--Movies
+--1
+INSERT INTO MOVIESTAR(NAME,ADDRESS,GENDER,BIRTHDATE) VALUES ('Nicole Kidman', NULL, 'F',1967-06-20);
+
+--2
+DELETE FROM MOVIEEXEC WHERE MOVIEEXEC.NETWORTH<30000000;
+
+--3
+DELETE FROM MOVIESTAR WHERE MOVIESTAR.ADDRESS IS NULL;
+
+--PC
+--4
+INSERT INTO pc VALUES (12,'1100',2400,2048,500,'52x',299);
+INSERT INTO product VALUES('C',1100,'pc');
+
+--5
+DELETE FROM pc WHERE pc.model='1100';
+
+--6
+DELETE FROM laptop WHERE laptop.model IN (SELECT product.model FROM product WHERE product.maker NOT IN (SELECT DISTINCT product.maker FROM product WHERE product.type='printer'));
+
+--7
+UPDATE product SET maker='A' WHERE maker='B';
+
+--8
+UPDATE pc SET price=price/2, hd=hd+20;
+
+--9
+UPDATE laptop SET screen=screen+1 WHERE laptop.model IN (SELECT product.model FROM product WHERE product.maker='B' AND product.type='laptop')
+
+--Ships
+--10
+INSERT INTO CLASSES VALUES('Nelson', 'bb','Gt.Britain',9,16,34000);
+INSERT INTO SHIPS VALUES('Nelson', 'Nelson',1927);
+INSERT INTO SHIPS VALUES('Rodney', 'Nelson',1927);
+
+--11
+DELETE FROM SHIPS WHERE SHIPS.NAME IN (SELECT DISTINCT OUTCOMES.SHIP FROM OUTCOMES WHERE OUTCOMES.RESULT='sunk');
+
+--12
+UPDATE CLASSES SET BORE=BORE*2.5, DISPLACEMENT=DISPLACEMENT*1.1;
