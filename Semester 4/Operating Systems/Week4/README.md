@@ -31,6 +31,9 @@ ps -e -g root -o rss= | awk -v"SUM=0" '{SUM+=$1} END { if(NR > 0) print SUM/NR; 
 ps -e -o tty= -o comm= | awk '$1=="?" {$1=""; print $0}' | cut -c 2- | sort | uniq
 ```
 #### 9. Да се отпечатат PID на всички процеси, които имат повече деца от родителския си процес.
+Идея: ps -e -o pid= -o ppid= | sort -nr -k 2 | uniq -D -f 1
+      ps -e -o pid= -o ppid= | sort -n -k 2 | uniq -D -f 1
+
 ```bash
 
 ````
