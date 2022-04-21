@@ -60,30 +60,26 @@ cat "$1" | grep "$2" >/dev/null 2>&1
 echo $?
 exit 0
 ```
-#### 10. ```
-Имате компилируем (a.k.a няма синтактични грешки) source file на езика C. Напишете shell script, който да покaзва колко е дълбоко най-дълбокото nest-ване (влагане).
+#### 10. Имате компилируем (a.k.a няма синтактични грешки) source file на езика C. Напишете shell script, който да покaзва колко е дълбоко най-дълбокото nest-ване (влагане).
 Примерен .c файл:
-
+```
 #include <stdio.h>
-
 int main(int argc, char *argv[]) {
-
   if (argc == 1) {
 		printf("There is only 1 argument");
 	} else {
 		printf("There are more than 1 arguments");
 	}
-
 	return 0;
 }
+```
 Тук влагането е 2, понеже имаме main блок, а вътре в него if блок.
-
 Примерно извикване на скрипта:
-
+```
 ./count_nesting sum_c_code.c
-
+```
 Изход:
-The deepest nesting is 2 levels
+```The deepest nesting is 2 levels
 ```
 ```bash
 
