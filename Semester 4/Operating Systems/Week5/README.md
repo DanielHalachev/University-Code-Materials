@@ -84,4 +84,34 @@ int main(int argc, char *argv[]) {
 ```bash
 
 ```
-#### 11.
+#### 11. Напишете shell script, който автоматично да попълва файл указател по подадени аргументи: име на файла указател, пълно име на човека (това, което очакваме да е в /etc/passwd) и избран за него nickname.
+Файлът указател нека да е във формат:
+<nickname, който лесно да запомните> <username в Astero>
+Може да сложите и друг delimiter вместо интервал
+Примерно извикване:
+`./pupulate_address_book myAddressBook "Даниел Халачев" Kotaka`
+Добавя към myAddressBook entry-то:
+`Kotaka s62547`
+***Бонус: Ако има няколко съвпадения за въведеното име (напр. има 10 човека Ivan Petrov в /etc/passwd), всички те да се показват на потребителя, заедно с пореден номер >=1,
+след което той да може да въведе някой от номерата (или 0 ако не си хареса никого), и само избраният да бъде добавен към указателя.***
+```bash
+#!/usr/bin/bash
+result=$(cat /etc/passwd | grep "$2")
+if [ ! -f "$1" ]
+then
+    touch "$1"
+fi
+
+if [ $(echo "$result" | wc -l) -eq 1 ]
+then
+    echo $3 "$result" | awk -F ':' '{print $1}' >> "$1"
+else
+    echo "Chose one: "
+    multipleResult=$(echo "$result" | awk -v counter='1' '{printf "%s) %s\n",counter,$1; counter++}')
+    echo "$multipleResult"
+    read selection
+    echo $3 $(echo "$multipleResult" | grep "^$selection) " | cut -d' ' -f 2 | cut -d':' -f 1) >> "$1"
+        #awk -F '\) ' '$1~/$selection/ {print $2}' >> $1
+fi
+exit 0
+```
