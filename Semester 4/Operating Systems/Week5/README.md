@@ -115,3 +115,54 @@ else
 fi
 exit 0
 ```
+#### 12. Напишете shell script, който да приема параметър име на директория, от която взимаме файлове, и опционално експлицитно име на директория, в която ще копираме файлове. Скриптът да копира файловете със съдържание, променено преди по-малко от 45 мин, от първата директория във втората директория. Ако втората директория не е подадена по име, нека да получи такова от днешната дата във формат, който ви е удобен. При желание новосъздадената директория да се архивира.
+```bash
+#!/usr/bin/bash
+if [ $# -eq 0 ] 
+then
+    echo "Invalid number of arguments"
+    exit 1
+elif [ $# -eq 1 ]
+then 
+    fromDir=$1
+    toDir="$(date +%d.%m.%Y-%H:%M)"
+elif [ $# -eq 2 ]
+then
+    fromDir=$1
+    toDir=$2
+fi
+
+if [ ! -d $fromDir ]
+then
+    echo "Starting directory is non-existent"
+    exit 2
+fi
+if [ ! -d $toDir ]
+then
+    mkdir -p "$toDir"
+fi
+
+find $fromDir -maxdepth 1 -type f -mmin -45 -exec mv -t $toDir {} +
+exit 0
+```
+#### 13. Да се напише shell скрипт, който получава при стартиране като параметър в командния ред идентификатор на потребител. Скриптът периодично (sleep(1)) да проверява дали потребителят е log-нат, и ако да - да прекратява изпълнението си, извеждайки на стандартния изход подходящо съобщение.
+```bash
+#!/usr/bin/bash
+if [ $# -eq 0 ] 
+then
+    echo "Invalid number of arguments"
+    exit 1
+fi
+while [ true ]
+do
+    sleep 1
+    if [ ! $(who | grep "$1" | wc -l) -eq 0 ]
+    then 
+        echo "User logged in"
+        break
+    else
+        echo "Checking... "
+    fi
+done
+exit 0
+```
