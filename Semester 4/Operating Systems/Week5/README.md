@@ -172,7 +172,9 @@ exit 0
 - 2, когато границите на интервала са обърнати
 - 1, когато числото не попада в интервала
 - 0, когато числото попада в интервала
+
 Примери:
+
 `$ ./validint.sh -42 0 102; echo $?`
 `1`
 `$ ./validint.sh 88 94 280; echo $?`
@@ -182,22 +184,30 @@ exit 0
 `$ ./validint.sh asdf - 280; echo $?`
 `3`
 ```bash
-#!/usr/bin/bash
-if [ $# -eq 0 ] 
+if [ ! $# = 3 ]
 then
-    echo "Invalid number of arguments"
+    echo "Incorrect number of arguments"
     exit 1
 fi
-while [ true ]
-do
-    sleep 1
-    if [ ! $(who | grep "$1" | wc -l) -eq 0 ]
-    then 
-        echo "User logged in"
-        break
-    else
-        echo "Checking... "
+
+regex="^-{0,1}[0-9]+$"
+if [[ $1 =~ $regex ]] && [[ $2 =~ $regex ]] && [[ $3 =~ $regex ]]
+then
+    if [ $2 -ge $3 ]
+    then
+        echo "Reversed interval"
+        exit 2
+    elif [ $1 -le $2 ] || [ $1 -ge $3 ]
+    then
+        echo "Not in interval"
+        exit 1
+    else 
+        echo "In interval"
+        exit 0
     fi
-done
+else
+    echo "Not integers"
+    exit 3
+fi
 exit 0
 ```
