@@ -211,3 +211,72 @@ else
 fi
 exit 0
 ```
+#### 15. Да се напише shell скрипт, който форматира големи числа, за да са по-лесни за четене. Като пръв аргумент на скрипта се подава цяло число. Като втори незадължителен аргумент се подава разделител. По подразбиране цифрите се разделят с празен интервал.
+
+Примери:
+`$ ./nicenumber.sh 1889734853`
+`1 889 734 853`
+
+`$ ./nicenumber.sh 7632223 ,` 
+`7,632,223`
+```bash
+regex="^[0-9]+$"
+if [ $# -lt 1 ] || [ ! $1=~regex ]
+then
+    echo "Incorrect number of arguments"
+    exit 1
+elif [ $# -eq 1 ]
+then
+    NUM="$(echo "$1" | rev | tr -d ' ')"
+    DELIM=" "
+else
+    NUM="$(echo "$1" | rev | tr -d ' ')"
+    DELIM="$2"
+fi
+counter=1
+result=""
+for ((i=0; i<${#NUM}; i++))
+do
+    char="${NUM: $i: 1}"
+    result="$result$char"
+    if [ $(($counter%3)) -eq 0 ]
+    then
+        result="$result$DELIM"
+    fi
+    counter=$(($counter+1))
+done
+result="$(echo "$result" | rev)"
+if [ $(($counter%3)) -eq 1 ]
+then
+    echo "$(echo "$result" | cut -c 2-)"
+else
+    echo "$result"
+fi
+exit 0
+```
+#### 16. Да се напише shell скрипт, който приема файл и директория. Скриптът проверява в подадената директория и нейните под-директории дали съществува копие на подадения файл и отпечатва имената на намерените копия, ако съществуват такива.
+```bash
+if [ $# -lt 2 ]
+then
+    echo "Incorrect number of arguments"
+    exit 1
+else
+    FILE=$1
+    DIR="$2"
+fi
+
+if [ ! -f "$FILE" ]
+then
+    echo "Provided file does not exist"
+    exit 1
+fi
+if [ ! -d "$DIR" ]
+then
+    echo "Provided directory does not exist"
+    exit 1
+fi
+result=""
+find "$DIR" -type f -exec cmp -s "$FILE" {} \; -and -print
+# when you have to perform two actions and perform the second only when the first was successful, use -and 
+exit 0
+```
