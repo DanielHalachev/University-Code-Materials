@@ -444,3 +444,20 @@ done
 echo "You guessed it in" "$COUNTER" "tries!"
 exit 0
 ```
+#### 23. Да се напише shell скрипт, който приема параметър - име на потребител. Скриптът да прекратява изпълненито на всички текущо работещи процеси на дадения потребител, и да извежда колко са били те.
+```bash
+#!/usr/bin/env bash
+for process in $(ps -u $1 -o pid=)
+do
+    kill -9 $process
+done
+exit 0
+```
+#### 24. Да се напише shell скрипт, който приема два параметъра - име на директория и число. Скриптът да извежда сумата от размерите на файловете в директорията, които имат размер, по-голям от подаденото число.
+```bash
+#!/usr/bin/env bash
+#Do some validation here cuz I don't care anymore
+find $1 -maxdepth 1 -type f -size +$2b -printf "%s\n" | awk -v sum=0 '{sum+=$1} END{print sum}'
+exit 0
+```
+https://github.com/avelin/fmi-os/blob/master/exercises/05.scripts/05-b-7800.txt
