@@ -329,3 +329,118 @@ f1 f2 f3 asdf
 ```bash
 WTF?
 ```
+#### 18. ???Да се напише shell скрипт, който получава единствен аргумент директория и отпечатва списък с всички файлове и директории в нея (без скритите). До името на всеки файл да седи размера му в байтове, а до името на всяка директория да седи броят на елементите в нея (общ брой на файловете и директориите, без скритите). Добавете параметър -a, който указва на скрипта да проверява и скритите файлове и директории.
+
+Пример:
+```$ ./list.sh .```
+*asdf.txt (250 bytes)
+Documents (15 entries)
+empty (0 entries)
+junk (1 entry)
+karh-pishtov.txt (8995979 bytes)
+scripts (10 entries)*
+```bash
+#!/usr/bin/env bash
+while getopts 'a' OPTION
+do
+    case "$OPTION" in
+        a)
+            echo "Hello there"
+            find $2 -maxdepth 1 -type d | xargs -I {} echo "{} (" "$(find {} -maxdepth 1 | wc -l)" "entries)"
+            exit 0
+            ;;
+        ?)
+            echo "You can use no option or [-a] to show the hidden files"
+            exit 0
+            ;;
+    esac
+done
+echo "Bruh"
+```
+#### 19. Да се напише shell скрипт, който приема произволен брой аргументи - имена на файлове. Скриптът да прочита от стандартния вход символен низ и за всеки от зададените файлове извежда по подходящ начин на стандартния изход броя на редовете, които съдържат низа.
+NB! Низът може да съдържа интервал.
+```bash
+#!/usr/bin/env bash
+read -p "Enter string: " STRING
+for var in "$@"
+do
+    printf "%s\t%s lines\n" "$var" "$(cat "$var" | grep "$STRING" | wc -l)"
+done
+exit 0
+```
+#### 20. Да се напише shell скрипт, който приема два параметъра - име на директория и число. Скриптът да извежда на стандартния изход имената на всички обикновени файлове във директорията, които имат размер, по-голям от подаденото число.
+```bash
+#!/usr/bin/env bash
+if [ ! $# -eq 2 ]
+then
+    echo "Invalid number of parameters"
+    exit 1
+fi
+if [ ! -d $1 ]
+then
+    echo "Directory does not exist"
+    exit 2
+fi
+regex="^[0-9]+$"
+if [ ! $2=~regex ]
+then
+    echo "Second argument is not integer"
+    exit 2
+fi
+find $1 -maxdepth 1 -type f -size +$2b 2>/dev/null
+exit 0
+```
+#### 21. Да се напише shell скрипт, който приема произволен брой аргументи - имена на файлове или директории. Скриптът да извежда за всеки аргумент подходящо съобщение:
+	- дали е файл, който може да прочетем
+	- ако е catдиректория - имената на файловете в нея, които имат размер, по-малък от броя на файловете в директорията.
+```bash
+#!/usr/bin/env bash
+for object in "$@"
+do
+    if [ -r $object ] && [ ! -d $object ]
+    then
+        echo "$object" "is a readable file"
+    elif [ -d $object ]
+    then
+        num="$(find $object -maxdepth 1 -type f | wc -l)"
+        find $object -maxdepth 1 -type f -size -${num}b
+    fi
+done
+exit 0 
+```
+#### 22. Напишете shell script guess, която си намисля число, което вие трябва да познате. В зависимост от вашия отговор, програмата трябва да ви казва "надолу" или "нагоре", докато не познате числото. Когато го познаете, програмата да ви казва с колко опита сте успели.
+
+./guess (програмата си намисля 5)
+
+Guess? 22
+...smaller!
+Guess? 1
+...bigger!
+Guess? 4
+...bigger!
+Guess? 6
+...smaller!
+Guess? 5
+RIGHT! Guessed 5 in 5 tries!
+
+Hint: Един начин да направите рандъм число е с $(( (RANDOM % b) + a  )), което ще генерира число в интервала [a, b]. Може да вземете a и b като параметри, но не забравяйте да направите проверката.
+```bash
+#!/usr/bin/env bash
+RAND=$(( (RANDOM % 3) + 1 ))
+GUESS=-1
+COUNTER=0
+while [ $GUESS -ne $RAND ]
+do
+    read -p "Your guess: " GUESS
+    if [ $GUESS -gt $RAND ]
+    then
+        echo "It is smaller..."
+    elif [ $GUESS -lt $RAND ]
+    then
+        echo "It is bigger..."
+    fi
+    COUNTER=$(( $COUNTER + 1))
+done
+echo "You guessed it in" "$COUNTER" "tries!"
+exit 0
+```
