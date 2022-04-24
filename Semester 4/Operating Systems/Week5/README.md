@@ -280,3 +280,37 @@ find "$DIR" -type f -exec cmp -s "$FILE" {} \; -and -print
 # when you have to perform two actions and perform the second only when the first was successful, use -and 
 exit 0
 ```
+#### 17. Да се напише shell script, който генерира HTML таблица съдържаща описание на потребителите във виртуалката ви. Таблицата трябва да има:
+- заглавен ред с имената нa колоните
+- колони за username, group, login shell, GECKO field (man 5 passwd)
+
+Пример:
+```$ ./passwd-to-html.sh > table.html```
+```$ cat table.html```
+```html
+<table>
+  <tr>
+    <th>Username</th>
+    <th>group</th>
+    <th>login shell</th>
+    <th>GECKO</th>
+  </tr>
+  <tr>
+    <td>root</td>
+    <td>root</td>
+    <td>/bin/bash</td>
+    <td>GECKO here</td>
+  </tr>
+  <tr>
+    <td>ubuntu</td>
+    <td>ubuntu</td>
+    <td>/bin/dash</td>
+    <td>GECKO 2</td>
+  </tr>
+</table>```
+```
+```bash
+echo "<table>"
+cat /etc/passwd | awk -F ':' '{printf "\t<tr>\n\t\t<th>%s</th>\n\t\t<th>%s</th>\n\t\t<th>%s</th>\n\t\t<th>%s</th>\n\t\t</tr>\n",$1,$4,$NF,$5}'
+echo "</table>"
+```
