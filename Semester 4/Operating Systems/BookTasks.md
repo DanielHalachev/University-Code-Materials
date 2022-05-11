@@ -152,7 +152,7 @@ do
     fi
 done
 ```
-#### 19.  2016-SE-04 
+#### 19. 2016-SE-04 
 ```bash
 #!/usr/bin/bash
 if [ $# -lt 2 ]
@@ -173,6 +173,89 @@ else
     winner="$1"
 fi
 cat "$winner" | awk '{$1="";$2="";$3="";print $0}' | cut -c 4-| sort > "$winner.songs"
+```
+#### 20. 2016-SE-02
+```bash
+#!/usr/bin/env bash
+if [ $# != 1 ]
+then
+    echo "Invalid number of parameters"
+    exit 1
+fi
+if [ ! -f $1 ]
+then
+    echo "The provided file does not exist"
+    exit 2
+fi
+cat "$1" | cut -c 10- | awk -v i=1 '{print i "." $0; i++}' | sort -k2
+exit 0
+```
+#### 21. 2017-IN-01
+```bash
+#!/usr/bin/env bash
+if [ $# != 3 ]
+then
+    echo "Invalid number of parameters"
+    exit 1
+fi
+
+if [ ! -f $1 ]
+then
+    echo "The provided file does not exist"
+    exit 2
+fi
+TERMS1="$(cat $1 | grep "$2=" | cut -d "=" -f 2)"   # $2= is very important, as otherwise grep catches the line with key2 as well
+RESULT="$3="
+for term in $(cat $1 | grep "$3" | cut -d "=" -f 2)
+do
+    if [ ! $(echo "${TERMS1}" | grep "${term}" | wc -l) -eq 0 ]
+    then
+        continue
+    fi
+    RESULT=${RESULT}" "${term}
+done
+cat $1 | sed -s "s/$(cat $1 | grep "$3")/${RESULT}/g" > bruh.txt    # without the grep here only $3 is replaced
+#echo "${RESULT}"
+exit 0
+```
+#### 22. 2017-IN-02
+```bash
+#!/usr/bin/env bash
+if [ $# != 1 ]
+then
+    echo "Invalid number of parameters"
+    exit 1
+fi
+COUNT=$(ps -a -u "$1" -o pid= | wc -l)
+for user in $(who | cut -d ' ' -f 1)
+do
+    if [ $(ps -a -u "${user}" -o pid= | wc -l) -gt ${COUNT} ]
+    then
+        echo "${user}"
+    fi
+done
+```
+```bash
+#!/usr/bin/env bash
+if [ $# != 1 ]
+then
+    echo "Invalid number of parameters"
+    exit 1
+fi
+COUNT=$(ps -a -u "$1" -o pid= | wc -l)
+    ps -e -o time= | awk -F ':' -v sum=0 '{nr=NR;sum=sum+$1*3600+$2*360+$3;}END{sum=sum/nr; printf("%02d:%02d:%02d\n", sum/3600, sum/60%60, sum%60)}'
+exit 0
+```
+```bash
+#!/usr/bin/env bash
+if [ $# != 1 ]
+then
+    echo "Invalid number of parameters"
+    exit 1
+fi
+AVERAGE=$(ps -e -o times= | awk -v sum=0 '{nr=NR;sum=sum+$1;}END{print sum=sum/nr;}')
+ps -e -o pid= -o times= | awk -v avg=${AVERAGE} '$2>2*avg{print $1;}' | xargs -I {} kill 9 {}
+exit 0
 ```
 #### 50
 ```c
