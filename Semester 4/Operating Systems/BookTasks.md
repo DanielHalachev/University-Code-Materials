@@ -174,3 +174,61 @@ else
 fi
 cat "$winner" | awk '{$1="";$2="";$3="";print $0}' | cut -c 4-| sort > "$winner.songs"
 ```
+#### 50
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h> 
+#include <unistd.h>
+#include <err.h>
+#include <sys/stat.h>
+#include <stdint.h>
+int main(int argc, char* argv[]){
+    if (argc != 4){
+        errx(1, "Invalid number of parameters");
+    }
+
+    int fd1 = open(argv[1], O_RDONLY);
+    if (fd1 == -1){
+        err(2, "Could not open file");
+    }
+    struct stat st1;
+    stat(argv[1], &st1);
+    uint32_t size1 = st1.st_size;
+
+    int fd2 = open(argv[2], O_RDONLY);
+    if (fd2 == -1){
+        err(3,"Could not open file");
+    }
+    struct stat st2;
+    stat(argv[2], &st2);
+    uint32_t size2 = st2.st_size;
+
+    if (size1%8 !=0 || size2%4 != 0){
+        err(3, "Invalid file contents");
+    }
+
+    int fd3 = open(argv[3], O_CREAT|O_WRONLY|O_TRUNC, S_IRWXU|S_IROTH);
+    if (fd3 == -1){
+        err(4, "Could not open file");
+    }
+
+    struct pair {
+        uint32_t start;
+        uint32_t length;
+    } pair;
+
+    while(read(fd1, &pair, sizeof(pair))){
+        lseek(fd2, pair.start, SEEK_SET);
+        for(uint32_t i=0; i<pair.length; i++){
+            read(fd2, &pair, sizeof(pair));
+            write(fd3, &pair, sizeof(pair));
+        }
+    } 
+
+    close(fd1);
+    close(fd2);
+    close(fd3);
+    exit(0);
+}
+```
