@@ -218,11 +218,15 @@ int main(int argc, char* argv[]){
         uint32_t length;
     } pair;
 
-    while(read(fd1, &pair, sizeof(pair))){
-        lseek(fd2, pair.start, SEEK_SET);
+    while(read(fd1, &pair, sizeof(pair) == sizeof(pair))){
+        lseek(fd2, pair.start*sizeof(uint32_t), SEEK_SET);
         for(uint32_t i=0; i<pair.length; i++){
-            read(fd2, &pair, sizeof(pair));
-            write(fd3, &pair, sizeof(pair));
+            if(read(fd2, &pair, sizeof(pair)) != sizeof(pair)){
+                err(5, "Invalid read");
+            }
+            if(write(fd3, &pair, sizeof(pair))!=sizeof(pair)){
+                err(6, "Invalid read");
+            }
         }
     } 
 
