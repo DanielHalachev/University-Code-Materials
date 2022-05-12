@@ -257,6 +257,29 @@ AVERAGE=$(ps -e -o times= | awk -v sum=0 '{nr=NR;sum=sum+$1;}END{print sum=sum/n
 ps -e -o pid= -o times= | awk -v avg=${AVERAGE} '$2>2*avg{print $1;}' | xargs -I {} kill 9 {}
 exit 0
 ```
+#### 23. 2017-IN-03 
+```bash
+#!/usr/bin/env bash
+find /home -type f -printf "%p; %p %T@\n" | sort -n -k 3 | head -n 1 | sed -s "s/\/home\///" | sed -s "s/\/[^;]*;//" | cut -d ' ' -f 1,2    # folder names may contain space
+# that's why I delimit it with ;, which cannot be inside a name
+```
+#### 24. 2017-SE-01
+```bash
+#!/usr/bin/env bash
+if [ $# -le 1 ]
+then
+    echo "Invalid number of parameters"
+fi
+if [ $# -eq 1 ]
+then
+    find -L "$1" -type l
+elif [ $# -eq 2 ]
+then
+    find "$1" -type f -printf "%p %n" | awk -v limit=${2} '$2>=limit {print $1}'
+fi
+exit 0
+```
+
 #### 50
 ```c
 #include <stdio.h>
