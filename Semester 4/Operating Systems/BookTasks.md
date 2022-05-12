@@ -266,6 +266,11 @@ find /home -type f -printf "%p; %p %T@\n" | sort -n -k 3 | head -n 1 | sed -s "s
 #### 24. 2017-SE-01
 ```bash
 #!/usr/bin/env bash
+if [ "$EUID" -ne 0 ]
+then 
+  echo "Please run as root"
+  exit
+fi
 if [ $# -le 1 ]
 then
     echo "Invalid number of parameters"
@@ -279,6 +284,127 @@ then
 fi
 exit 0
 ```
+#### 25. 2017-SE-02
+```bash
+#!/usr/bin/env bash
+if [ "$EUID" -ne 0 ]
+then 
+  echo "Please run as root"
+  exit
+fi
+if [ ! $# -eq 3 ]
+then
+    echo "Invalid number of parameteres"
+    exit 0
+fi
+SRC="$1"
+DST="$2"
+ABC="$3"
+
+if [ ! $(find "${DST}" -mindepth 2 -maxdepth 2 | wc -l) -eq 0 ]
+then
+    echo "Directory" "${DST}" "is not empty"
+fi
+
+cp -r --no-preserve=all "${SRC}"/* "${DST}"
+find "${DST}" -type f ! -name "*${ABC}*" -exec rm {} \;
+find "${SRC}" -type f -name "*${ABC}*" -exec rm {} \;
+for dr in $(find ${DST} -type d)
+do
+    if [ ! -d $dr ]
+    then
+        continue
+    fi
+    echo $dr
+    if [ $(find ${dr} -type f | wc -l) -eq 0 ]
+    then
+        rmdir $dr
+    fi
+done
+for dr in $(find ${SRC} -type d)
+do
+    if [ ! -d $dr ]
+    then
+        continue
+    fi
+    echo $dr
+    if [ $(find ${dr} -type f | wc -l) -eq 0 ]
+    then
+        rmdir $dr
+    fi
+done
+exit 0
+```
+#### 26. 2017-SE-03
+```bash
+#!/usr/bin/env bash
+if [ ! $(echo $EUID) -eq 0 ]
+then
+    echo "Please run as root"
+fi
+for user in $(ps -e -o user= | cut -d ' ' -f 1 | sort | uniq)
+do
+    echo $user - $(ps -a -o rss= -u $user | awk -v sum=0 '{sum+=$1;}END{print sum;}')
+done
+exit 0
+```
+#### 27. 2017-SE-04
+```bash
+#!/usr/bin/env bash
+if [ $# -lt 1 ]
+then
+  echo "Invalid number of parameters"
+  exit 1
+fi
+RESULT="$(echo "$(find $1 -maxdepth 1 -type l -printf "%f -> %l\n")" "Broken links:\n" "$(find -L $1 -type l | wc -l)")" 
+if [ $# -eq 1 ]
+then
+  echo "${RESULT}"
+else
+  echo "${RESULT}" > "$2"
+fi
+exit 0
+```
+#### 28. 2017-SE-05
+```bash
+#!/usr/bin/env bash
+if [ $# -lt 2 ]
+then
+  echo "Invalid number of parameters"
+  exit 1
+fi
+DIR="$1"
+STR="$2"
+find $DIR -maxdepth 1 -type f -printf "%f\n" | egrep "^vmlinuz-[0-9]+.[0-9]+.[0-9]+-${STR}$" | awk -F '-' '{printf "%s.%s\n",$2,$0}' | tail -n 1 | cut -d '.' -f 4-
+exit 0
+```
+#### 29. 2017-SE-06 
+```bash
+#!/usr/bin/env bash
+
+STRING=""
+cat /etc/passwd | while read -r line    # very important, /etc/passwd has spaces in it which break the for cycle
+do
+  DIR=$(echo "${line}" | cut -d ':' -f 7)
+  USR=$(echo "${line}" | cut -d ':' -f 1)
+  if [ ! -d "${DIR}" ] || [ ! "$(stat -c "%U" $DIR)" = "${USR}" ] || [ "$(stat -c "%A" ${DIR} | cut -c 3)" = "-"] 
+  then
+    STRING="$(echo ${STRING}"\n"${USR})"
+  fi
+done
+LIMIT=$(ps -a -u 0 -o rss= | awk -v sum=0 '{sum+=$1}END{print sum}')
+for usr in ${STRING}
+do
+  if [ $(ps -a -u "$usr" | awk -v sum=0 '{sum+=$1}END{print sum}') -ge $LIMIT ]
+  then 
+    ps -a -u "$usr" -o pid= | xargs -I {} kill 9 {}
+  fi
+done
+exit 0
+```
+
+
+
 
 #### 50
 ```c
