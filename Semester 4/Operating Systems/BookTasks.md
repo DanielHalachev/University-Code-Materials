@@ -402,6 +402,27 @@ do
 done
 exit 0
 ```
+#### 30. 2018-SE-01
+```bash
+#!/usr/bin/env bash
+if [ ! $# -eq 1 ]
+then
+  echo "invalid number of parameters"
+  exit 1
+fi
+LOGDIR="$1"
+FILE="$(mktemp)"
+for friend in $(find ${LOGDIR} -mindepth 3 -maxdepth 3 -printf "%f\n" | sort | uniq)
+do
+  echo $friend $(find $LOGDIR -mindepth 4 -maxdepth 4 -path "$LOGDIR/*/*/$friend/*"| egrep "[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}.txt$" | xargs wc -l | tail -n 1 | cut -d ' ' -f 2) >> $FILE 
+done
+cat $FILE | sort -nr -k 2 | head -n 10
+exit 0
+```
+#### 31. 2018-SE-02
+```bash
+
+```
 
 
 
