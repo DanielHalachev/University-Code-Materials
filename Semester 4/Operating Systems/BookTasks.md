@@ -421,7 +421,40 @@ exit 0
 ```
 #### 31. 2018-SE-02
 ```bash
-
+#!/usr/bin/env bash
+if [ ! $# -eq 2 ]
+then
+  echo "invalid number of parameters"
+  exit 1
+fi
+FILE="$1"
+DIR="$2"
+if [ ! -d "$DIR" ]
+then
+  echo "Directory does not exist"
+  exit 2
+fi
+if [ ! -f "$FILE" ]
+then
+  echo "File does not exist"
+  exit 3
+fi
+if [ ! $(find "$DIR" -mindepth 1 | wc -l) -eq 0 ]
+then
+  echo "Directory is not empty"
+  exit 4
+fi
+STRING="$(cat "${FILE}" | tr -s ' ' | sed -E -s "s/([a-zA-Z^ ]+ [a-zA-Z^ ]+)?\([a-zA-Z ]+\)?/\1/g" | sed -s "s/\s*:\s*/:/g")"
+touch dict.txt
+COUNTER=0
+echo "$STRING" | cut -d ':' -f 1 | sort | uniq | while read -r person
+do
+  COUNTER=$(( $COUNTER + 1 ))
+  echo "$person;$COUNTER" >> dict.txt
+  touch "${DIR}/${COUNTER}.txt"
+  echo "$STRING" | awk -F ':' -v p="${person}" '$1==p{print $2}' >> "${DIR}/${COUNTER}.txt" 
+done
+exit 0
 ```
 
 
