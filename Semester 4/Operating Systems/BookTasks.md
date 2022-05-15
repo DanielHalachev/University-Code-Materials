@@ -485,7 +485,7 @@ exit 0
 
 
 
-#### 50
+#### 50. 2016-SE-02
 ```c
 #include <stdio.h>
 #include <stdlib.h>
@@ -545,5 +545,76 @@ int main(int argc, char* argv[]){
     close(fd2);
     close(fd3);
     exit(0);
+}
+```
+#### 52. 2017-IN-01
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <err.h>
+
+int main(int argc, char* argv[]){
+    struct tuple{
+        uint16_t shift;
+        uint8_t length;
+        uint8_t reserved;
+    }__attribute__((packed)) tuple;
+    
+    if (argc != 5){
+        errx(1, "Invalid number of parameters");
+    }
+    
+    int fd_dat1 = open(argv[1], O_RDONLY);
+    if (fd_dat1 == -1){
+        err(2, "%s", argv[1]);
+    }
+    int fd_idx1 = open(argv[2], O_RDONLY);
+    if (fd_idx1 == -1){
+        err(2, "%s", argv[2]);
+    }
+    int fd_dat2 = open(argv[3], O_CREAT|O_WRONLY|O_TRUNC,S_IRUSR|S_IWUSR);
+    if (fd_dat1 == -1){
+        err(2, "%s", argv[3]);
+    }
+    int fd_idx2 = open(argv[4], O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IWUSR);
+    if (fd_idx2 == -1){
+        err(2, "%s", argv[4]);
+    }
+    while(read(fd_idx1,&tuple, sizeof(tuple))==sizeof(tuple)){
+        if(lseek(fd_dat1, tuple.shift, SEEK_SET) == -1){
+            err(3, "Could not move in file");
+        }
+        char str[tuple.length];
+        if (str == NULL){
+            err(4, "Could not allocate memory");
+        }
+        if(read(fd_dat1, &str, tuple.length) != tuple.length){
+            err(4, "Could not read from file %s", argv[1]);
+        }
+        if (str[0] >= 0x41 && str[0] <= 0x5A){
+            if(write(fd_dat2, &str, tuple.length) != tuple.length){
+                err(5, "Could not write in file %s", argv[3]);
+            }
+            if(write(fd_idx2, &tuple, sizeof(tuple)) != sizeof(tuple)){
+                err(5, "Could not write in file %s", argv[4]);
+            }
+        }
+    }
+
+    if(close(fd_dat1) != 0){
+        err(3, "%s", argv[1]);
+    }
+    if(close(fd_idx1) != 0){
+        err(3, "%s", argv[1]);
+    }
+    if(close(fd_dat2) != 0){
+        err(3, "%s", argv[1]);
+    }
+    if(close(fd_idx2) != 0){
+        err(3, "%s", argv[1]);
+    }
 }
 ```
