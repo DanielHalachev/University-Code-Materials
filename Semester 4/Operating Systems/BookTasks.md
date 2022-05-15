@@ -456,7 +456,32 @@ do
 done
 exit 0
 ```
+#### 32. 2018-SE-03
+```bash
+#!/usr/bin/env bash
+if [ ! $# -eq 2 ]
+then
+  echo "invalid number of parameters"
+  exit 1
+fi
+if [ ! -f $1 ]
+then
+  echo "File does not exist"
+  exit 2
+fi
+FILE1="$1"
+FILE2="$2"
+NF=$(cat "${FILE1}" | head -n 1 | awk -F ',' 'END{print NF}')
+cat "${FILE1}" | sort -t ',' -k 1,1 | sort -s -t ',' -k2,$NF -u > "${FILE2}"
+exit 0
 
+#Explanation
+# sorting by first key will make lines be ordered by their ID
+# sorting stabily with -s then sorts by all other fields, thus making identical lines (except the id) be next to each other but in the same time be ordered by their ID
+# -u removes the duplicates specified by the sorting key, which is k2,$NF
+# sort -t ',' -k2,$NF -u -k1,1 doesn't work for some reason. It seems that there must be exactly one -k for -u to work
+```
+#### 33. 2019-SE-01
 
 
 
