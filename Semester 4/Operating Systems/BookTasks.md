@@ -618,3 +618,60 @@ int main(int argc, char* argv[]){
     }
 }
 ```
+#### 
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <err.h>
+int main(int argc, char* argv[]){
+    struct tuple{
+        uint16_t shift;
+        uint8_t original;
+        uint8_t replacement;
+    }__attribute__((packed)) tuple;    
+    if (argc != 4){
+        errx(EXIT_FAILURE, "Invalid number of parameters");
+    }    
+    int fd1bin = open(argv[1], O_RDONLY);
+    if (fd1bin == -1){
+        err(EXIT_FAILURE, "%s", argv[1]);
+    }
+    int fd2bin = open(argv[2], O_RDONLY);
+    if (fd2bin == -1){
+        err(EXIT_FAILURE, "%s", argv[2]);
+    }
+    int fd_patch = open(argv[3], O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IWUSR);
+    if (fd_patch == -1){
+        err(EXIT_FAILURE, "%s", argv[3]);
+    }
+    uint8_t c1;
+    uint8_t c2;
+    uint16_t position=-1;
+    while (read(fd1bin, &c1, sizeof(c1)) == sizeof(c1)){
+        position++;
+        if (read(fd2bin, &c2, sizeof(c2)) != sizeof(c2)){
+            err(EXIT_FAILURE, "Could not read from file %s", argv[2]);
+        }
+        if (c1 != c2){
+            tuple.shift = position;
+            tuple.original = c1;
+            tuple.replacement = c2;
+            if(write(fd_patch, &tuple, sizeof(tuple)) != sizeof(tuple)){
+                err(EXIT_FAILURE, "Could not write in file %s", argv[3]);
+            }
+        }
+    }
+    if(close(fd1bin) != 0){
+        err(EXIT_FAILURE, "%s", argv[1]);
+    }
+    if(close(fd2bin) != 0){
+        err(EXIT_FAILURE, "%s", argv[2]);
+    }
+    if(close(fd_patch) != 0){
+        err(EXIT_FAILURE, "%s", argv[3]);
+    }
+}
+```
