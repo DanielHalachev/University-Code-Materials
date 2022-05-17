@@ -887,3 +887,44 @@ int main(int argc, char* argv[]) {
     exit(0);
 }
 ```
+#### 56. 2017-SE-04
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <err.h>
+#include <string.h>
+int main (int argc, char* argv[]){
+    char c;
+    if (argc == 1){
+    while(read(STDIN_FILENO, &c, sizeof(c))==sizeof(c)){
+            if(write(STDOUT_FILENO, &c, sizeof(c))!=sizeof(c)){
+                err(EXIT_FAILURE, "Could not write to STDOUT");
+            }
+        }
+    }
+    else{
+        for (int i=1; i<argc; i++){
+            if(strcmp(argv[i], "-") == 0){
+                while(read(STDIN_FILENO, &c, sizeof(c))==sizeof(c)){
+                    if(write(STDOUT_FILENO, &c, sizeof(c))!=sizeof(c)){
+                        err(EXIT_FAILURE, "Could not write to STDOUT");
+                    }
+                }
+            }
+            else{
+                int fd = open(argv[i], O_RDONLY);
+                while(read(fd, &c, sizeof(c))==sizeof(c)){
+                    if(write(STDOUT_FILENO, &c, sizeof(c))!=sizeof(c)){
+                        err(EXIT_FAILURE, "Could not write to stdout");
+                    }
+                }
+                close(fd);
+            }
+        }
+    }
+    exit(0);
+}
+```
