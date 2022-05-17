@@ -818,6 +818,144 @@ int main(int argc, char* argv[]){
     }
 }
 ```
+#### 56. 2017-SE-04
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <err.h>
+#include <string.h>
+int main (int argc, char* argv[]){
+    char c;
+    if (argc == 1){
+    while(read(STDIN_FILENO, &c, sizeof(c))==sizeof(c)){
+            if(write(STDOUT_FILENO, &c, sizeof(c))!=sizeof(c)){
+                err(EXIT_FAILURE, "Could not write to STDOUT");
+            }
+        }
+    }
+    else{
+        for (int i=1; i<argc; i++){
+            if(strcmp(argv[i], "-") == 0){
+                while(read(STDIN_FILENO, &c, sizeof(c))==sizeof(c)){
+                    if(write(STDOUT_FILENO, &c, sizeof(c))!=sizeof(c)){
+                        err(EXIT_FAILURE, "Could not write to STDOUT");
+                    }
+                }
+            }
+            else{
+                int fd = open(argv[i], O_RDONLY);
+                while(read(fd, &c, sizeof(c))==sizeof(c)){
+                    if(write(STDOUT_FILENO, &c, sizeof(c))!=sizeof(c)){
+                        err(EXIT_FAILURE, "Could not write to stdout");
+                    }
+                }
+                close(fd);
+            }
+        }
+    }
+    exit(0);
+}
+```
+#### 57. 2018-SE-01
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <err.h>
+#include <string.h>
+
+int in(char* str, char c);
+int in(char* str, char c){
+    for(size_t i=0; i<strlen(str); i++){
+        if (c==str[i]){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int main (int argc, char* argv[]){
+    char c1;
+    char c2;
+    struct pair{
+        char first;
+        char second;
+    };
+
+    if (argc != 3){
+        errx(EXIT_FAILURE, "Invalid number of parameters");
+    }
+       
+    if (strcmp(argv[1], "-s") == 0){
+        char set1[strlen(argv[2])+1]; 
+        strcpy(set1,argv[2]);
+
+        if(read(STDIN_FILENO, &c1, sizeof(c1))!=sizeof(c1)){
+                err(EXIT_FAILURE, "Could not write to STDOUT");
+        }
+        if(write(STDOUT_FILENO, &c1, sizeof(c1))!=sizeof(c1)){
+                err(EXIT_FAILURE, "Could not write to STDOUT");
+        }
+
+        while(read(STDIN_FILENO, &c2, sizeof(c2))==sizeof(c2)){
+            if(c1 != c2 || in(set1, c1)==0){
+                c1=c2;
+                if (write(STDOUT_FILENO, &c2, sizeof(c2))!= sizeof(c2)){
+                    err(EXIT_FAILURE, "Could not write to STDOUT");
+                }
+            }
+        }
+    }
+    else if(strcmp(argv[1], "-d") == 0){
+        char set1[strlen(argv[2])+1]; 
+        strcpy(set1,argv[2]);
+
+        if(read(STDIN_FILENO, &c1, sizeof(c1))!=sizeof(c1)){
+                err(EXIT_FAILURE, "Could not write to STDOUT");
+        }
+        if(write(STDOUT_FILENO, &c1, sizeof(c1))!=sizeof(c1)){
+                err(EXIT_FAILURE, "Could not write to STDOUT");
+        }
+
+        while(read(STDIN_FILENO, &c1, sizeof(c1))==sizeof(c1)){
+            if(in(set1, c1)==0){
+                if (write(STDOUT_FILENO, &c1, sizeof(c1))!= sizeof(c1)){
+                    err(EXIT_FAILURE, "Could not write to STDOUT");
+                }
+            }
+        }
+    }
+    else{
+        char set1[strlen(argv[1])+1]; 
+        strcpy(set1,argv[1]);
+        char set2[strlen(argv[2])+1]; 
+        strcpy(set2,argv[2]);
+        if (strlen(set1)!=strlen(set2)){
+            err(EXIT_FAILURE, "Set 1 and Set2 are not of equal length");
+        }
+        struct pair map[256];
+        for (int i=0; i<256; i++){
+            map[i].first=i;
+            map[i].second=i;
+        }
+        for(size_t i=0; i<strlen(set1); i++){
+            map[(int)set1[i]].second=set2[i]; 
+        } 
+        while(read(STDIN_FILENO, &c1, sizeof(c1))==sizeof(c1)){
+            c2 = map[(int)c1].second;
+            if (write(STDOUT_FILENO, &c2, sizeof(c2))!= sizeof(c2)){
+                err(EXIT_FAILURE, "Could not write to STDOUT");
+            }
+        }
+    }
+    exit(0);
+}
+```
 #### 65. 2021-SE-01
 ```c
 #include <err.h>     // for err and errx
@@ -883,47 +1021,6 @@ int main(int argc, char* argv[]) {
     }
     if (close(fd2)) {
         err(EXIT_FAILURE, "Could not close output file");
-    }
-    exit(0);
-}
-```
-#### 56. 2017-SE-04
-```c
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <err.h>
-#include <string.h>
-int main (int argc, char* argv[]){
-    char c;
-    if (argc == 1){
-    while(read(STDIN_FILENO, &c, sizeof(c))==sizeof(c)){
-            if(write(STDOUT_FILENO, &c, sizeof(c))!=sizeof(c)){
-                err(EXIT_FAILURE, "Could not write to STDOUT");
-            }
-        }
-    }
-    else{
-        for (int i=1; i<argc; i++){
-            if(strcmp(argv[i], "-") == 0){
-                while(read(STDIN_FILENO, &c, sizeof(c))==sizeof(c)){
-                    if(write(STDOUT_FILENO, &c, sizeof(c))!=sizeof(c)){
-                        err(EXIT_FAILURE, "Could not write to STDOUT");
-                    }
-                }
-            }
-            else{
-                int fd = open(argv[i], O_RDONLY);
-                while(read(fd, &c, sizeof(c))==sizeof(c)){
-                    if(write(STDOUT_FILENO, &c, sizeof(c))!=sizeof(c)){
-                        err(EXIT_FAILURE, "Could not write to stdout");
-                    }
-                }
-                close(fd);
-            }
-        }
     }
     exit(0);
 }
