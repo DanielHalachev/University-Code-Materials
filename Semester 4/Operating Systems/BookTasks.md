@@ -618,7 +618,7 @@ int main(int argc, char* argv[]){
     }
 }
 ```
-#### 
+#### 53. 2017-SE-01
 ```c
 #include <stdint.h>
 #include <stdio.h>
@@ -672,6 +672,77 @@ int main(int argc, char* argv[]){
     }
     if(close(fd_patch) != 0){
         err(EXIT_FAILURE, "%s", argv[3]);
+    }
+}
+```
+#### 54. 2017-SE-02
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <err.h>
+#include <stdbool.h>
+#include <string.h>
+
+int main(int argc, char* argv[]){
+    bool enumerating = false;
+    char c;
+    int line=1;
+    if (argc == 1){
+            if(read(0, &c, sizeof(c)) != sizeof(c)){
+                err(EXIT_FAILURE, "Could not read from stdin");
+            }
+            if (write(1, &c, sizeof(c)) != sizeof(c)){
+                err(EXIT_FAILURE, "Could not write to stdout"); 
+            }
+    }
+    int i=1;
+    if (strcmp(argv[1], "-n")==0){
+        enumerating = true;
+    }
+    for (;i <= argc; i++){
+        if (enumerating == true){
+            char str[2];
+            str[0]=line;
+            str[1]=(char)" ";
+            if(write(1, &str, sizeof(str)) != sizeof(str)){
+                err(EXIT_FAILURE, "Could not write to stdout");
+            } 
+            if(strcmp(argv[i], "-")==0){
+
+            }else{
+                int fd=open(argv[i], O_RDONLY);
+                while(read(fd, &c, sizeof(c)) == sizeof(c)){
+                    if(write(1, &c, sizeof(c)) != sizeof(c)){
+                            err(EXIT_FAILURE, "Could not write to stdout");
+                    } 
+                    if(c=="\n"){
+                        line++;
+                        str[0]=line;
+                        if(write(1, &str, sizeof(str)) != sizeof(str)){
+                            err(EXIT_FAILURE, "Could not write to stdout");
+                        }           
+                    }
+                }
+                close(fd);
+            }
+        }
+        else{
+            if(strcmp(argv[i], "-")==0){
+
+            }
+            else{
+                int fd=open(argv[i], O_RDONLY);
+                while(read(fd, &c, sizeof(c)) == sizeof(c)){
+                    if(write(1, &c, sizeof(c)) != sizeof(c)){
+                            err(EXIT_FAILURE, "Could not write to stdout");
+                    } 
+                }
+                close(fd);
+            }
+        }
     }
 }
 ```
