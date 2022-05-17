@@ -746,3 +746,75 @@ int main(int argc, char* argv[]){
     }
 }
 ```
+####  55. 2017-SE-03
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <err.h>
+#include <sys/stat.h>
+int main(int argc, char* argv[]){
+    struct tuple{
+        uint16_t shift;
+        uint8_t original;
+        uint8_t replacement;
+    }__attribute__((packed)) tuple;    
+    int fd_patch = open(argv[1], O_RDONLY);
+    if (fd_patch == -1){
+        err(EXIT_FAILURE, "%s", argv[1]);
+    }
+    if (argc != 4){
+        errx(EXIT_FAILURE, "Invalid number of parameters");
+    }    
+    int fd1bin = open(argv[2], O_RDONLY);
+    if (fd1bin == -1){
+        err(EXIT_FAILURE, "%s", argv[2]);
+    }
+    int fd2bin = open(argv[3], O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IWUSR);
+    if (fd2bin == -1){
+        err(EXIT_FAILURE, "%s", argv[3]);
+    }
+    uint8_t c;
+    uint16_t position=-1;
+    struct stat st;
+    stat(argv[0], &st);
+    if (st.st_size != 0){
+        int result = read(fd_patch, &tuple, sizeof(tuple));
+        if (result == -1){
+            err(EXIT_FAILURE, "Could not read from %s", argv[1]);
+        }
+    }
+    else{
+        tuple.shift=0;
+    }
+    while (read(fd1bin, &c, sizeof(c)) == sizeof(c))
+    {
+        position++;
+        if(position == tuple.shift && c == tuple.original){
+            c = tuple.replacement;
+            int result = read(fd_patch, &tuple, sizeof(tuple));
+            if(result == -1){
+                err(EXIT_FAILURE, "Could not read from file %s", argv[1]);
+            }
+            if(result < sizeof(tuple)){
+                tuple.shift = position;
+                // never will patch be read again
+            }
+        }
+        if (write(fd2bin, &c, sizeof(c)) != sizeof(c)){
+            err(EXIT_FAILURE, "Could not read from file %s", argv[3]);
+        }
+    }
+    if(close(fd1bin) != 0){
+        err(EXIT_FAILURE, "%s", argv[1]);
+    }
+    if(close(fd2bin) != 0){
+        err(EXIT_FAILURE, "%s", argv[2]);
+    }
+    if(close(fd_patch) != 0){
+        err(EXIT_FAILURE, "%s", argv[3]);
+    }
+}
+```
