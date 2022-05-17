@@ -818,3 +818,72 @@ int main(int argc, char* argv[]){
     }
 }
 ```
+#### 65. 2021-SE-01
+```c
+#include <err.h>     // for err and errx
+#include <fcntl.h>   // for open
+#include <stdint.h>  // for ints
+#include <stdio.h>   // for IO
+#include <stdlib.h>  // for exit
+#include <unistd.h>  // for close
+
+uint8_t arr1[]  = {0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080};
+uint16_t arr2[] = {0x0002, 0x0008, 0x0020, 0x0080, 0x0200, 0x0800, 0x2000, 0x8000};
+uint16_t arr3[] = {0x0001, 0x0004, 0x0010, 0x0040, 0x0100, 0x0400, 0x1000, 0x4000};
+
+uint16_t encode(const uint8_t number);
+uint16_t encode(const uint8_t number) {
+    uint16_t result = 0;
+    for (int i = 0; i < 8; i++) {
+        if ((number & arr1[i]) > 0) {
+            result = result | arr2[i];
+        }
+    }
+
+    for (int i = 0; i < 8; i++) {
+        if ((number & arr1[i]) == 0) {
+            result = result | arr3[i];
+        }
+    }
+
+    return result;
+}
+
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        errx(EXIT_FAILURE, "Invalid number of parameteres");
+    }
+
+    int fd1 = open(argv[1], O_RDONLY);
+    if (fd1 == -1) {
+        err(EXIT_FAILURE, "Could not open first file");
+    }
+
+    int fd2 = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR);
+    if (fd2 == -1) {
+        err(EXIT_FAILURE, "Could not open second file for writing");
+    }
+
+    uint16_t map[256];
+    for (int i = 0; i < 256; i++) {
+        map[i] = encode(i);
+    }
+
+    uint8_t number;
+    uint16_t encodedNumber;
+    while (read(fd1, &number, sizeof(number)) == sizeof(number)) {
+        encodedNumber = map[number];
+        if (write(fd2, &encodedNumber, sizeof(encodedNumber)) !=
+            sizeof(encodedNumber)) {
+            err(EXIT_FAILURE, "Could not write to output file");
+        }
+    }
+    if (close(fd1)) {
+        err(EXIT_FAILURE, "Could not close input file");
+    }
+    if (close(fd2)) {
+        err(EXIT_FAILURE, "Could not close output file");
+    }
+    exit(0);
+}
+```
