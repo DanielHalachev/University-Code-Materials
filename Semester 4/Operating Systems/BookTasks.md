@@ -482,8 +482,44 @@ exit 0
 # sort -t ',' -k2,$NF -u -k1,1 doesn't work for some reason. It seems that there must be exactly one -k for -u to work
 ```
 #### 33. 2019-SE-01
+```bash
+#!/usr/bin/env bash
+FILE="$(mktemp)"
+while read line
+do
+  echo "$line" | tr -c '[0-9.\-]'  ' ' | tr -s ' ' | tr ' ' '\n' | grep "[0-9]" >> $FILE
+done < ${1:-/dev/stdin}
+STRING="$(cat $FILE | sort -n)"
+NUM1="$(echo "$STRING" | head -n 1)"
+NUM2="$(echo "$STRING" | tail -n 1)"
 
+if [ ${NUM1#-} -gt ${NUM2#-} ]
+then
+  echo $NUM1
+elif [ ${NUM1#-} -lt ${NUM2#-} ]
+then
+  echo $NUM2
+else
+  echo $NUM1
+  echo $NUM2
+fi
+exit 0
+```
+```bash
+#!/usr/bin/env bash
+FILE1="$(mktemp)"
+FILE2="$(mktemp)"
+while read line
+do
+  echo "$line" | tr -c '[0-9.\-]'  ' ' | tr -s ' ' | tr ' ' '\n' | grep "[0-9]" >> $FILE1
+done < ${1:-/dev/stdin}
+cat $FILE1 | awk -F '' '{sum=0;for(i=1; i<=NF; i++)sum+=$i;print $0, sum}' | sort -k2,2nr -k1,1n | head -n 1 | cut -d ' ' -f 1
+exit 0
+```
+#### 34. 2019-SE-02
+```bash
 
+```
 
 #### 50. 2016-SE-02
 ```c
