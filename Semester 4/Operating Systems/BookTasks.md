@@ -518,9 +518,134 @@ exit 0
 ```
 #### 34. 2019-SE-02
 ```bash
+#!/usr/bin/env bash
+if [ $# -lt 1 ]
+then
+  echo "Invalid number of parameters"
+  exit 1
+fi
+FILE=$(mktemp)
+if [ $1 == "-n" ]
+then
+  START=3
+  REGEX="^[0-9]+$"
+  if [[ $2 =~ "$REGEX" ]]
+  then
+    NUM=$2
+  else
+    echo "Invalid format"
+    exit 1
+  fi
+else
+  START=1
+  NUM=10
+fi
+for ((i=$START; i<=$#; i++))
+do
+  NAME="$(echo "${!i}" | sed -s 's/.log//g')"
+  cat "${!i}" | tail -n $NUM | awk -v name=$NAME '{$2=$2" "name; print $0}' >> $FILE
+done
+cat $FILE | sort -nr
+```
+####  35. 2019-SE-03
+```bash
 
 ```
+#### 36. 2020-SE-01
+```bash
+#!/usr/bin/env bash
+if [ $# -lt 2 ]
+then
+  echo "Invalid number of parameters"
+  exit 1
+fi
+FILE="$1"
+DIR="$2"
+echo "hostname,phy,vlans,hosts,failover,VPN-3DES-AES,peers,VLAN Trunk Ports,license,SN,key" > $FILE
+if [ ! -f "$FILE" ]
+then
+  echo "File does not exist"
+fi
+if [ ! -d "$DIR" ]
+then
+  echo "Directory does not exist"
+fi
+for file in $(find "$DIR" -type f -name "*.log")
+do
+  NAME="$(basename "$file" | sed -s "s/.log//g")"
+  printf "$NAME" >> $FILE 
+  cat "$file" | tr -s ' ' | grep -v "Licensed features for this platform:" | sed -s "s/ license.//g" | sed -E -s "s/This platform has an{0,1}/ license :/g" | sed -s "s/ : /:/g" | sed -s "s/: /:/g" | sed -E -s "s/Serial//g" | sed -E -s "s/Running//g" | grep -E -v "^+$"| cut -c 2- | awk -F ':' '{printf ",%s",$2}' >>$FILE
+  echo >> $FILE
+done
+```
+####  37. 2020-SE-02
+```bash
+#!/usr/bin/env bash
+if [ $# -lt 1 ]
+then
+  echo "Invalid number of parameters"
+  exit 1
+fi
+TOP="$(cat $1 | cut -d ' ' -f 2 | sort | uniq -c | sort -nr -k1,1 | head -n 3 | tr -s ' ' | cut -c 2- | cut -d ' ' -f 2)"
+for website in $TOP
+do
+  LOGS="$(cat $1 | grep "$website")"
+  printf "%s HTTP/2.0:  %d non-HTTP/2.0:  %d\n" "$website" "$(echo "$LOGS" | cut -d ' ' -f8 | grep "HTTP/2.0" | wc -l)" "$(echo "$LOGS" | cut -d ' ' -f8 | grep -v "HTTP/2.0" | wc -l)"
+  echo "$LOGS" | awk '$9>302{print $1}' | sort | uniq -c
+done
+```
+#### 38. 2020-SE-03
+```bash
+#!/usr/bin/env bash
 
+if [ $# -lt 2 ]
+then
+  echo "Invalid number of parameters"
+  exit 1
+fi
+REPO_PATH="$(realpath $1)"
+PACKAGE_PATH="$(realpath $2)"
+if [ ! $(find $REPO_PATH -mindepth 1 -type f -name "db" | wc -l) -eq 1 ]
+then
+  echo "Invalid repo"
+fi
+if [ ! $(find $REPO_PATH -mindepth 1 -type d -name "packages" | wc -l) -eq 1 ]
+then
+  echo "Invalid repo"
+fi
+if [ ! $(find $PACKAGE_PATH -mindepth 1 -type f -name "version" | wc -l) -eq 1 ]
+then
+  echo "Invalid package"
+fi
+if [ ! $(find $PACKAGE_PATH -mindepth 1 -type d -name "tree" | wc -l) -eq 1 ]
+then
+  echo "Invalid package"
+fi
+BASE="$(basename $PACKAGE_PATH)"
+VERSION="$BASE-$(cat "$PACKAGE_PATH/version" | head -n 1 | egrep "[0-9]+.[0-9]+.[0-9]+-[0-9]+" | tr -d ' ')"
+tar cf "$BASE.tar" "$PACKAGE_PATH/tree"
+xz -z "$BASE.tar"
+HASH="$(sha256sum "$BASE.tar.xz" | cut -d ' ' -f 1 | tr -d ' ')"
+mv "$BASE.tar.xz" "$REPO_PATH/packages/$HASH.tar.xz"
+SAME_VERSIONS=$(cat "$REPO_PATH/db" | egrep "$VERSION" | wc -l)
+if [ $SAME_VERSIONS -eq 0 ]
+then
+    echo "$VERSION" "$HASH" >> "$REPO_PATH/db"
+    mv "$REPO_PATH/db" "$REPO_PATH/tmp"
+    cat "$REPO_PATH/tmp" | sort -k1,1 > "$REPO_PATH/db"
+    rm "$REPO_PATH/tmp"
+elif [ $NAME_VERSIONS -eq 1 ]
+then
+  cat "$REPO_PATH/db" | egrep -v "$VERSION" > "$REPO_PATH/tmp"
+  echo "$VERSION" "$HASH" >> "$REPO_PATH/tmp"
+  rm "$REPO_PATH/db" 
+  mv "$REPO_PATH/tmp" "$REPO_PATH/db"
+fi
+```
+#### 39. 2020-SE-04
+```bash
+
+```
 #### 50. 2016-SE-02
 ```c
 #include <stdio.h>
