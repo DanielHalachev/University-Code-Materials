@@ -644,7 +644,168 @@ fi
 ```
 #### 39. 2020-SE-04
 ```bash
+#!/usr/bin/env bash
 
+if [ $# -lt 2 ]
+then
+  echo "Invalid number of parameters"
+  exit 1
+fi
+SRC="$(realpath $1)"
+DST="$(realpath $2)"
+
+if [ ! -d "$SRC" ]
+then
+  echo "Non-existent source"
+  exit 1
+fi
+
+if [ -d "$DST" ]
+then
+  echo "Existent destination"
+  exit 1
+fi
+
+mkdir -p "$DST/images"
+mkdir "$DST/by-date"
+mkdir "$DST/by-album"
+mkdir "$DST/by-title"
+
+find "$SRC" -type f -name "*.jpg" -print0 | 
+  while IFS= read -r -d '' file
+  do
+    TITLE="$(echo " " "$(basename "$file")" | tr -s ' ' | cut -c 2- | sed -E -s "s/[\ ]*.[\ ]*jpg[\ ]*//g" | sed -E -s "s/\([^\(\)]*\)//g" | tr -s ' ')"
+    ALBUM="$(echo "$(basename "$file")" | egrep "^[a-zA-Z\(\) ]+\(([^\(\)]+)\)[^\(\)]*$" | sed -E -s "s/^[a-zA-Z\(\)\ ]+\(([^\(\)]+)\)[^\(\)]*$/\1/g")"
+    if [ "$ALBUM" = "" ]
+    then
+      ALBUM='misc'
+    fi
+    DATE="$(stat -c "%y" "$file" | cut -d ' ' -f 1)"
+    HASH="$(sha256sum "$file" | cut -c 1-16)"
+    NEW_NAME="$DST/images/$HASH.jpg"
+    cp "$file" "$NEW_NAME"
+    mkdir -p "$DST/by-date/$DATE/by-album/$ALBUM/by-title"
+    ln -rs "$NEW_NAME" "$DST/by-date/$DATE/by-album/$ALBUM/by-title/$TITLE.jpg"
+    mkdir -p "$DST/by-date/$DATE/by-title"
+    ln -rs "$NEW_NAME" "$DST/by-date/$DATE/by-title/$TITLE.jpg"
+    mkdir -p "$DST/by-album/$ALBUM/by-date/$DATE/by-title" 
+    ln -rs "$NEW_NAME" "$DST/by-album/$ALBUM/by-date/$DATE/by-title/$TITLE.jpg"
+    mkdir -p "$DST/by-album/$ALBUM/by-title"
+    ln -rs "$NEW_NAME" "$DST/by-album/$ALBUM/by-title/$TITLE.jpg"
+    mkdir -p "$DST/by-title"
+    ln -rs "$NEW_NAME" "$DST/by-title/$TITLE.jpg"
+  done
+```
+#### 40. 2020-SE-05
+```bash
+#!/usr/bin/env bash
+
+if [ $# -lt 3 ]
+then
+  echo "Invalid number of parameters"
+  exit 1
+fi
+USERS="$1"
+CONFIG_FILE="$2"
+DIR="$3"
+
+if [ ! -f "$USERS" ]
+then
+  echo "Non-existent users file"
+  exit 1
+fi
+
+if [ -f "$CONFIG_FILE" ]
+then
+  echo "Existent config file"
+  exit 1
+fi
+
+if [ ! -d "$DIR" ]
+then
+  echo "Non-existent directory"
+  exit 1
+fi
+
+STR1="{ no-production };"
+STR2="{ volatile };"
+STR3="{ run-all; };"
+
+GROUP="($STR1)|($STR2)|($STR3)"
+touch "$CONFIG_FILE"
+
+find "${DIR}" -type f -name "*.cfg" -print0 |
+  while IFS= read -r -d '' file
+  do
+    if [ ! $(cat "$file" | egrep -v "$GROUP" | wc -l) -eq 0 ]
+    then
+      echo Error in "$(basename "$file")" : 
+      cat "$file" | awk  -v regex="$GROUP" '$0 !~ /regex/ {printf "Line %d: %s\n",NR,$0}'
+      continue;
+    fi
+    NAME="$(basename "$file" | sed -s "s/.cfg//g")"
+    cat "$file" >> "$CONFIG_FILE"
+    if [ $(cat "$USERS" | egrep "$NAME" | wc -l) -eq 0 ]
+    then
+      PWD="somepassword" # "$(pwgen 16 1)"
+      printf "%s:%s\n" "$NAME" "$PWD" >> "$USERS"
+      echo "$NAME" "$PWD" 
+    fi
+  done
+```
+#### 41. 2020-SE-06
+```bash
+#!/usr/bin/env bash
+# breaks if there is a case # to...  \nto ...
+if [ $# -lt 3 ]
+then
+  echo "Invalid number of parameters"
+  exit 1
+fi
+FILE="$1"
+KEY="$2"
+VALUE="$3"
+
+if [ ! -f "$FILE" ]
+then
+  echo "Non-existent users file"
+  exit 1
+fi
+
+DATE="$(date)"
+USER="$(whoami)"
+if [ $(cat "$FILE" | cut -d '=' -f 1 | egrep "$KEY" | wc -l) -eq 0 ]
+then
+  echo "Hello"
+  printf "%s = %s # added at %s by %s\n" "$KEY" "$VALUE" "$DATE" "$USER" >> "$FILE"
+else
+  echo "Bye"
+  sed -E -s "s/^([\ ]*$KEY[\ ]*=[^\n]+)$/\# \1 \# edited at $DATE by $USER \\n$KEY=$VALUE \# added at $DATE by $USER/g" "$FILE"
+fi
+```
+#### 42. 2021-SE-01
+```bash
+
+```
+#### 44. 2021-SE-03 
+```
+#!/usr/bin/env bash
+if [ $# -lt 2 ]
+then
+  echo "Invalid number of parameters"
+  exit 1
+fi
+INPUT="$1"
+OUTPUT="$2"
+STRING="$(xxd $INPUT | cut -d ' ' -f2-9 | sed -E -s "s/([0-9a-z]{4})/\t\t0x\1,\\n/g" | egrep ",")"
+echo "$STRING"
+COUNT=$(echo "$STRING" | wc -l)
+echo "#include <stdint.h>" > $OUTPUT
+echo "int main (int argc, char* argv[]){" >> $OUTPUT
+echo -e "\tuint32_t arrN=$COUNT;" >> $OUTPUT
+echo -e "\tuint16_t arr[]={" >> $OUTPUT
+echo "$STRING" >> $OUTPUT
+echo -e "\t};\n}" >> $OUTPUT
 ```
 #### 50. 2016-SE-02
 ```c
