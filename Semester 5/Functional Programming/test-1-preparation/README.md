@@ -93,41 +93,36 @@
 (run-machine (list 1 'x 4 'a 9 16 25 sqrt 6 (cons + 2) (cons * 5))) → (45 a 2 x 1)
 ```
 ```scheme
+
+#lang racket
 (define (run-machine l)
-  (define process 
+  (define process
     (lambda (ops stack)
-      (if (null? l)
+      (if (null? ops)
           stack
-          (let(
-               (current (car l))
-               (rest (cdr l)))
-            (cond
-              (
-               (or (number? current) (symbol? current))
-               (process rest (cons current stack)))
-              (
-               (procedure? current)
+          (let ((current (car ops))
+                (rest (cdr ops)))
+            (cond ((or (number? current) (symbol? current))
+                   (process rest (cons current stack)))
+              ((procedure? current)
                (process rest (map (lambda(i)(if (number? i) (current i) i)) stack)))
-              (
-               (and (pair? current) (procedure? (car current)) (number? (cdr current)))
-               (let(
-                    (current (car current))
+              ((and (pair? current) (procedure? (car current)) (number? (cdr current)))
+               (let((current (car current))
                     (n-repeat (cdr current)))
-                 (if(
-                     or
-                     (< (length stack) 2)
-                     (= 0 (n-repeat))
-                     (or
-                      (not (number? (car stack)))
-                      (not (number? (cadr stack)))))
-                    (process rest stack)
-                    (let(
-                         (f (car stack))
+                 (if (or (< (length stack) 2)
+                         (= 0 n-repeat)
+                         (or (not (number? (car stack)))
+                             (not (number? (cadr stack)))))
+                   (process rest stack)
+                   (let ((f (car stack))
                          (s (cadr stack))
                          (r (cddr stack)))
-                      (process (cons (cons current (- n-repeat 1)) rest) (cons (current f s) r))))))
-              (else
-               (process rest stack)))))))
+                     (process (cons (cons current
+                                          (- n-repeat 1))
+                                    rest)
+                              (cons (current f s)
+                                    r))))))
+              (else (process rest stack)))))))
   (process l '()))
 ```
 ### Задача 3 (10 т.)
