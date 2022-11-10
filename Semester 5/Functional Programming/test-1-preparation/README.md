@@ -425,3 +425,87 @@ define (find-longest-major ll)
 (define (level-flatten dl)
   (level-flatten-lvl 1 dl))
 ```
+
+## Тема 5
+### Задача 1
+Да се напише функция middle-digit, която намира средната цифра от записа на подадено естествено число n. Ако n е с четен брой цифри, функцията връща -1.
+
+Пример: `(middle-digit 452) → 5`
+
+Пример: `(middle-digit 4712) → -1`
+```scheme
+(define (count-digits n)
+  (if(< n 10)
+     1
+  (+ 1 (count-digits (quotient n 10)))))
+
+(define (middle-digit n)
+  (if (= (remainder (count-digits n) 2) 0)
+      -1
+      (remainder
+       (quotient
+        n
+        (expt
+         10
+         (quotient (count-digits n) 2)))
+       10)))
+```
+
+## Задача 2
+Нека е даден списък l от числа и двуместна операция над числа ⊕. Функцията f наричаме “ендоморфизъм над l”, ако f трансформира l в себе си, запазвайки операцията ⊕, т.е. ∀x∈l f(x)∈l и ∀x,y∈l f(x) ⊕ f(y) = f(x ⊕ y). Да се реализира функция is-em?, която проверява дали f е ендоморфизъм.
+
+Пример: `(is-em? ‘(0 1 4 6) + (lambda (x) (remainder x 3))) → #t`
+```scheme
+(define (all-pairs l)
+  (define (term i)
+    (define (inner-term j)
+      (list (cons (list-ref l i) (list-ref l j))))
+    (accumulate append '() (+ i 1) (- (length l) 1) inner-term ++))
+  (accumulate append '() 0 (- (length l) 2) term ++))
+
+(define (is-em? l op f)
+  (define pairs (all-pairs l))
+  (equal? (map
+           (lambda (pair)(op (f (car pair)) (f (cdr pair))))
+           pairs)
+          (map
+           (lambda (pair)(op (f (car pair)) (f (cdr pair))))
+           pairs)))
+```
+
+## Задача 3
+Да се напише функция (meetTwice? f g a b), която проверява дали в целочисления интервал [a; b] съществуват две различни цели числа x и y такива, че f(x) = g(x) и f(y) = g(y).
+
+
+Пример:`(meetTwice? (lambda(x)x) (lambda(x) (- x)) -3 1) → #f`
+
+Пример:`(meetTwice? (lambda(x)x) sqrt 0 5) → #t`
+```scheme
+(define (meetTwice? f g a b)
+  (define (term i)
+    (define (inner-term j)
+      (and
+       (= (f i) (g i))
+       (= (f j) (g j))))
+    (accumulate (lambda (f s)(or f s)) #f (+ i 1) b inner-term ++))
+  (accumulate (lambda (f s)(or f s)) #f a b term ++))
+```
+
+## Задача 4
+Казваме, че списъкът x = (x1 x2 … x2n) от цели числа се получава от прочитането (look-and-say) на списъка y, ако y се състои от последователно срещане на x1 пъти x2, последвано от x3 пъти x4, и така нататък до x2n-1 пъти x2n. Да се дефинира функция next-look-and-say, която по даден списък y намира списъка x, получен от прочитането y.
+
+Пример: `(next-look-and-say ‘(1 1 2 3 3)) → ‘(2 1 1 2 2 3)`
+```scheme
+(define (next-look-and-say l)
+  (define (helper last counter rest result)
+    (print 'last:)
+    (println last)
+    (print 'counter:)
+    (println counter)
+    (if (null? rest)
+      (append result (list counter last))
+      (if (eqv? (car rest) last)
+          (helper last (+ counter 1) (cdr rest) result)
+          (helper (car rest) 1 (cdr rest) (append result (list counter last))))))
+   (helper (car l) 1 (cdr l) '()))
+```
