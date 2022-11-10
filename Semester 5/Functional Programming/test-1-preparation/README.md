@@ -383,15 +383,12 @@ define (find-longest-major ll)
   (accumulate (lambda (f s) (max f s)) -inf.0 a b term ++))
 ```
 
-## Задача 2. (10 т.) ⚠️
+## Задача 2. (10 т.)
 “Метрика” наричаме функция, която приема като параметър списък от числа и връща число като резултат. Да се напише функция count-metrics, която приема като параметри списък от метрики ml и списък от списъци от числа ll и връща броя на метриките от ml, които дават еднакви стойности за всички елементи на ll.
 Пример: 
 ```scheme
-(define (prod l) (apply * l))        (define (sum l) (apply + l)) 
-(count-metrics (list sum prod) '((0 1 2) (3 0 5) (1337 0)))  → 1
-(count-metrics (list car sum)  '((42 -2 2) (42 0) (42)))     → 2
-```
-```scheme
+(define (prod l) (apply * l))
+(define (sum l) (apply + l)) 
 (define (count-metrics ml ll)
   (define my-list (map (lambda(metric)(map (lambda(l)(metric l)) ll)) ml))
   (define (term i)
@@ -401,8 +398,8 @@ define (find-longest-major ll)
            (list-ref my-list j))
          1
          0))
-    (accumulate + 1 (+ i 1) (- (length ll) 1) inner-term ++))
-  (accumulate (lambda (f s)(max f s)) 0 0 (- (length ll) 2) term ++))
+    (accumulate + 1 (+ i 1) (- (length my-list) 1) inner-term ++))
+  (accumulate (lambda (f s)(max f s)) 0 0 (- (length my-list) 2) term ++))
 ```
 ## Задача 3. (10 т.) 
 “Ниво на влагане” на атом в дълбок списък наричаме броя пъти, който трябва да се приложи операцията car за достигане до атома. Да се реализира функция level-flatten, която по подаден дълбок списък dl връща плосък списък от всички атоми в dl, като всеки числов атом е увеличен с номера на нивото си на влагане.
