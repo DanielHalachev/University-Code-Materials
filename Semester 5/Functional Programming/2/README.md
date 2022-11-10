@@ -1,6 +1,6 @@
 # 02. Рекурсия и итерация
 
-### [Зад 1 `count-digits`][count-digits]
+### Зад 1 `count-digits`
 Брой цифри на цяло число (вкл. и отрицателно).
 ```scheme
 (define (count-digits n)
@@ -11,7 +11,7 @@
   (cd (abs n) 1))
 ```
 
-### [Зад 2 `sum-digits`][sum-digits]
+### Зад 2 `sum-digits`
 Сума от цифрите на цяло число.
 ```scheme
 (define (sum-digits n)
@@ -22,7 +22,7 @@
   (sd n 0))
 ```
 
-### [Зад 3 `bin-to-dec`][bin-to-dec]
+### Зад 3 `bin-to-dec`
 Преобразуване от двоична в десетична бройна система.
 ```scheme
 (define(bin-to-dec bin)
@@ -33,7 +33,7 @@
   (helper bin 0 -1))
 ```
 
-### [Зад 4 `dec-to-bin`][dec-to-bin]
+### Зад 4 `dec-to-bin`
 Преобразува число от десетична в двоична бройна система.
 ```scheme
 (define (dec-to-bin dec)
@@ -44,7 +44,7 @@
   (helper dec 0))
 ```
 
-### [Зад 5 `digit-occurence`][digit-occurence]
+### Зад 5 `digit-occurence`
 Колко пъти цифрата d се среща в цялото число n?
 ```scheme
 (define (digit-occurence n d)
@@ -59,7 +59,7 @@
   (helper2 n d 0))
 ```
 
-### [Зад 6 `reverse-digits`][reverse-digits]
+### Зад 6 `reverse-digits`
 Обръща реда на цифрите на число.
 ```scheme
 (define (reverse-digits n)
@@ -70,13 +70,13 @@
   (rev n (- (count-digits n) 1) 0))
 ```
 
-### [Зад 7 `palindrome?`][palindrome?]
+### Зад 7 `palindrome?`]
 ```scheme
 (define (plaindrome? n)
   (= n (reverse-digits n)))
 ```
 
-### [Зад 8 `sum-interval`]
+### Зад 8 `sum-interval`
 ```scheme
 (define (sum-interval a b)
   (define (s a b result)
@@ -86,7 +86,7 @@
   (s a b 0))
 ```
 
-### [Зад 10 `monotonous?`]
+### Зад 9 `monotonous?`
 ```scheme
 (define (monot? n)
   (cond
@@ -95,7 +95,7 @@
     (else (and (< (remainder (quotient n 10) 10) (remainder n 10)) (monot? (quotient n 10))))))
 ```
 
-### [Зад 10 `fasterpow`][fasterpow]
+### Зад 10 `fast-pow`
 Итеративен вариант на Exponentiation by squaring.
 ```scheme
 (define (fast-pow base power)
@@ -109,7 +109,7 @@
   (helper n 0))
 ```
 
-### [Зад 11 `automorphic?`][automorphic?]
+### Зад 11 `automorphic?`
 Дали е автоморфно числото? Едно число е _автоморфно_, ако квадратът му завършва на него.
 
 ```scheme
@@ -121,7 +121,7 @@
   (ends-in? (* n n) n))
 ```
 
-### [Зад 12 `prime?`][prime?]
+### Зад 12 `prime?`
 Дали числото е просто?
 ```scheme
 (define (prime? n)
@@ -132,7 +132,7 @@
   (helper n 2))
 ```
 
-### [Зад 12 `fibonacci`]
+### Зад 13 `fibonacci`
 ```scheme
 (define (fibonacci n)
   (define (helper n res1 res2)
@@ -141,7 +141,7 @@
        (helper (- n 1) res2 (+ res1 res2))))
   (helper n 1 1))
 ```
-### [Зад 12 `factorial`]
+### Зад 14 `factorial`
 ```scheme
 (define (factorial n)
   (define (fact n result)
