@@ -53,7 +53,8 @@
 която се извежда по интересен начин от триъгълника на Паскал.
 [Wikipedia](https://en.wikipedia.org/wiki/Fibonacci_number#Mathematics).
 
-### Зад 2 `newton-binomial`
+### Зад 2 `newton`
+Бином на Нютон
 ```scheme
 (define (newton x y n)
   (define (n-choose-k n k)
@@ -65,7 +66,7 @@
   (accumulate + 0 0 n term ++))
 ```
 
-### Зад 3 `count-palindromes`]
+### Зад 3 `count-palindromes`
 Броят на целите числа палиндроми в интервала [a, b].
 ```scheme
 (define (count-palindromes a b)
@@ -105,7 +106,7 @@
   (accumulate (lambda (f s) (or f s)) #f a b (lambda (i) (pred? i)) ++))
 ```
 
-### [Зад 6 `all-int?`][all-int?]
+### Зад 6 `all-int?`
 Дали **за всяко** цяло число в интервала [a, b] предикатът `pred?` е истина?
 ```scheme
 (define (all-int? pred? a b)
