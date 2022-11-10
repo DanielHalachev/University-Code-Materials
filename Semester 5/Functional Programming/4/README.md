@@ -182,7 +182,16 @@
 ### Зад 19 `insertion-sort` (най-лесният алгоритъм за сортиране функционално)
 Сортиране на списък по алгоритъма [insertion sort](https://en.wikipedia.org/wiki/Insertion_sort).
 ```scheme
+(define (insert element sorted-lst)
+  (cond
+    ((null? sorted-lst) (list element))
+    ((> element (car sorted-lst)) (cons (car sorted-lst) (insert element (cdr sorted-lst))))
+    (else (cons element sorted-lst))))
 
+(define (insertion-sort lst)
+  (if (null? lst)
+      '()
+      (insert (car lst) (insertion-sort (cdr lst)))))
 ```
 
 ### Зад 20 `explode-digits` (много полезна за задачи с числа)
