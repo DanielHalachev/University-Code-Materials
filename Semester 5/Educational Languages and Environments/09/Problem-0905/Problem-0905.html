@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Пример 0905</title>
+
+	<script src="suica.min.js"></script>
+
+	<script>
+		function vLen(a)
+		{
+			return Math.sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2]);
+		}
+		 
+			
+		function calc()
+		{
+			var A = [document.getElementById('Ax').value, document.getElementById('Ay').value, document.getElementById('Az').value];
+			var B = [document.getElementById('Bx').value, document.getElementById('By').value, document.getElementById('Bz').value];
+			var C = [document.getElementById('Cx').value, document.getElementById('Cy').value, document.getElementById('Cz').value];
+	
+			var AB = vectorPoints(A,B);
+			var CA = vectorPoints(C,A);
+			var CB = vectorPoints(C,B);
+			
+			document.getElementById("result1").innerHTML = 'Координати на векторите: AB [' +AB+ '], CA [' +CA+ '], CB [' +CB+ ']';
+			document.getElementById("result2").innerHTML = 'Дължини на векторите: AB = ' +vLen(AB)+ ', CA = ' +vLen(CA)+ ', CB = ' +vLen(CB);
+			document.getElementById("result3").innerHTML = 'Скаларното произведение  CA.CB =' +scalarProduct(CA,CB);
+		
+		}
+		
+		
+	</script>	
+</head>
+
+<body>
+	<p>
+			Въведете координати на точката <b>A</b>:
+			<input type="text" id="Ax" value="" size="5">
+			<input type="text" id="Ay" value="" size="5">
+			<input type="text" id="Az" value="" size="5">
+	</p>
+	<p>
+			Въведете координати на точката <b>B</b>:
+			<input type="text" id="Bx" value="" size="5">
+			<input type="text" id="By" value="" size="5">
+			<input type="text" id="Bz" value="" size="5">
+	</p>
+	<p>
+			Въведете координати на точката <b>C</b>:
+			<input type="text" id="Cx" value="" size="5">
+			<input type="text" id="Cy" value="" size="5">
+			<input type="text" id="Cz" value="" size="5">
+	</p>
+	
+	<p><button onclick="calc()">Изведи</button>
+	
+	
+	<p id="result1"></p>
+	<p id="result2"></p>
+	<p id="result3"></p>
+</body>
+</html>

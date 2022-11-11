@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Пример 0911</title>
+
+	<script src="suica.min.js"></script>
+
+	<script>
+		function main(n)
+		{
+			new Suica();
+			oxyz();
+			demo();
+			
+			var A = point([random(-20,20),random(-20,20),random(-20,20)]);
+			A.pointSize = 8;
+			A.color = [0,0,1];
+
+			var B = point([random(-20,20),random(-20,20),random(-20,20)]);
+			B.pointSize = 8;
+			B.color = [0,0,1];
+			
+			
+			
+			// създаване на n случайни точки лежащи между две точки
+			for (var i=0; i<n; i++)
+			{
+				var k = random(0,1);
+
+				var x = A.center[0]*(1-k)+k*B.center[0];
+				var y = A.center[1]*(1-k)+k*B.center[1];
+				var z = A.center[2]*(1-k)+k*B.center[2];
+
+				point([x,y,z]);
+			}
+
+		}
+	</script>	
+</head>
+
+<body onload="main(50)">
+	<noscript>
+		Искаме JavaScript, но няма!
+	</noscript>
+	
+	<canvas width="740" height="400" style="border: solid 1px Black;">
+		Искаме canvas, но няма!
+	</canvas>
+</body>
+</html>

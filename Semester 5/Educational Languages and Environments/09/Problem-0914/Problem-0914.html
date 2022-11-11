@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Пример 0914</title>
+
+	<script src="suica.min.js"></script>
+
+	<script>
+		function main(n, m) {
+			new Suica();
+			oxyz();
+			demo();
+
+			var A = point([random(-20, 20), random(-20, 20), random(-20, 20)]);
+			A.pointSize = 5;
+
+			var x = A.center[0];
+			var y = A.center[1];
+			var z = A.center[2];
+
+			var B = point([x + n, y, z]);
+			B.pointSize = 5;
+			var C = point([x + n, y + m, z]);
+			C.pointSize = 5;
+			var D = point([x, y + m, z]);
+			D.pointSize = 5;
+
+			var AB = segment(A.center, B.center);
+			AB.color = [0, 0, 1];
+			var BC = segment(B.center, C.center);
+			BC.color = [0, 0, 1];
+			var CD = segment(C.center, D.center);
+			CD.color = [0, 0, 1];
+			var DA = segment(D.center, A.center);
+			DA.color = [0, 0, 1];
+			var AC = segment(A.center, C.center);
+			AC.color = [0, 0, 1];
+			var BD = segment(B.center, D.center);
+			BD.color = [0, 0, 1];
+
+		}
+	</script>
+</head>
+
+<body onload="main(15, 10)">
+	<noscript>
+		Искаме JavaScript, но няма!
+	</noscript>
+
+	<canvas width="740" height="400" style="border: solid 1px Black;">
+		Искаме canvas, но няма!
+	</canvas>
+</body>
+
+</html>

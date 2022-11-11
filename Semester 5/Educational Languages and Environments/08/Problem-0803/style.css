@@ -1,0 +1,8 @@
+canvas {
+    width: 500px;
+    height: 220px;
+    /*this border gets over the yellow*/
+    border: dotted 5px #AD9C84;
+    /*works but gets overriden by the Suica() background property, it's left only on the border*/
+    background-color: yellow;
+}

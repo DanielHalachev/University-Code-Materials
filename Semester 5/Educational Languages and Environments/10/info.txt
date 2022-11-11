@@ -1,0 +1,18 @@
+square([x, y, z], a);
+rectangle([x, y, z], a, b);
+cube([x, y, z], a);
+cuboid([x, y, z], [a, b, c]);
+
+square/rectangle/cube/cuboid.center -> [x, y, z];
+square/cube.size -> a;
+
+rectangle/cuboid.sizes  -> [a, b]
+                        -> [a, b, c]
+
+square/rectangle/cube/cuboid.mode = Suica.POINT
+                                    Suica.LINE
+                                    Suica.SOLID
+
+square/rectangle/cube/cuboid.focus = [ , , ]; -> извърта по някоя ос
+square/rectangle/cube/cuboid.spin
+square/rectangle/cube/cuboid.origin = [ , , ] -> сменя центъра - удобно за транслации

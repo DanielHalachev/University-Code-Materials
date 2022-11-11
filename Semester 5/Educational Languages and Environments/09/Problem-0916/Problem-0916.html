@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Пример 0916</title>
+
+	<script src="suica.min.js"></script>
+
+	<script>
+		function main(n, r, x, y, z)
+		{
+			new Suica();
+			oxyz();
+			demo();
+			
+			for (var i=0; i<n; i++)
+			{
+				var a = random(0,radians(360));
+				var b = a + 360/n;
+				
+				var xp = x;
+				var yp = y + r*Math.sin(a);
+				var zp = z + r*Math.cos(a);
+				
+				var xq = x;
+				var yq = y + r*Math.sin(b);
+				var zq = z + r*Math.cos(b);
+				
+				segment([xp,yp,zp], [xq,yq,zq]);
+				
+			}
+		}
+	</script>	
+</head>
+
+<body onload="main(90, 15 , 15, 28, 10)">
+	<noscript>
+		Искаме JavaScript, но няма!
+	</noscript>
+	
+	<canvas width="740" height="350" style="border: solid 1px Black;">
+		Искаме canvas, но няма!
+	</canvas>
+</body>
+</html>

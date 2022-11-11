@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Пример 0908-2</title>
+
+	<script src="suica.min.js"></script>
+
+	<script>
+		function main(n, r, x, y, z)
+		{
+			new Suica();
+			oxyz();
+			demo();
+			
+						
+			// създаване на n случайни точки по окръжност с радиус r и център точка с координати х, у, z
+			for (var i=0; i<n; i++)
+			{
+				var alpha = random(0,radians(360));
+				
+				var xp = x + r*Math.cos(alpha);
+				var yp = y + r*Math.sin(alpha);
+				var zp = z;
+				
+				point([xp,yp,zp]);
+			}
+		}
+	</script>	
+</head>
+
+<body onload="main(100, 20 , 15, 28, 10)">
+	<noscript>
+		Искаме JavaScript, но няма!
+	</noscript>
+	
+	<canvas width="740" height="350" style="border: solid 1px Black;">
+		Искаме canvas, но няма!
+	</canvas>
+</body>
+</html>
