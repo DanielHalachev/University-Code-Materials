@@ -166,7 +166,7 @@
               res)))
   (reverse (helper ll '() '())))
 ```
-### Бонус ⚠
+### Бонус
 (5 т.) Да се реализира функция find-longest-major, която намира най-дългия мажорен подсписък на даден списък от списъци от числа.
 ```scheme
 define (find-longest-major ll)
@@ -288,7 +288,7 @@ define (find-longest-major ll)
     (accumulate + 0 (+ i 1) b inner-term ++))
   (accumulate + 0 a b term ++))
 ```
-## Задача 2 ⚠️
+## Задача 2
 (10 т.) “Метрика” наричаме функция, която приема като параметър списък от числа и връща число като резултат. Да се напише функция best-metric?, която приема като параметри списък от метрики ml и списък от списъци от числа ll и проверява дали има метрика в ml, която дава по-големи стойности от всички други метрики от ml над всеки от елементите на ll.
 Пример: 
 ```scheme
@@ -297,16 +297,8 @@ define (find-longest-major ll)
 (best-metric? (list car sum)  '((100 -100) (29 1) (42)))    → #f
 ```
 ```scheme
-(define (more f s)
-  (cond
-    ((not (= (length f) (length s))) #f)
-    ((null? f) #t)
-    (else
-     (and (> (car f) (car s)) (less (cdr f) (cdr s))))))
-
-(define l1 '(1 2 3))
-(define l2 '(3 1 2))
-
+#lang racket
+;; for soring
 (define (bigger? l1 l2)
   (if (null? (cdr l1))
       (> (car l1) (car l2))
@@ -315,6 +307,14 @@ define (find-longest-major ll)
         ((< (car l1) (car l2)) #f)
         (else (bigger? (cdr l1) (cdr l2))))))
 
+;; for end result
+(define (totally-bigger? l1 l2)
+  (if (null? (cdr l1))
+      (> (car l1) (car l2))
+      (cond
+        ((>= (car l1) (car l2)) (bigger? (cdr l1) (cdr l2)))
+        (else #f))))
+;; sorting functions
 (define (insert elem ll)
   (cond
     ((null? ll) (list elem))
@@ -327,10 +327,11 @@ define (find-longest-major ll)
       ll
       (insert (car ll) (sort (cdr ll)))))
 
+;;end result
 (define (res elem ll)
   (cond
     ((null? ll) #t)
-    ((bigger? elem (car ll)) (res (car ll) (cdr ll)))
+    ((totally-bigger? elem (car ll)) (res (car ll) (cdr ll)))
     (else #f)))
 
 (define (best-metric? ml ll)
