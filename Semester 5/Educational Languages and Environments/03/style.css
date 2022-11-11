@@ -1,0 +1,58 @@
+body {
+    background-color: wheat;
+    color: #a0522d;
+    text-align: justify;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+h1,
+h3 {
+    background-color: white;
+}
+
+p {
+    margin-left: 2cm;
+    margin-right: 2cm;
+}
+
+li {
+    margin-left: 1.3cm;
+    margin-right: 2cm;
+}
+
+p i {
+    color: red;
+}
+
+#formula {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    color: red;
+    font-size: 28px;
+}
+
+.framed {
+    border: 2px ridge red;
+}
+
+[yellowed] {
+    background-color: yellow;
+}
+
+a:link {
+    color: black;
+}
+
+a:visited {
+    color: peru;
+}
+
+a:hover,
+h1:hover,
+h3:hover {
+    background-color: yellow;
+}

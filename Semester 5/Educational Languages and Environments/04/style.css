@@ -1,0 +1,108 @@
+body {
+    /* for different surrounding */
+    background-color: #ad9c84;
+    /* text set here to rule the whole webpage */
+    color: #1a4551;
+    text-align: justify;
+    font-family: sans-serif;
+    /* no stupid space on the side and above */
+    margin: 0;
+}
+
+.page {
+    /* main webpage color */
+    background-color: antiquewhite;
+    margin: 30px auto;
+    padding: 20px;
+    width: 80%;
+}
+
+ul {
+    /* set color of whole ul, not just ul li
+    in order to cover the whole 100% width */
+    background-color: rgba(135, 206, 235, 1.0);
+    /*removes bullets*/
+    list-style-type: none;
+    /* list-style-type leaves some padding and margins
+    we need to remove them */
+    margin: 0;
+    padding: 0;
+    /* allow scrolling if nav has too much content */
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    border-bottom: 3px solid #837a6d;
+    z-index: 1;
+}
+
+ul li {
+    float: left;
+    /* makes list items stand one next to the other without spaces*/
+}
+
+ul li a {
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    padding: 10px 35px;
+}
+
+ul li :hover {
+    background-color: #ad9c84;
+}
+
+a :link {
+    color: #ad9c84;
+}
+
+a :visited {
+    color: #3690ab;
+}
+
+a:hover {
+    color: #ffffff;
+    background-color: #ad9c84;
+}
+
+.theorem {
+    background-color: #fffbf5;
+    color: #42b0d1;
+    font-family: serif;
+    font-style: italic;
+    border-left: 10px solid rgba(135, 206, 235, 1.0);
+    border-right: 10px solid rgba(135, 206, 235, 1.0);
+    padding: 20px;
+    margin: 20px;
+}
+
+.description {
+    text-align: center;
+    font-style: italic;
+    font-family: serif;
+    font-size: small;
+}
+
+img {
+    margin: 20px auto;
+    position: relative;
+    display: block;
+}
+
+.theorem b {
+    font-size: larger;
+    /*16pt on exercise*/
+}
+
+h1 {
+    color: #3690ab;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#formula {
+    text-align: center;
+    font-size: larger;
+    /*16pt on exercise*/
+    font-weight: bold;
+}
