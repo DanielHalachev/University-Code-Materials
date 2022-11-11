@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="catalog.xsl" type="text/xsl"?>
+<!DOCTYPE catalog [
+    <!NOTATION jpg SYSTEM "image/jpg">
+    <!ENTITY su.jpg SYSTEM "su.jpg" NDATA jpg>
+    <!ENTITY tu.jpg SYSTEM "tu.jpg" NDATA jpg>
+    <!ENTITY nbu.jpg SYSTEM "nbu.jpg" NDATA jpg>
+    <!ENTITY pu.jpg SYSTEM "pu.jpg" NDATA jpg>
+    <!ENTITY tu-plovdiv.jpg SYSTEM "tu-plovdiv.jpg" NDATA jpg>
+    <!ENTITY pu-smolian.jpg SYSTEM "tu-smolian.jpg" NDATA jpg>
+    <!ENTITY tru.jpg SYSTEM "tru.jpg" NDATA jpg>
+    <!ENTITY btu.jpg SYSTEM "btu.jpg" NDATA jpg>
+    <!ENTITY bfu.jpg SYSTEM "bfu.jpg" NDATA jpg>
+    <!ENTITY tu-sliven.jpg SYSTEM "tu-sliven.jpg" NDATA jpg>
+    <!ENTITY mu.jpg SYSTEM "mu.jpg" NDATA jpg>
+    <!ENTITY vtu.jpg SYSTEM "vtu.jpg" NDATA jpg>
+    <!ENTITY vfu.jpg SYSTEM "vfu.jpg" NDATA jpg>
+]>
+<catalog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="catalog.xsd">
+    <universities>
+        <university id="u1" regionID="sw" type="държавен">
+            <name>Софийски университет "Св. Климент Охридски"</name>
+            <chancellor degree="Проф. дфн.">Анастас Герджиков</chancellor>
+            <location>
+                <city>София</city>
+                <address>бул. "Цар Освободител" 15</address>
+                <postcode>1504</postcode>
+            </location>
+            <contacts>
+                <phone>02/ 93 08 200</phone>
+                <email>info@uni-sofia.bg</email>
+                <fax>02/ 94 60 255</fax>
+            </contacts>
+            <website href="www.uni-sofia.bg" />
+            <statistics>
+                <students>20516</students>
+                <lecturers>1711</lecturers>
+                <since>1888</since>
+            </statistics>
+            <faculties>
+                <faculty acronym="ИФ">Исторически факултет</faculty>
+                <faculty acronym="ФФ">Философски факултет</faculty>
+                <faculty acronym="ФКНФ">Факултет по класически и нови филологии</faculty>
+                <faculty acronym="ФСФ">Факултет по славянски филологии</faculty>
+                <faculty acronym="ЮФ">Юридически факултет</faculty>
+                <faculty acronym="ФП">Факултет по педагогика</faculty>
+                <faculty acronym="ФНОИ">Факултет по науки за образованието и изкуствата</faculty>
+                <faculty acronym="ФЖМК">Факултет по журналистика и масова комуникация</faculty>
+                <faculty acronym="БгФ">Богословски факултет</faculty>
+                <faculty acronym="СФ">Стопански факултет</faculty>
+                <faculty acronym="ФМИ">Факултет по математика и информатика</faculty>
+                <faculty acronym="ФзФ">Физически факултет</faculty>
+                <faculty acronym="ФХФ">Факултет по химия и фармация</faculty>
+                <faculty acronym="БФ">Биологически факултет</faculty>
+                <faculty acronym="ГгФ">Геолого-географски факултет</faculty>
+                <faculty acronym="МФ">Медицински факултет</faculty>
+            </faculties>
+            <image src="su.jpg" />
+        </university>
+        <university id="u2" regionID="sw" type="държавен">
+            <name>Технически университет - София</name>
+            <chancellor degree="Проф. дн. инж.">Иван Кралов</chancellor>
+            <location>
+                <city>София</city>
+                <address>бул. "Св. Климент Охридски" 8</address>
+                <postcode>1000</postcode>
+            </location>
+            <contacts>
+                <phone>02/ 862 3073</phone>
+                <email>ucheben@tu-sofia.bg</email>
+                <fax>02/ 868 3215</fax>
+            </contacts>
+            <website href="www.tu-sofia.bg" />
+            <statistics>
+                <students>11005</students>
+                <lecturers>704</lecturers>
+                <since>1945</since>
+            </statistics>
+            <faculties>
+                <faculty acronym="ФА">Факултет по автоматика</faculty>
+                <faculty acronym="ЕлФ">Електротехнически факултет</faculty>
+                <faculty acronym="ЕнФ">Енергомашиностроителен факултет</faculty>
+                <faculty acronym="МФ">Машиностроителен факултет</faculty>
+                <faculty acronym="ФЕТТ">Факултет по електронна техника и технологии</faculty>
+                <faculty acronym="ФТ">Факултет по телекомуникации</faculty>
+                <faculty acronym="ФКСТ">Факултет по компютърни системи и технологии</faculty>
+                <faculty acronym="ФТ">Факултет по транспорта</faculty>
+                <faculty acronym="СФ">Стопански факултет</faculty>
+                <faculty acronym="ФПМИ">Факултет по приложна математика и информатика</faculty>
+                <faculty acronym="ФГИОП">Факултет за германско инженерно обучение и промишленост</faculty>
+                <faculty acronym="ФФОЕ">Факултет за френско обучение по електроинженерство</faculty>
+                <faculty acronym="ФАИО">Факултет за английско инженерно обучение</faculty>
+                <faculty acronym="ФИТ">Факултет по индустриални технологии</faculty>
+            </faculties>
+            <image src="tu.jpg" />
+        </university>
+        <university id="u3" regionID="sw" type="частен">
+            <name>Нов български университет - София</name>
+            <chancellor degree="Проф. дн.">Пламен Дойнов</chancellor>
+            <location>
+                <city>София</city>
+                <address>ул. "Монтевидео" 21</address>
+                <postcode>1618</postcode>
+            </location>
+            <contacts>
+                <phone>02/ 81 10 571</phone>
+                <email>ealexandrova@nbu.bg</email>
+            </contacts>
+            <website href="nbu.bg" />
+            <statistics>
+                <students>9620</students>
+                <lecturers>361</lecturers>
+                <since>1991</since>
+            </statistics>
+            <faculties>
+                <faculty acronym="ФБО">Факултет за базово образование</faculty>
+                <faculty acronym="БФ">Бакалавърски факултет</faculty>
+                <faculty acronym="МФ">Магистърски факултет</faculty>
+                <faculty acronym="МДЕНО">Факултет за дистанционно, електронно и надграждащо
+обучение</faculty>
+            </faculties>
+            <image src="nbu.jpg" />
+        </university>
+        <university id="u4" regionID="sc" type="държавен">
+            <name>Пловдивски университет "Паисий Хилендарски"</name>
+            <chancellor degree="Проф. др.">Румен Младенов</chancellor>
+            <location>
+                <city>Пловдив</city>
+                <address>ул. "Цар Асен" 24</address>
+                <postcode>4000</postcode>
+            </location>
+            <contacts>
+                <phone>032/ 261 261</phone>
+                <email>diana_ilieva@uni-plovdiv.bg</email>
+                <fax>032/ 628 390</fax>
+            </contacts>
+            <website href="www.uni-plovdiv.bg" />
+            <statistics>
+                <students>16960</students>
+                <lecturers>628</lecturers>
+                <since>1961</since>
+            </statistics>
+            <faculties>
+                <faculty>Биологически факултет</faculty>
+                <faculty>Факултет по икономически и социални науки</faculty>
+                <faculty>Факултет по математика и информатика</faculty>
+                <faculty>Философско-исторически факултет</faculty>
+                <faculty>Педагогически факултет</faculty>
+                <faculty>Физико-технологичен факултет</faculty>
+                <faculty>Филологически факултет</faculty>
+                <faculty>Философско-исторически факултет</faculty>
+                <faculty>Химически факултет</faculty>
+                <faculty>Юридически факултет</faculty>
+            </faculties>
+            <image src="pu.jpg" />
+        </university>
+        <university id="u5" regionID="sc" type="държавен" branchOf="u2">
+            <name>Технически университет - София, филиал Пловдив</name>
+            <chancellor degree="Проф. др. инж.">Вальо Николов</chancellor>
+            <location>
+                <city>Пловдив</city>
+                <address>ул. "Цанко Дюстабанов" 25</address>
+                <postcode>4000</postcode>
+            </location>
+            <contacts>
+                <phone>032/ 659 551</phone>
+                <email>branch@tu-plovdiv.bg</email>
+                <fax>032/ 626 600</fax>
+            </contacts>
+            <website href="tu-plovdiv.bg" />
+            <statistics>
+                <students>3927</students>
+                <lecturers>134</lecturers>
+                <since>1986</since>
+            </statistics>
+            <faculties>
+                <faculty>Факултет по електроника и автоматика</faculty>
+                <faculty>факултет по машиностроене и уредостроене</faculty>
+            </faculties>
+            <image src="tu-plovdiv.jpg" />
+        </university>
+        <university id="u6" regionID="sc" type="държавен" branchOf="u4">
+            <name>Пловдивски университет "Паисий Хилендарски" - филиал Смолян</name>
+            <chancellor degree="Проф. др.">Иванка Димитрова Дилгерова</chancellor>
+            <location>
+                <city>Смолян</city>
+                <address>ул. "Дичо Петров" 32</address>
+                <postcode>4700</postcode>
+            </location>
+            <contacts>
+                <phone>0301/ 62339</phone>
+                <email>pufilial_sm@uni-plovdiv.bg</email>
+            </contacts>
+            <website href="www.uni-plovdiv.bg/pages/index/45" />
+            <statistics>
+                <students>297</students>
+                <lecturers>31</lecturers>
+                <since>1986</since>
+            </statistics>
+            <faculties>
+                <faculty>Педагогически, хуманитарни, стопански и
+природо-математически науки</faculty>
+            </faculties>
+            <image src="pu-smolian.jpg" />
+        </university>
+        <university id="u7" regionID="se" type="държавен">
+            <name>Тракийски университет - Стара Загора</name>
+            <chancellor degree="Проф. др.">Добри Ярков</chancellor>
+            <location>
+                <city>Стара Загора</city>
+                <address>кв. "Студентски град"</address>
+                <postcode>6000</postcode>
+            </location>
+            <contacts>
+                <phone>042/ 699 202</phone>
+                <email>info@uni-sz.bg</email>
+                <fax>042/ 672 009</fax>
+            </contacts>
+            <website href="uni-sz.bg" />
+            <statistics>
+                <students>7149</students>
+                <lecturers>542</lecturers>
+                <since>1995</since>
+            </statistics>
+            <faculties>
+                <faculty>Аграрен факултет</faculty>
+                <faculty>Ветеринарномедицински факултет</faculty>
+                <faculty>Медицински факултет</faculty>
+                <faculty>Педагогически факултет</faculty>
+                <faculty>Стопански факултет</faculty>
+            </faculties>
+            <image src="tru.jpg" />
+        </university>
+        <university id="u8" regionID="se" type="държавен">
+            <name>Университет "Проф. д-р Асен Златаров" - Бургас</name>
+            <chancellor degree="Проф. др.">Магдалена Миткова</chancellor>
+            <location>
+                <city>Бургас</city>
+                <address>бул. "Проф. Яким Якимов" 1</address>
+                <postcode>8010</postcode>
+            </location>
+            <contacts>
+                <phone>056/ 860 041</phone>
+                <email>office@btu.bg</email>
+                <fax>056/ 880 249</fax>
+            </contacts>
+            <website href="btu.bg" />
+            <statistics>
+                <students>3656</students>
+                <lecturers>231</lecturers>
+                <since>1995</since>
+            </statistics>
+            <faculties>
+                <faculty>Факултет по технически науки</faculty>
+                <faculty>Факултет по обществени науки</faculty>
+                <faculty>Факултет по природни науки </faculty>
+                <faculty>Факултет по обществено здраве и здравни грижи</faculty>
+                <faculty>Медицински факултет</faculty>
+            </faculties>
+            <image src="btu.jpg" />
+        </university>
+        <university id="u9" regionID="se" type="частен">
+            <name>Бургаски свободен университет</name>
+            <chancellor degree="Проф. др.">Милен Балтов</chancellor>
+            <location>
+                <city>Бургас</city>
+                <address>бул. "Сан Стефано" 62</address>
+                <postcode>8001</postcode>
+            </location>
+            <contacts>
+                <phone>056/ 900 400</phone>
+                <email>bfu@bfu.bg</email>
+            </contacts>
+            <website href="bfu.bg" />
+            <statistics>
+                <students>1935</students>
+                <lecturers>63</lecturers>
+                <since>1991</since>
+            </statistics>
+            <faculties>
+                <faculty>Център по юридически науки</faculty>
+                <faculty>Център по икономически и управленски науки</faculty>
+                <faculty>Център по информатика и технически науки</faculty>
+                <faculty>Център по хуманитарни науки</faculty>
+            </faculties>
+            <image src="bfu.jpg" />
+        </university>
+        <university id="u10" regionID="se" type="държавен" branchOf="u2">
+            <name>Технически университет - София, инженерно-педагогически факултет - Сливен</name>
+            <chancellor degree="Доц. др. инж.">Невен Кръстев</chancellor>
+            <location>
+                <city>Сливен</city>
+                <address>бул. "Бургаско шосе" 59</address>
+                <postcode>8800</postcode>
+            </location>
+            <contacts>
+                <phone>044/ 667 277</phone>
+                <email>dean-sliven@tu-sofia.bg</email>
+                <fax>044/ 667 505</fax>
+            </contacts>
+            <website href="tu-sliven.com" />
+            <statistics>
+                <students>673</students>
+                <lecturers>43</lecturers>
+                <since>1986</since>
+            </statistics>
+            <faculties>
+                <faculty>Електротехника, автоматика и информационни технологии</faculty>
+                <faculty>Механика, машиностроене и топлотехника</faculty>
+                <faculty>Педагогика и мениджмънт</faculty>
+            </faculties>
+            <image src="tu-sliven.jpg" />
+        </university>
+        <university id="u11" regionID="nw" type="държавен">
+            <name>Медицински университет - Плевен</name>
+            <chancellor degree="Проф. др.">Добромир Димитров</chancellor>
+            <location>
+                <city>Плевен</city>
+                <address>ул. "Св. Климент Охридски" 1</address>
+                <postcode>5800</postcode>
+            </location>
+            <contacts>
+                <phone>064/ 884 100</phone>
+                <email>rector@mu-pleven.bg</email>
+                <fax>064/ 801 603</fax>
+            </contacts>
+            <website href="mu-pleven.bg" />
+            <statistics>
+                <students>3066</students>
+                <lecturers>461</lecturers>
+                <since>1974</since>
+            </statistics>
+            <faculties>
+                <faculty>Факултет „Медицина“</faculty>
+                <faculty>Факултет „Фармация“</faculty>
+                <faculty>Факултет „Обществено здраве“</faculty>
+                <faculty>Факултет „Здравни грижи“</faculty>
+            </faculties>
+            <image src="mu.jpg" />
+        </university>
+        <university id="u12" regionID="nc" type="държавен">
+            <name>Великотърновски университет "Св. св. Кирил и Методий"</name>
+            <chancellor degree="Проф. др.">Христо Бонджолов</chancellor>
+            <location>
+                <city>Велико Търново</city>
+                <address>ул "Теодосий Търновски" 2</address>
+                <postcode>5003</postcode>
+            </location>
+            <contacts>
+                <phone>052/ 628 023</phone>
+                <email>mbox@uni-vt.bg</email>
+            </contacts>
+            <website href="www.uni-vt.bg" />
+            <statistics>
+                <students>9877</students>
+                <lecturers>517</lecturers>
+                <since>1963</since>
+            </statistics>
+            <faculties>
+                <faculty acronym="ПФ">Педагогически факултет</faculty>
+                <faculty acronym="ФллФ">Филологически факултет</faculty>
+                <faculty acronym="ИФ">Исторически факултет</faculty>
+                <faculty acronym="СФ">Стопански факултет</faculty>
+                <faculty acronym="ЮФ">Юридически факултет</faculty>
+                <faculty acronym="ФлсФ">Философски факултет</faculty>
+                <faculty acronym="ФИИ">Факултет по изобразително изкуство</faculty>
+                <faculty acronym="ПБФ">Православен богословски факултет</faculty>
+                <faculty acronym="ФМИ">Факултет „Математика и информатика“</faculty>
+            </faculties>
+            <image src="vtu.jpg" />
+        </university>
+        <university id="u13" regionID="ne" type="частен">
+            <name>Варненски свободен университет "Черноризец Храбър"</name>
+            <chancellor degree="Проф. др.">Петър Христов</chancellor>
+            <location>
+                <city>Варна</city>
+                <address>ул. „Янко Славчев“ 84</address>
+                <postcode>9007</postcode>
+            </location>
+            <contacts>
+                <phone>052/ 359 506</phone>
+                <email>rector@vfu.bg</email>
+                <fax>052/ 357 066</fax>
+            </contacts>
+            <website href="www.vfu.bg" />
+            <statistics>
+                <students>8550</students>
+                <lecturers>159</lecturers>
+                <since>1991</since>
+            </statistics>
+            <faculties>
+                <faculty>Факултет по международна икономика и администрация</faculty>
+                <faculty>Юридически факултет</faculty>
+                <faculty>Архитектурен факултет</faculty>
+            </faculties>
+            <image src="vfu.jpg" />
+        </university>
+    </universities>
+    <regions>
+        <region id="nw">Северозападен</region>
+        <region id="sw">Югозападен</region>
+        <region id="nc">Северен централен</region>
+        <region id="sc">Южен централен</region>
+        <region id="ne">Североизточен</region>
+        <region id="se">Югоизточен</region>
+    </regions>
+</catalog>

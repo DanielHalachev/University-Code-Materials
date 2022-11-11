@@ -1,0 +1,14 @@
+<!ELEMENT channel (item+,title,link,image*,language?,description)>
+<!ATTLIST channel version CDATA #REQUIRED>
+<!ELEMENT item (
+    (title,link,description?)|
+    (title,desciption?,link)|
+    (link, title, description?)|
+    (link, decription?, title)|
+    (description?, title, link)|
+    (description?, link, title))>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT link (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT image (title*|link*|url*)>
+<!ELEMENT language EMPTY>

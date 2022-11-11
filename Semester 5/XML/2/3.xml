@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Course_Catalog SYSTEM "3.dtd">
+<Course_Catalog>
+    <Department Code="CS">
+        <Title>FMI</Title>
+        <Chair>
+            <Professor>
+                <First_Name>Parvan</First_Name>
+                <Middle_Initial>?</Middle_Initial>
+                <Last_Name>Parvanov</Last_Name>
+            </Professor>
+        </Chair>
+        <Course Number="CS106A">
+            <Title>XML and Semantic Web</Title>
+            <Description>An XML course</Description>
+            <Instructors>
+                <Lecturer>
+                    <First_Name>Boyab</First_Name>
+                    <Middle_Initial>?</Middle_Initial>
+                    <Last_Name>Bonchev</Last_Name>
+                </Lecturer>
+                <Professor>
+                    <First_Name>Boyan</First_Name>
+                    <Middle_Initial>?</Middle_Initial>
+                    <Last_Name>Bonchev</Last_Name>
+                </Professor>
+            </Instructors>
+            <Prerequisites>
+                <Prereq>Third course</Prereq>
+            </Prerequisites>
+        </Course>
+    </Department>
+</Course_Catalog>

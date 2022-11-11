@@ -1,0 +1,13 @@
+<!ELEMENT games (game)*>
+<!ELEMENT game (teams, goals, suspensions)>
+<!ATTLIST game score NMTOKEN #REQUIRED>
+<!ELEMENT teams (home, guest)>
+<!ELEMENT home (#PCDATA)>
+<!ELEMENT guest (#PCDATA)>
+<!ELEMENT goals (goal)*>
+<!ELEMENT goal (player, time)>
+<!ELEMENT player (#PCDATA)>
+<!ELEMENT time (#PCDATA)>
+<!ELEMENT suspensions (reds, yellows)>
+<!ELEMENT reds (player, player)>
+<!ELEMENT yellows (player, player)>

@@ -1,0 +1,14 @@
+<!ELEMENT games (game)*>
+<!ELEMENT game (home-team, ex-team, scores, yellows, reds)>
+<!ATTLIST game score NMTOKEN #REQUIRED>
+<!ELEMENT home-team (#PCDATA)>
+<!ELEMENT ex-team (#PCDATA)>
+<!ELEMENT scores (score)+>
+<!ELEMENT score (player)>
+<!ATTLIST score
+    me NMTOKEN #REQUIRED
+    type NMTOKEN #IMPLIED
+>
+<!ELEMENT player (#PCDATA)>
+<!ELEMENT yellows (player)*>
+<!ELEMENT reds (player)*>

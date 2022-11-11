@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cinema>
+    <name>Cinema City Paradise</name>
+    <address></address>
+    <telephone></telephone>
+    <tickets>
+        
+    </tickets>
+    <movies>
+        <movie>
+            <name>1</name>
+            <date>12.10.2022</date>
+            <time>12:50</time>
+        </movie>
+        <movie>
+            <name>2</name>
+            <date>13.10.2022</date>
+            <time>11:30</time>
+        </movie>
+    </movies>
+</cinema>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="1.xsd">
+    <description> Hello </description>
+    <recipe>
+        <title>MyRecipe</title>
+        <ingredient name="butter"></ingredient>
+        <ingredient name="milk"></ingredient>
+        <ingredient name="cookie">
+            <step>Buy cookies from store</step>
+        </ingredient>
+        <preparation>
+            <step>Heat the butter</step>
+            <step>Heat the milk</step>
+            <step>Mix Together</step>
+        </preparation>
+        <comment>This recipe is fake</comment>
+        <nutrition protein="1" carbohydrates="2" fat="3" calories="4" />
+    </recipe>
+</collection>

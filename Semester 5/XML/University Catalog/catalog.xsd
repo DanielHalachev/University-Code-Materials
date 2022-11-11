@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+    <xs:element name="catalog">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="universities">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="university" type="uni" minOccurs="0" maxOccurs="unbounded"></xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="regions">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="region" type="reg" maxOccurs="6"></xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:key name="universityIDKey">
+            <xs:selector xpath="universities/university"></xs:selector>
+            <xs:field xpath="@id"></xs:field>
+        </xs:key>
+        <xs:keyref name="universityIDRef" refer="universityIDKey">
+            <xs:selector xpath="universities/university"></xs:selector>
+            <xs:field xpath="@branchOf"></xs:field>
+        </xs:keyref>
+        <xs:key name="regionIDKey">
+            <xs:selector xpath="regions/region"></xs:selector>
+            <xs:field xpath="@id"></xs:field>
+        </xs:key>
+        <xs:keyref name="regionIDRef" refer="regionIDKey">
+            <xs:selector xpath="universities/university"></xs:selector>
+            <xs:field xpath="@regionID"></xs:field>
+        </xs:keyref>
+        <xs:unique name="uniqueUniversityName">
+            <xs:selector xpath="universities/university"></xs:selector>
+            <xs:field xpath="@name"></xs:field>
+        </xs:unique>
+    </xs:element>
+    <xs:complexType name="reg">
+        <xs:simpleContent>
+            <xs:extension base="regionName">
+                <xs:attribute name="id" type="xs:ID" use="required" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="uni">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="chancellor">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="personName">
+                            <xs:attribute name="degree" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="location">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="city" type="cityName" />
+                        <xs:element name="address" type="xs:string" />
+                        <xs:element name="postcode" type="xs:positiveInteger" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="contacts">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="phone" minOccurs="0" maxOccurs="unbounded" type="phoneFaxNumber" />
+                        <xs:element name="email" minOccurs="0" maxOccurs="unbounded" type="email" />
+                        <xs:element name="fax" minOccurs="0" maxOccurs="unbounded" type="phoneFaxNumber" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="website">
+                <xs:complexType>
+                    <xs:attribute name="href" type="xs:anyURI" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="statistics">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element minOccurs="0" name="students" type="xs:nonNegativeInteger" />
+                        <xs:element minOccurs="0" name="since" type="xs:gYear" />
+                        <xs:element minOccurs="0" name="lecturers" type="xs:nonNegativeInteger" />
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="faculties">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="faculty" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute name="acronym" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="image">
+                <xs:complexType>
+                    <!--TODO -->
+                    <xs:attribute name="src" type="xs:ENTITY" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:ID" use="required" />
+        <xs:attribute name="regionID" type="xs:IDREF" use="required" />
+        <xs:attribute name="type" type="universityType" use="required" />
+        <xs:attribute name="branchOf" type="xs:IDREF" />
+    </xs:complexType>
+    <xs:simpleType name="universityType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="държавен"></xs:enumeration>
+            <xs:enumeration value="частен"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="regionName">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Северозападен"></xs:enumeration>
+            <xs:enumeration value="Югозападен"></xs:enumeration>
+            <xs:enumeration value="Северен централен"></xs:enumeration>
+            <xs:enumeration value="Южен централен"></xs:enumeration>
+            <xs:enumeration value="Североизточен"></xs:enumeration>
+            <xs:enumeration value="Югоизточен"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="phoneFaxNumber">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9+/ ]{3,}"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="email">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9a-zA-Z]([-.\w]*[_0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="personName">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[А-Я][а-я]+ ([А-Я][а-я]+ )*[А-Я][а-я]+"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="cityName">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([А-Я][а-я]+ )*[А-Я][а-я]+"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

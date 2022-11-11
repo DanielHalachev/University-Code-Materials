@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- simple root creation-->
+<items>
+    <book>
+        <title>A true story</title>
+        <description>A real cool publication</description>
+    </book> 
+    <record>
+        <name>Miller</name>
+        <title>Dr. </title>
+        <publications> ... </publications>
+    </record>
+</items>

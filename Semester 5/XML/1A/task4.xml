@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<operations>
+    <operation>
+        <operator><![CDATA[=]]></operator>
+        <condition>Equal to</condition>
+        <example><![CDATA[=A1=B1]]></example>
+        <description>The formula returns TRUE if a value in cell A1 is equal to the values in cell B1; FALSE otherwise.</description>
+    </operation>
+    <operation>
+        <operator><![CDATA[<>]]></operator>
+        <condition>Not equal to</condition>
+        <example><![CDATA[=A1<>B1]]></example>
+        <description>The formula returns TRUE if a value in cell A1 is equal to the values in cell B1; FALSE otherwise.</description>
+    </operation>
+    <operation>
+        <operator><![CDATA[>]]></operator>
+        <condition>Greater than</condition>
+        <example><![CDATA[=A1>B1]]></example>
+        <description>The formula returns TRUE if a value in cell A1 is equal to the values in cell B1; FALSE otherwise.</description>
+    </operation>
+    <operation>
+        <operator><![CDATA[<]]></operator>
+        <condition>Less than</condition>
+        <example><![CDATA[=A1<B1]]></example>
+        <description>The formula returns TRUE if a value in cell A1 is equal to the values in cell B1; FALSE otherwise.</description>
+    </operation>
+    <operation>
+        <operator><![CDATA[>=]]></operator>
+        <condition>Greater than or equal to</condition>
+        <example><![CDATA[=A1>=B1]]></example>
+        <description>The formula returns TRUE if a value in cell A1 is equal to the values in cell B1; FALSE otherwise.</description>
+    </operation>
+    <operation>
+        <operator><![CDATA[<=]]></operator>
+        <condition>Less than or equal to</condition>
+        <example><![CDATA[=A1<=B1]]></example>
+        <description>The formula returns TRUE if a value in cell A1 is equal to the values in cell B1; FALSE otherwise.</description>
+    </operation>
+</operations>
