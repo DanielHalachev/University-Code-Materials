@@ -26,22 +26,19 @@
                 <div id="content">
                     <div id="overview">            
                         <xsl:for-each select="/catalog/universities/university">
-                            <xsl:variable name="addr">
-                                <xsl:value-of select="self::node()/image/@src"/>
-                            </xsl:variable>
+                            <xsl:sort select="statistics/students" data-type="number" order="descending"/>
                             <div class="uni">
-                                <img>
-                                    <xsl:attribute name="src">images/<xsl:value-of select="$addr"/></xsl:attribute>
-                                    <xsl:attribute name="alt">images/<xsl:value-of select="$addr"/></xsl:attribute>
-                                </img>                                
+                                <img src="{unparsed-entity-uri(image/@src)}"></img>                                
                                 <h2><xsl:value-of select="name"/></h2>
                                 <div class="info">
+                                    <p><i><xsl:value-of select="description"/></i></p>
+                                    <br/>
                                     <p>
                                         <span><b>Ректор: </b></span>
                                         <span><xsl:value-of select="chancellor"/></span>
                                     </p>
                                     <p>
-                                        <span><b>Дата на създаване: </b></span>
+                                        <span><b>Година на създаване: </b></span>
                                         <span><xsl:value-of select="statistics/since"/></span>
                                     </p>
                                     <p>
@@ -70,23 +67,19 @@
                 <h1 class="collapsable"><xsl:value-of select="$regName"/> регион</h1>
                 <div class="uni-collapsable">                    
                     <xsl:for-each select="/catalog/universities/university[@regionID=$regID]">
-                        <xsl:variable name="addr">
-                            <xsl:value-of select="self::node()/image/@src"/>
-                        </xsl:variable>
-                        <div class="uni"> 
-                            
-                            <img>
-                                <xsl:attribute name="src">images/<xsl:value-of select="$addr"/></xsl:attribute>
-                                <xsl:attribute name="alt">images/<xsl:value-of select="$addr"/></xsl:attribute>
-                            </img>
+                        <xsl:sort select="statistics/students" data-type="number" order="descending"/>
+                        <div class="uni">                             
+                            <img src="{unparsed-entity-uri(image/@src)}"></img>
                             <h2><xsl:value-of select="name"/></h2>
                             <div class="info">
+                                <p><i><xsl:value-of select="description"/></i></p>
+                                <br/>
                                 <p>
                                     <span><b>Ректор: </b></span>
                                     <span><xsl:value-of select="chancellor"/></span>
                                 </p>
                                 <p>
-                                    <span><b>Дата на създаване: </b></span>
+                                    <span><b>Година на създаване: </b></span>
                                     <span><xsl:value-of select="statistics/since"/></span>
                                 </p>
                                 <p>
@@ -121,6 +114,7 @@
                 </tr>
                 
                 <xsl:for-each select="/catalog/universities/university">
+                    <xsl:sort select="statistics/students" data-type="number" order="descending"/>
                     <xsl:variable name="regID"><xsl:value-of select="self::node()/@regionID"/></xsl:variable>
                     
                     <tr>

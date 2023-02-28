@@ -8,7 +8,8 @@
                 <xs:element name="universities">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="university" type="uni" minOccurs="0" maxOccurs="unbounded"></xs:element>
+                            <xs:element name="university" type="uni" minOccurs="0"
+                                maxOccurs="unbounded"></xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -52,6 +53,13 @@
     <xs:complexType name="uni">
         <xs:sequence>
             <xs:element name="name" type="xs:string" />
+            <xs:element name="description" minOccurs="0" maxOccurs="1">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:whiteSpace value="collapse"></xs:whiteSpace>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
             <xs:element name="chancellor">
                 <xs:complexType>
                     <xs:simpleContent>
@@ -73,13 +81,15 @@
             <xs:element name="contacts">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="phone" minOccurs="0" maxOccurs="unbounded" type="phoneFaxNumber" />
+                        <xs:element name="phone" minOccurs="0" maxOccurs="unbounded"
+                            type="phoneFaxNumber" />
                         <xs:element name="email" minOccurs="0" maxOccurs="unbounded" type="email" />
-                        <xs:element name="fax" minOccurs="0" maxOccurs="unbounded" type="phoneFaxNumber" />
+                        <xs:element name="fax" minOccurs="0" maxOccurs="unbounded"
+                            type="phoneFaxNumber" />
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="website">
+            <xs:element name="website" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
                     <xs:attribute name="href" type="xs:anyURI" use="required" />
                 </xs:complexType>
@@ -108,24 +118,16 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="image">
+            <xs:element name="image" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
-                    <!--TODO -->
                     <xs:attribute name="src" type="xs:ENTITY" use="required" />
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
         <xs:attribute name="id" type="xs:ID" use="required" />
         <xs:attribute name="regionID" type="xs:IDREF" use="required" />
-        <xs:attribute name="type" type="universityType" use="required" />
         <xs:attribute name="branchOf" type="xs:IDREF" />
     </xs:complexType>
-    <xs:simpleType name="universityType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="държавен"></xs:enumeration>
-            <xs:enumeration value="частен"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
     <xs:simpleType name="regionName">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Северозападен"></xs:enumeration>
@@ -143,17 +145,17 @@
     </xs:simpleType>
     <xs:simpleType name="email">
         <xs:restriction base="xs:string">
-            <xs:pattern value="([0-9a-zA-Z]([-.\w]*[_0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})" />
+            <xs:pattern value="[^@]+@[^\.]+\..+" />
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="personName">
         <xs:restriction base="xs:string">
-            <xs:pattern value="[А-Я][а-я]+ ([А-Я][а-я]+ )*[А-Я][а-я]+"></xs:pattern>
+            <!-- <xs:pattern value="[А-Я][а-я]+ ([А-Я][а-я]+ )*[А-Я][а-я]+"></xs:pattern> -->
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="cityName">
         <xs:restriction base="xs:string">
-            <xs:pattern value="([А-Я][а-я]+ )*[А-Я][а-я]+"></xs:pattern>
+            <!-- <xs:pattern value="([А-Я][а-я]+ )*[А-Я][а-я]+"></xs:pattern> -->
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

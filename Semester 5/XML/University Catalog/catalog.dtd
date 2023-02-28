@@ -1,0 +1,35 @@
+<!ELEMENT catalog (universities,regions)>
+<!ATTLIST catalog
+    xmlns:xsi CDATA #IMPLIED
+    xsi:noNamespaceSchemaLocation CDATA #IMPLIED>
+<!ELEMENT universities (university+)>
+<!ELEMENT university (name,description,chancellor,location,contacts,website,statistics,faculties,image)>
+<!ATTLIST university id ID #REQUIRED>
+<!ATTLIST university regionID NMTOKEN #REQUIRED>
+<!ATTLIST university branchOf NMTOKEN #IMPLIED>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT chancellor (#PCDATA)>
+<!ATTLIST chancellor degree CDATA #REQUIRED>
+<!ELEMENT location (city,address,postcode)>
+<!ELEMENT city (#PCDATA)>
+<!ELEMENT address (#PCDATA)>
+<!ELEMENT postcode (#PCDATA)>
+<!ELEMENT contacts (phone,email,fax?)>
+<!ELEMENT phone (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT fax (#PCDATA)>
+<!ELEMENT website EMPTY>
+<!ATTLIST website href CDATA #REQUIRED>
+<!ELEMENT statistics (students,lecturers,since)>
+<!ELEMENT students (#PCDATA)>
+<!ELEMENT lecturers (#PCDATA)>
+<!ELEMENT since (#PCDATA)>
+<!ELEMENT faculties (faculty+)>
+<!ELEMENT faculty (#PCDATA)>
+<!ATTLIST faculty acronym CDATA #IMPLIED>
+<!ELEMENT image EMPTY>
+<!ATTLIST image src ENTITY #REQUIRED>
+<!ELEMENT regions (region+)>
+<!ELEMENT region (#PCDATA)>
+<!ATTLIST region id NMTOKEN #REQUIRED>

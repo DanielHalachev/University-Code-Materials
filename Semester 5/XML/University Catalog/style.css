@@ -104,8 +104,18 @@ header h1 {
 
 .info {
     position: absolute;
-    bottom: 50px;
+    bottom: 20px;
     left: calc(var(--imageParamWidth) + 70px);
+    padding: 0px 40px 0px 0px;
+}
+
+.info p{
+    margin-top:0.5em;
+    margin-bottom: 0em;
+}
+
+.info p:first-child{
+    text-align: justify;
 }
 
 
@@ -212,6 +222,28 @@ th {
 }
 
 @media only screen and (max-width:900px) {
+    
+    header{
+        padding: 0 10px;
+    }
+
+    header h1{
+        font-size:1.3em;
+        padding: 0;
+        margin: 0;
+    }
+
+    header h1 span{
+        font-size: 1.5em;
+    }
+
+    .nav-links li{
+        display: inline;
+    }
+
+    .nav-links li a{
+        font-size: 1em;
+    }
     #content {
         padding: 0px;
         margin: 0px;
@@ -234,12 +266,72 @@ th {
 
     .info {
         position: relative;
-        left: 5%;
+        left: 10px;
         bottom: 0px;
         float: left;
     }
 
     h2 {
         margin-left: 5%;
+    }
+}
+@media only screen and (max-width:500px) {
+    
+    header{
+        padding: 0 10px;
+    }
+
+    header h1{
+        font-size:0.7em;
+        padding: 0;
+        margin: 0;
+    }
+
+    #bg{
+        font-size: 1em;
+    }
+
+    .nav-links li{
+        display: inline;
+        padding: 2px;
+    }
+
+    .nav-links li a{
+        font-size: 0.7em;
+    }
+
+    #content {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .uni {
+        margin: 10px auto;
+        width: 100%;
+        overflow: hidden;
+        padding: 10px 0px;
+        background-color: #454b53;
+    }
+
+    .uni img {
+        width: 90%;
+        object-fit: cover;
+        float: left;
+        margin: 10px 5% 10px 5%;
+    }
+
+    .info {
+        position: relative;
+        left: 10px;
+        bottom: 0px;
+        float: left;
+    }
+
+    h2 {
+        margin-left: 5%;
+        font-size: 1.2em;
+    }
+    .info p{
+        font-size: 0.7em;
     }
 }

@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="catalog.xsl" type="text/xsl"?>
-<!DOCTYPE catalog [
+<!DOCTYPE catalog SYSTEM "catalog.dtd" [
     <!NOTATION jpg SYSTEM "image/jpg">
-    <!ENTITY su.jpg SYSTEM "su.jpg" NDATA jpg>
-    <!ENTITY tu.jpg SYSTEM "tu.jpg" NDATA jpg>
-    <!ENTITY nbu.jpg SYSTEM "nbu.jpg" NDATA jpg>
-    <!ENTITY pu.jpg SYSTEM "pu.jpg" NDATA jpg>
-    <!ENTITY tu-plovdiv.jpg SYSTEM "tu-plovdiv.jpg" NDATA jpg>
-    <!ENTITY pu-smolian.jpg SYSTEM "tu-smolian.jpg" NDATA jpg>
-    <!ENTITY tru.jpg SYSTEM "tru.jpg" NDATA jpg>
-    <!ENTITY btu.jpg SYSTEM "btu.jpg" NDATA jpg>
-    <!ENTITY bfu.jpg SYSTEM "bfu.jpg" NDATA jpg>
-    <!ENTITY tu-sliven.jpg SYSTEM "tu-sliven.jpg" NDATA jpg>
-    <!ENTITY mu.jpg SYSTEM "mu.jpg" NDATA jpg>
-    <!ENTITY vtu.jpg SYSTEM "vtu.jpg" NDATA jpg>
-    <!ENTITY vfu.jpg SYSTEM "vfu.jpg" NDATA jpg>
+    <!ENTITY su SYSTEM "images/su.jpg" NDATA jpg>
+    <!ENTITY tu SYSTEM "images/tu.jpg" NDATA jpg>
+    <!ENTITY nbu SYSTEM "images/nbu.jpg" NDATA jpg>
+    <!ENTITY pu SYSTEM "images/pu.jpg" NDATA jpg>
+    <!ENTITY tu-plovdiv SYSTEM "images/tu-plovdiv.jpg" NDATA jpg>
+    <!ENTITY pu-smolian SYSTEM "images/pu-smolian.jpg" NDATA jpg>
+    <!ENTITY tru SYSTEM "images/tru.jpg" NDATA jpg>
+    <!ENTITY btu SYSTEM "images/btu.jpg" NDATA jpg>
+    <!ENTITY bfu SYSTEM "images/bfu.jpg" NDATA jpg>
+    <!ENTITY tu-sliven SYSTEM "images/tu-sliven.jpg" NDATA jpg>
+    <!ENTITY mu SYSTEM "images/mu.jpg" NDATA jpg>
+    <!ENTITY vtu SYSTEM "images/vtu.jpg" NDATA jpg>
+    <!ENTITY vfu SYSTEM "images/vfu.jpg" NDATA jpg>
 ]>
-<catalog
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="catalog.xsd">
     <universities>
-        <university id="u1" regionID="sw" type="държавен">
+        <university id="u1" regionID="sw">
             <name>Софийски университет "Св. Климент Охридски"</name>
+            <description>Софийският университет „Св. Климент Охридски“ или съкратено СУ „Св. Климент
+                Охридски“ е най-старото и най-голямо висше училище в България. Неговата история е
+                въплъщение и продължение на многовековната културна и просветна традиция на
+                българския народ. Научноизследователската дейност на преподавателите от Софийския
+                университет „Св. Климент Охридски“ е съставна част от учебния процес със студентите.</description>
             <chancellor degree="Проф. дфн.">Анастас Герджиков</chancellor>
             <location>
                 <city>София</city>
@@ -57,10 +61,15 @@
                 <faculty acronym="ГгФ">Геолого-географски факултет</faculty>
                 <faculty acronym="МФ">Медицински факултет</faculty>
             </faculties>
-            <image src="su.jpg" />
+            <image src="su" />
         </university>
-        <university id="u2" regionID="sw" type="държавен">
+        <university id="u2" regionID="sw">
             <name>Технически университет - София</name>
+            <description>Техническият университет в гр. София е държавно техническо висше училище,
+                най-голямото в България. В учебната си структура ТУС включва общо 17 факултета и 3
+                департамента, 3 висши колежа и 2 средни училища в няколко града. Техническият
+                университет осъществява методично и учебно ръководство на 2 средни технически
+                училища – в София и Правец.</description>
             <chancellor degree="Проф. дн. инж.">Иван Кралов</chancellor>
             <location>
                 <city>София</city>
@@ -94,10 +103,14 @@
                 <faculty acronym="ФАИО">Факултет за английско инженерно обучение</faculty>
                 <faculty acronym="ФИТ">Факултет по индустриални технологии</faculty>
             </faculties>
-            <image src="tu.jpg" />
+            <image src="tu" />
         </university>
-        <university id="u3" regionID="sw" type="частен">
+        <university id="u3" regionID="sw">
             <name>Нов български университет - София</name>
+            <description>Нов български университет (съкратено НБУ) е български частен университет.
+                Основната му база е разположена в София, в няколко корпуса, като притежава и други
+                академични бази из страната, а също и собствена университетска библиотека в София –
+                Библиотека на НБУ. Университетът разполага със собствено издателство. </description>
             <chancellor degree="Проф. дн.">Пламен Дойнов</chancellor>
             <location>
                 <city>София</city>
@@ -121,10 +134,15 @@
                 <faculty acronym="МДЕНО">Факултет за дистанционно, електронно и надграждащо
 обучение</faculty>
             </faculties>
-            <image src="nbu.jpg" />
+            <image src="nbu" />
         </university>
-        <university id="u4" regionID="sc" type="държавен">
+        <university id="u4" regionID="sc">
             <name>Пловдивски университет "Паисий Хилендарски"</name>
+            <description>Пловдивският университет „Паисий Хилендарски“ (или ПУ) е висше училище в
+                Пловдив, Смолян и Кърджали, България. Той е водеща културна, образователна и научна
+                институция. Днес Пловдивският университет „Паисий Хилендарски“ има 9 факултета, в
+                които се обучават над 8000 редовни и около 5000 задочни студенти в повече от 40
+                специалности по природни, хуманитарни, обществени и икономически науки.</description>
             <chancellor degree="Проф. др.">Румен Младенов</chancellor>
             <location>
                 <city>Пловдив</city>
@@ -154,10 +172,15 @@
                 <faculty>Химически факултет</faculty>
                 <faculty>Юридически факултет</faculty>
             </faculties>
-            <image src="pu.jpg" />
+            <image src="pu" />
         </university>
-        <university id="u5" regionID="sc" type="държавен" branchOf="u2">
+        <university id="u5" regionID="sc" branchOf="u2">
             <name>Технически университет - София, филиал Пловдив</name>
+            <description>Филиалът е създаден през 1986 г. като изнесено звено на Технически
+                Университет (ТУ) - София на територията на гр. Пловдив. Филиалът има богата
+                библиотека, в която на разположение на студентите са над 75 000 тома учебна и
+                специализирана техническа литература. Филиалът разполага с добре обзаведени
+                студентски столове и общежития за студентите с 500 места. </description>
             <chancellor degree="Проф. др. инж.">Вальо Николов</chancellor>
             <location>
                 <city>Пловдив</city>
@@ -179,10 +202,14 @@
                 <faculty>Факултет по електроника и автоматика</faculty>
                 <faculty>факултет по машиностроене и уредостроене</faculty>
             </faculties>
-            <image src="tu-plovdiv.jpg" />
+            <image src="tu-plovdiv" />
         </university>
-        <university id="u6" regionID="sc" type="държавен" branchOf="u4">
+        <university id="u6" regionID="sc" branchOf="u4">
             <name>Пловдивски университет "Паисий Хилендарски" - филиал Смолян</name>
+            <description>Филиалът на ПУ "Паисий Хилендарски" в гр. Смолян е наследник на
+                полувековните традиции в областта на педагогическото образование, началото на които
+                се изгражда от Института за подготовка на детски, начални и прогимназиални учители,
+                създаден през 1962 г. в гр. Смолян.</description>
             <chancellor degree="Проф. др.">Иванка Димитрова Дилгерова</chancellor>
             <location>
                 <city>Смолян</city>
@@ -203,10 +230,15 @@
                 <faculty>Педагогически, хуманитарни, стопански и
 природо-математически науки</faculty>
             </faculties>
-            <image src="pu-smolian.jpg" />
+            <image src="pu-smolian" />
         </university>
-        <university id="u7" regionID="se" type="държавен">
+        <university id="u7" regionID="se">
             <name>Тракийски университет - Стара Загора</name>
+            <description>Тракийският университет е държавно висше училище със седалище в гр. Стара
+                Загора, България. Изучавани области: хуманна и ветеринарна медицина, педагогика,
+                аграрна сфера, екология, икономика, техника и технологии, моден дизайн, социални
+                дейности и др. Университетът е акредитиран с много висока оценка 9,20 (при
+                максимална 10) от Националната агенция за оценяване и акредитация в България.</description>
             <chancellor degree="Проф. др.">Добри Ярков</chancellor>
             <location>
                 <city>Стара Загора</city>
@@ -231,10 +263,15 @@
                 <faculty>Педагогически факултет</faculty>
                 <faculty>Стопански факултет</faculty>
             </faculties>
-            <image src="tru.jpg" />
+            <image src="tru" />
         </university>
-        <university id="u8" regionID="se" type="държавен">
+        <university id="u8" regionID="se">
             <name>Университет "Проф. д-р Асен Златаров" - Бургас</name>
+            <description>Университет „Проф. д-р Асен Златаров“ е основан през 1963 г. с Указ № 162
+                на МС като Висш химико-технологически институт в Бургас. Установените контакти с
+                институти и университети от Великобритания, Франция, Германия, Русия и др. дават
+                възможност на преподавателите и студентите да правят специализации в чужбина, обмен
+                на лектори и научна литература, както и съвместни научни изследвания.</description>
             <chancellor degree="Проф. др.">Магдалена Миткова</chancellor>
             <location>
                 <city>Бургас</city>
@@ -259,10 +296,15 @@
                 <faculty>Факултет по обществено здраве и здравни грижи</faculty>
                 <faculty>Медицински факултет</faculty>
             </faculties>
-            <image src="btu.jpg" />
+            <image src="btu" />
         </university>
-        <university id="u9" regionID="se" type="частен">
+        <university id="u9" regionID="se">
             <name>Бургаски свободен университет</name>
+            <description>Бургаският свободен университет (БСУ) в гр. Бургас е създаден с решение на
+                Великото народно събрание от 18.09.1991 г. и е един от първите частни университети в
+                страната. БСУ е модерен, иновативен и ориентиран към студентите и тяхната
+                професионална реализация университет със значими академични постижения и утвърден
+                международен статус.</description>
             <chancellor degree="Проф. др.">Милен Балтов</chancellor>
             <location>
                 <city>Бургас</city>
@@ -285,10 +327,15 @@
                 <faculty>Център по информатика и технически науки</faculty>
                 <faculty>Център по хуманитарни науки</faculty>
             </faculties>
-            <image src="bfu.jpg" />
+            <image src="bfu" />
         </university>
-        <university id="u10" regionID="se" type="държавен" branchOf="u2">
+        <university id="u10" regionID="se" branchOf="u2">
             <name>Технически университет - София, инженерно-педагогически факултет - Сливен</name>
+            <description>Създаването на Инженерно - Педагогическия Факултет е подготвяно още от
+                1983г., когато с министерски постановления (ПМС 8/22.05.83 г., ДВ30/83, ПМСIPF
+                27/22.06.83 г., ДВ61/83) се формира мрежата на ВУЗ в страната. Създава се ново звено
+                с база в гр. Сливен, замислено като Институт за повишаване квалификацията на
+                инженерно-педагогическите кадри.</description>
             <chancellor degree="Доц. др. инж.">Невен Кръстев</chancellor>
             <location>
                 <city>Сливен</city>
@@ -311,10 +358,15 @@
                 <faculty>Механика, машиностроене и топлотехника</faculty>
                 <faculty>Педагогика и мениджмънт</faculty>
             </faculties>
-            <image src="tu-sliven.jpg" />
+            <image src="tu-sliven" />
         </university>
-        <university id="u11" regionID="nw" type="държавен">
+        <university id="u11" regionID="nw">
             <name>Медицински университет - Плевен</name>
+            <description>Медицинският университет в Плевен е държавно висше медицинско училище.
+                Създаден е с името Висш медицински институт в структурата на обединената Медицинска
+                академия през 1974 г. и става самостоятелен от 1990 г. Много от тях са членове на
+                национални и международни научни и медицински дружества и са автори на много научни
+                публикации.</description>
             <chancellor degree="Проф. др.">Добромир Димитров</chancellor>
             <location>
                 <city>Плевен</city>
@@ -338,10 +390,14 @@
                 <faculty>Факултет „Обществено здраве“</faculty>
                 <faculty>Факултет „Здравни грижи“</faculty>
             </faculties>
-            <image src="mu.jpg" />
+            <image src="mu" />
         </university>
-        <university id="u12" regionID="nc" type="държавен">
+        <university id="u12" regionID="nc">
             <name>Великотърновски университет "Св. св. Кирил и Методий"</name>
+            <description>Великотърновският университет „Св. св. Кирил и Методий“ е създаден през
+                1962 г. като Висш педагогически институт „Братя Кирил и Методий“ във Велико Търново.
+                Основатели на съвременния Великотърновския университет са проф. Александър Бурмов и
+                проф. д-р Пеньо Русев.</description>
             <chancellor degree="Проф. др.">Христо Бонджолов</chancellor>
             <location>
                 <city>Велико Търново</city>
@@ -369,10 +425,16 @@
                 <faculty acronym="ПБФ">Православен богословски факултет</faculty>
                 <faculty acronym="ФМИ">Факултет „Математика и информатика“</faculty>
             </faculties>
-            <image src="vtu.jpg" />
+            <image src="vtu" />
         </university>
-        <university id="u13" regionID="ne" type="частен">
+        <university id="u13" regionID="ne">
             <name>Варненски свободен университет "Черноризец Храбър"</name>
+            <description>Варненският свободен университет "Черноризец Храбър" е най-големият частен
+                университет в България. ВСУ "Черноризец Храбър" се утвърждава като университет със
+                съвременен мениджмънт, търсещ качествена промяна в критериите за подбор на
+                академичния състав и в критериите за оценка в дейността му, с развиващ се център за
+                управление на проекти, с перспективна програма за професионално развитие на
+                студентите.</description>
             <chancellor degree="Проф. др.">Петър Христов</chancellor>
             <location>
                 <city>Варна</city>
@@ -395,7 +457,7 @@
                 <faculty>Юридически факултет</faculty>
                 <faculty>Архитектурен факултет</faculty>
             </faculties>
-            <image src="vfu.jpg" />
+            <image src="vfu" />
         </university>
     </universities>
     <regions>
