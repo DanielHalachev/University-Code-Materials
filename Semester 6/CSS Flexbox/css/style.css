@@ -1,0 +1,348 @@
+/* common */
+body {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', Arial, Helvetica, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, h7, h8, nav {
+  font-family: 'Roboto Mono', 'Source Code Pro', 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+span.source {
+  vertical-align: super;
+  font-size: 0.83em;
+}
+
+/* top header */
+header {
+  height: 70px;
+  top: 0;
+  position: fixed;
+  width: 100%;
+  background-color: #ffe;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-left: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#menu-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#menu-button:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+/* side navigation */
+aside {
+  position: fixed;
+  width: 0;
+  height: calc(100vh - 70px);
+  top: 70px;
+  left: 0;
+  transition: 0.5s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #333;
+  color: #fff;
+  resize: both;
+}
+
+/* applied when menu button is clicked */
+aside.active {
+  width: 300px;
+}
+
+nav {
+  display: flex; /* Hide initially */
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  overflow-y: scroll; /* Add scrollbar if needed */
+}
+
+nav h2 {
+  padding-left: 10px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0px 0px 0px 10px;
+}
+
+nav a {
+  display: block;
+  color: #fff;
+  padding: 10px 5px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  background-color: #555;
+}
+
+/* making navigation scrollbar pretty */
+nav::-webkit-scrollbar {
+  width: 10px;
+}
+
+nav::-webkit-scrollbar-track {
+  /* background-color: #eee; */
+  box-shadow: inset 0 0 5px grey;
+  /* border-radius: 10px; */
+}
+
+nav::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 10px;
+}
+
+nav::-webkit-scrollbar-thumb:hover {
+  background-color: #888;
+}
+
+/* main content */
+main {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 40px;
+  margin: 70px 0px 0px 0px;
+  scroll-snap-type: y proximity;
+  scroll-snap-align: end;
+}
+
+/* make everything scroll below the header */
+* {
+  scroll-padding-top: 70px;
+}
+
+/* applied when menu is visible */
+main.active {
+  margin-left: 300px;
+}
+
+/* make each subtopic indent for better visibility */
+article, section {
+  padding-left: 10px;;
+}
+
+article p, section p{
+  padding-left: 10px;
+}
+
+/* warning sections */
+.warning {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
+  margin: 5px 0px;
+  border-width: 2px 2px 2px 10px;
+  border-style: solid;
+  border-color: orangered;
+  max-width: 750px;
+}
+
+.warning-title, .warning .fa {
+  color: orangered;
+}
+
+.warning .fa {
+  font-size: 24px;
+}
+
+/* code sections */
+code {
+  background-color: #eee;
+  font-family: 'Roboto Mono', 'Source Code Pro', 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+code.inline {
+  padding: 2px;
+  border-radius: 3px;
+}
+code.block {
+  display: block;
+  padding: 5px;
+  border-radius: 10px;
+  max-width: 750px;
+  margin: 0px auto 0px 20px;
+}
+
+/* tables */
+table {
+  border-collapse: collapse;
+}
+
+table th {
+  background-color: #eee;
+  font-family: 'Roboto Mono', 'Source Code Pro', 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+table th, table td {
+  border: 1px solid #333;
+  padding: 5px;
+}
+
+/* flexible views for tables and demos */
+.tables {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-items: center;
+  gap: 15px;
+  font-family: 'Roboto Mono', 'Source Code Pro', 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+/* footer */
+footer {
+  padding: 1px 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  background-color: #ddd;
+}
+
+/* real-life examples */
+.examples {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.examples article {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 10px;
+} 
+
+.examples article h3 {
+  width: 100%;
+}
+
+.examples p {
+  flex: 1;
+  flex-shrink: 2;
+  margin: auto 0px;
+}
+
+.examples img {
+  object-fit: cover;
+  margin-left: auto;
+  flex: 3;
+  flex-shrink: 1;
+  max-height: 350px;
+  max-width: 500px;
+  border: 1px solid #333;
+  border-radius: 20px;
+}
+
+.examples article {
+  border-bottom: 1px solid black;
+}
+
+figcaption {
+  text-align: center;
+}
+
+/* make codepen snippets resizable */
+.cp_embed_wrapper{
+  overflow: hidden;
+  resize: both;
+  height: 350px;
+  margin: 10px auto;
+  max-width: 100%;
+}
+
+.cp_embed_wrapper iframe {
+  height: 100% !important;
+}
+
+/* flex-direction demo flex container */
+.flex-direction-demo {
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.flex-direction-demo .container {
+  display:flex;
+  width: 250px;
+  height: 250px;
+  border: 1px solid #333;
+}
+
+.flex-direction-demo .container .item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #aaa;
+  border: 1px solid #333;
+  width: 50px;
+  height: 50px;
+}
+
+/* sources list */
+ol {
+  counter-reset: list;
+}
+
+ol > li {
+  list-style: none;
+}
+
+ol > li::before {
+  content: "[" counter(list) "] ";
+  counter-increment: list;
+}
+
+/* make website decent in mobile view */
+/* because I used flexbox, the media queries are minimal */
+@media (max-width: 768px) {
+  aside.active {
+    width: 100%;
+  }
+
+  main {
+    padding: auto;
+  }
+
+  main.active {
+    margin-left: 0px;
+  }
+
+  .examples img {
+    max-width: 100%;
+  }
+}

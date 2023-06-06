@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="bg">
+  <head>
+    <title>CSS Flexbox</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5c9473fc67.js" crossorigin="anonymous"></script>
+    <script src="js/script.js"></script>
+    <script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+  </head>
+  <body onload="tableOfContents('main', 'nav')">
+    <header>
+      <span id="menu-button" class="fa fa-bars" onclick="toggleNav()"></span>
+      <h1>CSS Layouts: CSS Flexbox</h1>
+    </header>
+    <aside>
+      <nav>
+        <h2>Съдържание</h2>
+      </nav> 
+    </aside>
+    <main>
+      <section>
+        <h2>Въведение</h2>
+        <p>
+          Представянето, в това число подреждането на съдържанието в една уеб страница е основният и най-важен казус в дизайна на графичния интерфейс. Съществуват множество опции, които позволяват да бъдат постигнати сходни резултати. Сред най-популярните методи е CSS Flexbox, но за да разберем защо се е наложил и да оценим предимствата му, е необходимо да проследим цялостната история на начините за представяне на съдържанието чрез CSS <span class="source"><a href="#sources">[1]</a></span><span class="source"><a href="#sources">[2]</a></span>. 
+        </p>
+        <article>
+          <h3>Двата основни типа елементи</h3>
+          <p>Начините за изобразяване на елементите в HTML претърпяват известни промени, но обобщено могат да бъдат представени в следните две категории: блокови и последователни <span class="source"><a href="#sources">[3]</a></span>. </p>
+          <p>Блоковите елементи се представят като кутии, които се изнасят на нов ред и по този начин се отделят от останалото съдържание. Примери за блокови елементи са <code class="inline">p</code>, <code class="inline">div</code>, <code class="inline">table</code>, <code class="inline">ul</code>, <code class="inline">nav</code>, <code class="inline">figure</code> и други. </p>
+          <p>От друга страна, последователните елементи се визуализират непосредствено един след друг, без всеки да се обособява на отделен ред. Примери за такива елементи са <code class="inline">span</code>, <code class="inline">img</code>, <code class="inline">a</code>,<code class="inline">label</code> и други. </p>
+          <p>Представянето на елементите може да се изменя чрез свойството display. Блоковите елементи притежават свойството <code class="inline">display:block</code>, а последователните - <code class="inline">display:inline</code>. Съществуват още няколко възможни стойности на свойството display, сред които и <code class="inline">flex</code>, което представя изобразява елемента като адаптивен (<b>flex</b>ible) контейнер, чието представяне се мени спрямо различни параметри, най-вече размерите на екрана. Именно такива адаптивни контейнери са предметът на този реферат, но за да разберем защо съществуват, нека проследим какво са правили хората в миналото. </p>
+        </article>
+        <article>
+          <h3>Подреждане на съдържанието чрез таблици</h3>
+          <p>Зората на 90-те. Появата на първите страници. Съдържанието им е опростено, с акцент върху информацията и най-важното - статично. То не се изменя спрямо действията на потребителя. Страниците през този период основно се състоят от следните елементи - заглавна част, страничен панел, съдържание и заключителна част. Не е трудно да видим сходството на това оформление със структурата на таблица. Затова неслучайно таблиците са основен способ за структуриране на съдържанието през този период.</p>
+          <p class="codepen" data-height="300" data-theme-id="dark" data-default-tab="html,result" data-slug-hash="XWxdZjE" data-editable="true" data-user="DanielHalachev">
+            <span>See the Pen <a href="https://codepen.io/DanielHalachev/pen/XWxdZjE">Untitled</a> by Daniel Halachev (<a href="https://codepen.io/DanielHalachev">@DanielHalachev</a>) on <a href="https://codepen.io">CodePen</a>.</span>
+          </p>
+        </article>
+        <article>
+          <h3>Плаващото позициониране и първите работни рамки</h3>
+          <p>Нещата се променят с навлизането на все повече графично съдържание под формата на изображения. Вследствие на това, популярност добива свойството <code class="inline">float</code>, което позволява на блоков елемент (например изображение) да “плава” на дадена страна, а текстът да го обвива. В началото на 2000-те обаче хитри програмисти осъзнават колко много може да се постигне, ако свойството се комбинира със солидно количество техники за разстояние между елементите и свойството <code class="inline">position</code>. Така се появяват първите страници с псевдодинамично съдържание, което (в известни граници) се променя спрямо големината на прозореца на браузъра. <span class="source"><a href="#sources">[4]</a></span></p>
+          <p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="MWPyQGV" data-editable="true" data-user="DanielHalachev">
+            <span>See the Pen <a href="https://codepen.io/DanielHalachev/pen/MWPyQGV">Untitled</a> by Daniel Halachev (<a href="https://codepen.io/DanielHalachev">@DanielHalachev</a>) on <a href="https://codepen.io">CodePen</a>.</span>
+          </p>
+        </article>
+        <article>
+          <h3>CSS Flexbox</h3>
+          <p>Модата се променя още веднъж с появата на първите смартфони, които позволяват ефективен достъп до Интернет. Сякаш за една нощ, уеб страниците вече трябва да имат съдържание, което изглежда добре както на компютър, така и на мобилен телефон. Бързо се проявяват недостатъците на използваните досега “хакерски” техники, често възползващи се от бъгове и недомислия в CSS стандарта. </p>
+          <p>За щастие програмистите успяват да запазят косите си от опадване, защото през 2012 година се появява тяхното спасение - <code class="inline">display:flex</code>. Това е първото CSS свойство, посветено изцяло на подредбата на съдържанието (то няма семантичен смисъл) и бързо се налага като любим избор на front-end разработчиците. То предоставя, бърз, удобен и последователен начин за красиво и смислено представяне на съдържанието на устройства с най-разнообразни размери без разглеждане и уточняване на различните случаи, позициониране и използване на плаващо съдържание. </p>
+          <p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="oNaxEOv" data-editable="true" data-user="DanielHalachev" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+            <span>See the Pen <a href="https://codepen.io/DanielHalachev/pen/oNaxEOv">Flexbox Layout</a> by Daniel Halachev (<a href="https://codepen.io/DanielHalachev">@DanielHalachev</a>) on <a href="https://codepen.io">CodePen</a>.</span>
+          </p>
+        </article>
+      </section>
+      <section>
+        <h2>Как се прави?</h2>
+        <p>Постигането на CSS Flexbox, или динамичен контейнер, става чрез настройки на контейнера родител, който за краткост ще наричаме flex контейнер, и чрез настройки на елементите наследници, които за краткост ще наричаме flex елементи. <span class="source"><a href="#sources">[5]</a></span></p>
+        <article>
+          <h3>Свойства на flex-контейнера (контейнера родител)</h3>
+          <p>И така, как се прави? Достатъчно е да просто да зададете свойството <code class="inline">display:flex</code> на родителския контейнер, чието съдържание искате да се подрежда динамично. Това автоматично задава някои настройки, които Вие можете да промените. </p>
+          <section>
+            <h4>Задаване на посоката на подреждане</h4>
+            <p>CSS Flexbox позволява динамично оформление на съдържанието в една посока, тоест по една ос – хоризонтална или вертикална. Тази ос се нарича главна ос. Тя се контролира от свойството <code class="inline">flex-direction</code>. По подразбиране тя е по хоризонтала (елементите се подреждат в редица/ редове) и се постига чрез <code class="inline">flex-direction:row</code>. Освен по редове, съдържанието може да се подрежда и вертикално (елементите застават в колони) чрез стойността <code class="inline">flex-direction:column</code>. </p>
+            <p><code class="inline">flex-direction:row</code> подрежда съдържанието отляво надясно, а <code class="inline">flex-direction:column</code> – отгоре надолу. Това може да се промени. Стойността <code class="inline"><code class="inline">flex-direction:row</code>-reverse</code> подрежда съдържанието в ред, но отдясно наляво, а <code class="inline"><code class="inline">flex-direction:column</code>-reverse</code> – в колона, но отдолу нагоре. </p>
+            <p>Освен по главната ос, CSS Flexbox позволява настройки, например подравняване, и перпендикулярно на главната ос. Тази втора ос се нарича второстепенна. </p>
+            <p>Ако използваме <code class="inline">flex-direction:row-reverse</code> или <code class="inline">flex-direction:row-reverse</code>, главната ос е хоризонтална, а второстепенната ос – вертикална. </p>
+            <p>Ако използваме <code class="inline">flex-direction:column</code> или <code class="inline">flex-direction:column-reverse</code>, главната ос е вертикалната, а второстепенната е хоризонталната. </p>
+            <div class="tables">
+              <figure>
+              <div class="flex-direction-demo">
+                <div class="option">
+                  <div class="container" style="flex-direction:row">
+                    <div class="item">1</div>
+                    <div class="item">2</div>
+                    <div class="item">3</div>
+                    <div class="item">4</div>
+                  </div>
+                  <p>flex-direction:row</p>
+                </div>
+                <div class="option">
+                  <div class="container" style="flex-direction: column">
+                    <div class="item">1</div>
+                    <div class="item">2</div>
+                    <div class="item">3</div>
+                    <div class="item">4</div>
+                  </div>
+                  <p>flex-direction:column</p>
+                </div>
+                <div class="option">
+                  <div class="container" style="flex-direction: row-reverse">
+                    <div class="item">1</div>
+                    <div class="item">2</div>
+                    <div class="item">3</div>
+                    <div class="item">4</div>
+                  </div>
+                  <p>flex-direction:row-reverse</p>
+                </div>
+                <div class="option">
+                  <div class="container" style="flex-direction: column-reverse">
+                    <div class="item">1</div>
+                    <div class="item">2</div>
+                    <div class="item">3</div>
+                    <div class="item">4</div>
+                  </div>
+                  <p>flex-direction:column-reverse</p>
+                </div>
+              </div>
+              <figcaption>Фигура 1. Различните опции на свойството flex-direction</figcaption>
+              </figure>
+            </div>
+            <div class="warning">
+              <span class="fa fa-triangle-exclamation"></span>
+              <span class="warning-title">Внимание: </span>
+              <span class="warning-text">Главна и второстепенна ос са ключови понятия за работата със CSS Flexbox. Уверете се, че ги разбирате, преди да продължите да четете по темата. </span>
+            </div>
+          </section>
+          <section>
+            <h4>Пренасянето на съдържанието</h4>
+            <p>Добре. Можем да подреждаме съдържанието в ред или колона, но какво става, когато имаме много елементи, за които един ред или една колона не стигат? Тук се проявява възможността за адаптивен дизайн спрямо размера на екрана чрез контролиране на свойството <code class="inline">flex-wrap</code>. По подразбиране то има стойност <code class="inline">flex-wrap:nowrap</code>, което означава, че при прекалено малък екран, съдържанието не се пренася на следващия ред, а се смалява или отрязва, за да се побере. Това се променя чрез <code class="inline">flex-wrap:wrap</code>, което позволява, когато съдържанието не се побира, да се пренесе на нов ред или колона. Друга възможна стойност е <code class="inline">wrap-reverse</code>, която пренася съдържанието, подобно на wrap, но в обратен ред. </p>
+          </section>
+          <section>
+            <h4>Съкратен запис</h4>
+            <p>Свойството <code class="inline">flex-flow</code> позволява съкратен запис на стойностите на свойствата <code class="inline">flex-direction</code> и <code class="inline">flex-wrap</code>: <code class="inline">flex-flow: row wrap</code>. </p>
+          </section>
+          <section>
+            <h4>Подравняване на съдържанието</h4>
+            <p>Когато съдържанието на flex контейнера се състои от няколко елемента, възниква въпросът как всички те да се наредят - в центъра, вляво или вдясно, в горната или в долната част и т.н. </p>
+            <p>Има три различни начина за подравняване на съдържанието – <code class="inline">justify-content</code>, <code class="inline">align-items</code> и <code class="inline">align-content</code>. Кой ще използвате зависи от ориентацията на flex контейнера. <span class="source"><a href="#sources">[6]</a></span><span class="source"><a href="#sources">[7]</a></span></p>
+            <div class="warning">
+              <span class="fa fa-triangle-exclamation"></span>
+              <span class="warning-title">Внимание</span>
+              <span class="warning-text">Нека напомним, че посоката на контейнера, зададена чрез <code class="inline">flex-direction</code>, определя главната ос и перпендикулярната (второстепенната) ос. Контейнер със свойството <code class="inline">flex-direction:row</code> или <code class="inline">flex-direction:row-reverse</code> има хоризонтална главна ос, а контейнер със свойството <code class="inline">flex-direction:column</code> или <code class="inline">flex-direction:column-reverse</code> – главна вертикална ос. </span>
+            </div>
+            <p>Правилата са следните:</p> 
+            <ul>
+              <li><code class="inline">justify-content</code> работи на главната ос; </li>
+              <li><code class="inline">align-content</code> и <code class="inline">align-items</code> работят на второстепенната ос; </li>
+              <li><code class="inline">align-content</code> работи само когато контейнерът се пренася (<code class="inline">flex-wrap:wrap</code>). Причината е, че, <code class="inline">align-items</code> подрежда елементите, когато не заемат всичкото пространство по второстепенната ос, а <code class="inline">align-content</code> подрежда редовете, а не елементите. Ако контейнерът не се пренася, той няма да има нови редове. </li>
+            </ul>
+            <h5><code class="inline">justify-content</code></h5>
+            <p><code class="inline">justify-content</code> работи на главната ос и определя подреждането на елементите, когато има останало свободно място. </p>
+            <figure>
+              <table>
+              <tbody>
+                <tr>
+                  <th><code class="inline">flex-start</code></th>
+                  <td>
+                    Подрежда елементите в началото на flex контейнера. Когато посоката на flex контейнера е:
+                    <ul>
+                      <li><code class="inline">flex-direction:row</code>, елементите се нареждат вляво;</li>
+                      <li><code class="inline">flex-direction:column</code>, се нареждат горе;</li>
+                      <li><code class="inline">flex-direction:row-reverse</code>, елементите се нареждат вдясно;</li>
+                      <li><code class="inline">flex-direction:column-reverse</code>, се нареждат долу. </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">flex-end</code></th>
+                  <td>Подрежда елементите в края на flex контейнера. Когато посоката на flex контейнера е:
+                    <ul>
+                      <li><code class="inline">flex-direction:row</code>, елементите се нареждат вдясно;</li>
+                      <li><code class="inline">flex-direction:column</code>, се нареждат долу;</li>
+                      <li><code class="inline">flex-direction:row-reverse</code>, елементите се нареждат вляво;</li>
+                      <li><code class="inline">flex-direction:column-reverse</code>, се нареждат горе. </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">center</code></th>
+                  <td>Подрежда елементите в центъра на flex контейнера.</td>
+                </tr>
+                <tr>
+                  <th><code class="inline">space-between</code></th>
+                  <td>Подрежда елементите така, че първият е плътно в началото, последният е плътно в края, а разстоянието между всички е еднакво. </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">space-around</code></th>
+                  <td>Подрежда елементите така, че разстоянието около всеки елемент е еднакво. Разликата между <code class="inline">space-between</code> и <code class="inline">space-around</code> е, че <code class="inline">space-around</code> оставя пространство преди първия елемент и след последния. </td>
+                </tr>
+              </tbody>
+              </table>
+              <figcaption>Таблица 1. Стойности на justify-content</figcaption>
+            </figure>
+            <p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="wvYGmwq" data-editable="true" data-user="DanielHalachev">
+              <span>See the Pen <a href="https://codepen.io/DanielHalachev/pen/wvYGmwq">Untitled</a> by Daniel Halachev (<a href="https://codepen.io/DanielHalachev">@DanielHalachev</a>) on <a href="https://codepen.io">CodePen</a>.</span>
+            </p>
+            <div class="warning">
+              <span class="fa fa-triangle-exclamation"></span>
+              <span class="warning-title">Внимание: </span>
+              <span class="warning-text"><code class="inline">justify-content</code> се влияе от посоката на писане на текста (direction). Горепосочените описания важат за езици, които се изписват отляво надясно (български, английски език и други). Ако посоката на изписване е отдясно наляво (както в арабския език), а посоката на flex контейнера: <code class="inline">flex-direction:row</code>, <code class="inline">justify-content: flex-start</code> ще подреди елементите отдясно наляво. </span>
+            </div>
+            <div class="warning">
+              <span class="fa fa-triangle-exclamation"></span>
+              <span class="warning-title">Внимание: </span>
+              <span class="warning-text">Свойството се влияе от стойността на страничното отстояние <code class="inline">margin</code>. За повече информация, разгледайте секция Трикове и често задавани въпроси. </span>
+            </div>
+            <h5><code class="inline">align-items</code></h5>
+            <p>Свойството подравнява елементите на второстепенната ос. Стойността му по подразбиране е <code class="inline">stretch</code>. </p>
+            <figure>
+            <table>
+              <tbody>
+                <tr>
+                  <th><code class="inline">stretch</code></th>
+                  <td>Разтяга елементите така, че да заемат цялото възможно пространство по второстепенната ос. Ако второстепенната ос е вертикална, елементите се разтягат на височина, за да запълнят свободното пространство под и над тях. Ако второстепенната ос е хоризонтална, елементите се разтягат на широчина, за да запълнят пространството отстрани на тях. В резултат всички елементи стават равни на височина (или на ширина в зависимост от второстепенната ос). </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">flex-start</code></th>
+                  <td>Запазва размерите на елементите. Подрежда елементите в посока началото на flex контейнера по отношение на второстепенната ос. Когато посоката на flex контейнера е:
+                    <ul>
+                      <li><code class="inline">flex-direction:row</code>, елементите се подравняват отгоре;</li>
+                      <li><code class="inline">flex-direction:column</code>, се подравняват вляво;</li>
+                      <li><code class="inline">flex-direction:row-reverse</code>, елементите се нареждат отдолу;</li>
+                      <li><code class="inline">flex-direction:column-reverse</code>, се нареждат отдясно. </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">flex-end</code></th>
+                  <td>Подрежда елементите в посока края на flex контейнера по отношение на второстепенната ос. Когато посоката на flex контейнера е: 
+                    <ul>
+                      <li><code class="inline">flex-direction:row</code>, елементите се подравняват отдолу;</li>
+                      <li><code class="inline">flex-direction:column</code>, се подравняват вдясно;</li>
+                      <li><code class="inline">flex-direction:row-reverse</code>, елементите се нареждат отгоре;</li>
+                      <li><code class="inline">flex-direction:column-reverse</code>, се нареждат вляво. </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">center</code></th>
+                  <td>Подрежда елементите централно по второстепенната ос. </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">baseline</code></th>
+                  <td>Подрежда елементите по второстепенната ос спрямо първата буква в текстовото съдържание в тях.</td>
+                </tr>
+              </tbody>
+            </table>
+            <figcaption>Таблица 2. Стойности на align-items</figcaption>
+            </figure>
+            <p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="YzJqaeZ" data-editable="true" data-user="DanielHalachev">
+              <span>See the Pen <a href="https://codepen.io/DanielHalachev/pen/YzJqaeZ">Align items</a> by Daniel Halachev (<a href="https://codepen.io/DanielHalachev">@DanielHalachev</a>) on <a href="https://codepen.io">CodePen</a>.</span>
+            </p>
+            <div class="warning">
+              <span class="fa fa-triangle-exclamation"></span>
+              <span class="warning-title">Внимание: </span>
+              <span class="warning-text"><code class="inline">align-items</code> свойство на flex контейнера (родител), което задава на всички flex елементи (деца) стойността на свойството <code class="inline">align-self</code>, която по подразбиране е auto. Възможно е стойността на <code class="inline">align-self</code> да се промени от auto на някоя стойностите <code class="inline">flex-start</code>, <code class="inline">flex-end</code>, <code class="inline">center</code>, <code class="inline">baseline</code> за конкретен flex елемент (дете). </span>
+            </div>
+            <h5><code class="inline">align-content</code></h5>
+            <p>Когато съдържанието е разпределено на няколко реда или колони (<code class="inline">flex-wrap:wrap</code>), освен съдържанието на отделните елементи искаме да контролираме и разстоянието между редовете (колоните). Това се постига чрез свойството <code class="inline">align-content</code>. Подобно на <code class="inline">align-items</code>, работи по второстепенната ос. </p>
+            <figure>
+            <table>
+              <tbody>
+                <tr>
+                  <th><code class="inline">flex-start</code></th>
+                  <td>Нарежда всички редове (колони) плътно един до друг, започвайки от началото на flex контейнера. </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">flex-end</code></th>
+                  <td>Нарежда всички редове (колони) плътно един до друг в края на flex контейнера. </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">center</code></th>
+                  <td>Нарежда всички редове (колони) плътно един до друг и подравнява “групата” централно по второстепенната ос. </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">space-between</code></th>
+                  <td>Подрежда редовете (колоните) така, че да имат равно разстояние помежду си. Не оставя разстояние преди първия ред и след последния ред. </td>
+                </tr>
+                <tr>
+                  <th>space-around</th>
+                  <td>Подрежда редовете така, че да имат равно разстояние преди, след и между себе си. На практика оставя разстояние преди първия ред и след последния ред. </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">stretch</code></th>
+                  <td>Разпъва редовете по второстепенната ос, за да запълнят цялото свободно пространство. </td>
+                </tr>
+              </tbody>
+            </table>
+            <figcaption>Таблица 3. Възможни стойности на align-content</figcaption>
+            </figure>
+            <p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="WNawzya" data-editable="true" data-user="DanielHalachev">
+              <span>See the Pen <a href="https://codepen.io/DanielHalachev/pen/WNawzya">Untitled</a> by Daniel Halachev (<a href="https://codepen.io/DanielHalachev">@DanielHalachev</a>) on <a href="https://codepen.io">CodePen</a>.</span>
+            </p>
+          </section>
+          <section>
+            <h4>Разстояние между flex елементите</h4>
+            <p>Не, за щастие не се прави с <code class="inline">margin</code>! Може да се зададе еднакво разстояние между всички flex елементи чрез свойството <code class="inline">gap</code>, което е съкратен запис за <code class="inline">row-gap</code> и <code class="inline">column-gap</code>. </p>
+            <figure>
+            <table>
+              <tbody>
+                <tr>
+                  <th><code class="inline">column-gap:40px</code></th>
+                  <td>Задава разстояние (в случая от 40px) между всеки два елемента по главната ос. </td>
+                </tr>
+                <tr>
+                  <th><code class="inline">row-gap:20px</code></th>
+                  <td>Задава разстояние (в случая от 20px) между всеки два елемента по второстепенната ос. </td>
+                </tr>
+                <tr>
+  <th><code class="inline">gap:40px 20px</code></th>
+  <td>Съкратен запис, обединяващ горните два. </td>
+                </tr>
+  </tbody>
+            </table>
+            <figcaption>Таблица 4. Възможни стойности на gap</figcaption>
+            </figure>
+          </section>
+        </article>
+        <article>
+          <h3>Свойства на flex елементите (елементите деца)</h3>
+          <section>
+            <h4>Подредба</h4>
+            <p>Подредбата на елементите при показване на съдържанието не е необходимо да е същата като подредбата на елементите в кода. Конкретна подредба може да се зададе чрез свойството <code class="inline">order</code>, което приема неотрицателно цяло число. <span class="source"><a href="#sources">[8]</a></span><span class="source"><a href="#sources">[9]</a></span></p>
+          </section>
+          <section>
+            <h4>Разширяване</h4>
+            <p>Може да се окаже колко голям е даден елемент спрямо останалите елементи във flex контейнера чрез свойството <code class="inline">flex-grow</code>. Стойността по подразбиране е 0, което означава “елементът да е толкова голям, колкото да се побере съдържанието”. Всички останали стойности, различни от нула, разширяват елементите пропорционално един на друг, за да заемат цялото останало пространство (с изключение на разстоянията между елементите и редовете, дефинирани чрез <code class="inline">gap</code>, <code class="inline">align-content</code> и т.н.)<span class="source"><a href="#sources">[9]</a></span>. </p>
+          </section>
+          <section>
+            <h4>Свиване</h4>
+            <p>Може да се укаже колко бързо да се свива даден елемент спрямо останалите елементи във flex контейнера чрез свойството <code class="inline">flex-shrink</code>. Стойността 0 означава “елементът да не свива, когато разстоянието по основната ос се намали”. Стойността по подразбиране е 1, което означава “елементът да се свива толкова, колкото и другите елементи, когато разстоянието по основната ос се намали”. Стойност 2,3 и т.н. свива дадения елемент 2, 3 и т.н. пъти по-бързо отколкото се свиват останалите елементи<span class="source"><a href="#sources">[9]</a></span>. </p>
+          </section>
+          <section>
+          <h4>Първоначален размер</h4>
+            <p>Свойството flex-basis задава първоначалния размер на даден flex елемент по главната ос. Разликата с <code class="inline">flex-grow</code> е, че размерът се задава в мерни единици, независимо от размерите на останалите flex елементи. Разликата с <code class="inline">width</code>/<code class="inline">height</code> (по главната ос) е, че при промяна на размера на flex контейнера, flex елементът не си променя размера – не се разширява, нито се свива, за разлика от случая с <code class="inline">flex-basis</code><span class="source"><a href="#sources">[9]</a></span>. </p>
+        </section>
+          <section>
+            <h4>Обобщено свойство <code class="inline">flex</code></h4>
+            <p>Свойството flex е съкратен запис на <code class="inline">flex-grow</code>, <code class="inline">flex-shrink</code> и <code class="inline">flex-basis</code><span class="source"><a href="#sources">[9]</a></span>. </p>
+          </section>
+          <section>
+            <h4><code class="inline"><code class="inline">align-self</code></code></h4>
+            <p>Свойството позволява да бъде предефинирана стойността за подредба по второстепенната ос, наследена от свойството <code class="inline">align-items</code> на родителския flex контейнер.<span class="source"><a href="#sources">[9]</a></span> </p>
+          </section>
+        </article>
+      </section>
+      <section>
+        <h2>Предимства</h2>
+        <p>Технологията Flexbox има няколко ключови предимства пред алтернативните технологии – таблици, <code class="inline">float</code> и <code class="inline">position</code>:</p>
+        <ul>
+          <li>Първият и единствен способ (допреди CSS Grid) с изцяло представителна функция – свойството няма семантичен смисъл;</li>
+          <li>Прост, последователен и много кратък синтаксис;</li>
+          <li>Възможност за автоматично преоразмеряване на елементите;</li>
+          <li>Лесно подравняване на елементите без необходимост от дефиниране на <code class="inline">margin</code> и други подобни свойства;</li>
+          <li>Възможност за представяне на елементите в последователност, различна от тази в кода;</li>
+          <li>Лесно влагане на едни flex контейнери в други;</li>
+          <li>Доказано средство за адаптивен уеб дизайн с минимални усилия;</li>
+          <li>Добра съвместимост с други CSS свойства, например CSS Grid;</li>
+          <li>Поддържа се от 98% от браузърите. </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Недостатъци</h2>
+        <p>Като всичко в реалността, технологията има и своите недостатъци:</p>
+        <ul>
+          <li>Неинтуитивни имена на свойствата за подравняване align-items, <code class="inline">align-content</code> и <code class="inline">justify-content</code> и трудно възприемане на разликата между тях;</li>
+          <li>Успехът за работа с технологията зависи в голяма степен от две понятия – основна и второстепенна ос;</li>
+          <li>Отклонения от стандарта като <code class="inline">justify-content:space-evenly</code> и <code class="inline">align-contentspace-evenly</code>, които не сме споменали в този реферат;</li>
+          <li>CSS Flexbox предоставя контрол най-вече по една ос, за разлика от CSS Grid, където има силен контрол и върху двете оси – главна и второстепенна;</li>
+          <li>Малки, но все пак съществуващи разлики в имплементацията на различните браузъри;</li>
+          <li>98% поддръжка е приемлива стойност, но останалите 2% са предимно мобилни браузъри, които имат по-малък шанс да бъдат обновени. Това основно се отразява на потребители със стари мобилни телефони, а това противоречи на основната употреба на CSS Flexbox – за изграждане на адаптивен дизайн. </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Кога да изберем Flexbox?</h2>
+        Изберете CSS Flexbox:
+        <ul>
+          <li>Пред таблици, <code class="inline">position</code> и <code class="inline">float</code>, когато организирането на информацията има чисто визуален, а не семантичен смисъл;</li>
+          <li>Когато искате да направите адаптивен уеб дизайн;</li>
+          <li>Когато искате да промените реда на елементите;</li>
+          <li>Пред CSS Grid, когато е необходим контрол само по една от осите. </li>
+        </ul>
+        Не използвайте CSS Flexbox (а CSS Grid):
+        <ul>
+          <li>Когато Ви трябва сложен контрол и по двете оси, например за изграждането на таблици с елементи, които се пренареждат спрямо ширината и височината на екрана (стандартните таблици не могат да се адаптират динамично спрямо размерите на екрана или броя елементи);</li>
+          <li>За конкретно позициониране на елементите и по ред, и по колона;</li>
+          <li>Когато трябва да насложите елементи (частично) един върху друг. </li>
+        </ul>
+        Не използвайте CSS Flexbox (a <code class="inline">table</code>):
+        <ul>
+        <li>Когато представянето на информация в таблица има семантичен смисъл. </li>
+      </ul>
+        Не използвайте CSS Flexbox (а <code class="inline">float</code>):
+        <ul>
+          <li>Когато искате да поставите снимка и да обвиете текст около нея. </li>
+        </ul>
+        Не използвайте CSS Flexbox (а <code class="inline">position</code>):
+        <ul>
+          <li>Когато настройвате само един елемент, а не поредица от елементи;</li>
+          <li>Когато трябва да настройте позицията на елемента спрямо целия документ или родителския елемент;</li>
+          <li>Когато трябва да застъпите/ припокриете два елемента;</li>
+          <li>Когато елементът, който настройвате, не трябва да се скролира заедно с останалото съдържание. </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Flexbox + Grid</h2>
+        <p>CSS Flexbox и CSS Grid са две технологии, които изпълняват сходни роли – организират динамичната подредба на съдържанието. Понякога те се конкурират и може/трябва да изберем само една от двете, но в повечето случаи се сработват отлично заедно. Има два такива основни случая. </p>
+        <article>
+          <h3>Grid родителски елемент и елементи наследници, които са Flex</h3>
+          <p>Използвайте този способ, когато всеки от елементите наследници трябва да има точно определено място, а съдържанието им се подрежда динамично спрямо размера им. </p>
+          <p>Пример: Grid body на Интернет страница с <code class="inline">header</code>, <code class="inline">main</code> и <code class="inline">footer</code>, които са flex контейнери. </p>
+        </article>
+        <article>
+          <h3>Flex родителски елемент и елементи наследници, които са Grid</h3>
+          <p>Използвайте тази конфигурация, когато елементите наследници трябва да се подреждат динамично по ред или колона, а съдържанието им изисква табличен изглед. </p>
+        </article>
+      </section>
+      <section>
+        <h2>Prefixing</h2>
+        <p>С цел максимална съвместимост с всички браузъри, понякога е необходим префикс – тоест, поясняване на свойството с префикса на доставчика му, например <code class="inline">display:-webkit-flex</code>. </p>
+        Има две решения на проблема:
+        <ul>
+          <li>Използване на библиотеки като mixin, които решават проблема със съвместимостта, но ни принуждават да използваме различен синтаксис;</li>
+          <li>Да използваме инструменти като <b>Autoprefixer</b>, които автоматично добавят необходимите префикси към нашия код. </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Трикове и често задавани въпроси</h2>
+        <article>
+          <h3>Динамичен дизайн</h3>
+          <p>Винаги разработвайте уеб страниците, предвиждайки различни типове устройства. Най-популярният принцип е <b>Mobile First</b>. Както подсказва името му, се започва с дизайна на мобилния изглед. Той е най-труден, а телефоните имат най-ограничените по ресурси браузъри и трябва да бъдат най-улеснени. Това се постига чрез задаване на случаи за максимална (а не минимална) ширина. Примерно разпределение на случаите може да бъде това:</p>
+          <p class="codepen" data-height="300" data-default-tab="css" data-slug-hash="JjmXLaX" data-editable="true" data-user="DanielHalachev">
+            <span>See the Pen <a href="https://codepen.io/DanielHalachev/pen/JjmXLaX">CSS Example</a> by Daniel Halachev (<a href="https://codepen.io/DanielHalachev">@DanielHalachev</a>) on <a href="https://codepen.io">CodePen</a>.</span> 
+          </p>  
+        </article>
+        <article>
+          <h3>Динамична навигация 1</h3>
+        <p>Навигацията е линейна. При свиване на ширината на екрана, е колонна<span class="source"><a href="#sources">[10]</a></span>. </p>
+          <p class="codepen" data-height="300" data-default-tab="css" data-slug-hash="QWZNmzz" data-editable="true" data-user="DanielHalachev">
+          <span>See the Pen <a href="https://codepen.io/DanielHalachev/pen/QWZNmzz">Dynamic Menu 1</a> by Daniel Halachev (<a href="https://codepen.io/DanielHalachev">@DanielHalachev</a>) on <a href="https://codepen.io">CodePen</a>.</span>
+        </p>
+        </article>
+        <!-- <article> -->
+        <!--   <h3>Динамична навигация 2</h3> -->
+        <!--   <p>Искаме при широки екрани навигацията да е подравнена вдясно, при екрани за таблети да заема цялата навигация, а при мобилни екрани – да има по един бутон на ред. </p> -->
+        <!-- </article> -->
+        <article>
+          <h3>Flexbox + <code class="inline">margin</code> за подравняване</h3>
+          <p><code class="inline">margin:auto</code>на даден flex елемент “абсорбира” свободното пространство. Това е отличен начин да центрираме един flex елемент и по двете оси. </p>
+          <p>Понякога искаме част от flex елементите да имат едно подравняване, а друга част – друго. Тук <code class="inline">margin:auto</code> идва на помощ. Нека разгледаме случай, в който искаме първите няколко flex елемента да се подравняват в началото, а последните 1 или 2 – в края на контейнера. За целта задаваме стойност <code class="inline">margin-top:auto</code>на първия елемент от тези, които искаме да се подравнят в края на контейнера. В резултат flex елементите се разпределят така, че цялото свободно разстояние остава преди елемента с <code class="inline">margin-top:auto</code>. </p>
+          <p class="codepen" data-height="300" data-default-tab="css,result" data-slug-hash="zYmqjYq" data-editable="true" data-user="DanielHalachev" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+            <span>See the Pen <a href="https://codepen.io/DanielHalachev/pen/zYmqjYq">Sticky Footer</a> by Daniel Halachev (<a href="https://codepen.io/DanielHalachev">@DanielHalachev</a>) on <a href="https://codepen.io">CodePen</a>.</span>
+          </p>
+        </article>
+        <article>
+          <h3>Галерия от снимки</h3>
+          <p>Стига с този Javascript! Само HTML + CSS Flexbox. </p>
+          <p>За да можем да подредим снимките динамично, те трябва да са с еднаква височина, за да могат се превърнат във flex елементи. За да не се деформират снимките, всички те трябва да са със зададено свойство <code class="inline">object-fit:cover</code>. Остава последният ред, където ако снимките са малко, се разтягат неестествено, за да заемат останалото свободно пространство. За целта се добавя още един елемент, който има стойност <code class="inline">flex-grow:10</code> или някое друго голямо число, за да заеме излишното празно пространство на последния ред. С цел защита на авторските права, вместо демо ще препратя <a href="https://css-tricks.com/adaptive-photo-layout-with-flexbox/">ето тук</a>.</p>
+        </article>
+      </section>
+      <section class="examples">
+        <h2>Примерна употреба в реални приложения</h2>
+        <article>
+          <h3>Този реферат</h3>
+          <p>Ctrl + Shift + I, за да разгледате кода. </p>
+          <p></p>
+        </article>
+        <article>
+          <h3>Google Drive</h3>
+          <p>Google Drive използва Flexbox за основното съдържание.</p>
+          <figure>
+            <img src="img/gd.png" alt="Google Drive">
+            <figcaption>Фигура 2. Персонална начална страница на Google Drive.</figcaption>
+          </figure>
+        </article>
+        <article>
+          <h3>LinkedIn</h3>
+          <p>LinkedIn използва Flexbox за nav и main елементите.</p>
+          <figure>
+            <img src="img/linkedin.png" alt="LinkedIn">
+            <figcaption>Фигура 3. Начална страница на LinkedIn</figcaption>
+          </figure>          
+        </article>
+        <article>
+          <h3>YouTube</h3>
+          <p>Сайтът на YouTube използва Flexbox за подреждане на предложенията на началната страница, а също и за подредба на съдържанието в страницата за възпроизвеждане на даден видеоклип. </p>
+          <figure>
+            <img src="img/yt.png" alt="YouTube">
+            <figcaption>Фигура 4. Начална страница на YouTube</figcaption>
+          </figure>
+        </article>
+        <article>
+          <h3>Github</h3>
+          <p>Страницата на Github използва Flexbox за header тага, Grid за съдържанието и отново Flexbox за лентата с файлова навигация, където се намират бутоните за промяна на branch, добавяне на файл и клониране на хранилището. </p>
+          <figure>
+            <img src="img/github.png" alt="Github">
+            <figcaption>Фигура 5. Изглед на хранилище в Github</figcaption>
+          </figure>
+        </article>
+        <article>
+          <h3>Airbnb</h3>
+          <p>Сайтът на Airbnb използва Flexbox за навигацията си. Картата на всяка дестинация използва Grid и Flexbox. </p>
+          <figure>
+            <img src="img/airbnb.png" alt="Airbnb">
+            <figcaption>Фигура 6. Начална страница на Airbnb</figcaption>
+          </figure>
+        </article>
+        <article>
+          <h3>Slack</h3>
+          <p>Страницата на Slack използва Flexbox за навигацията и за бързите връзки към workspaces в началния изглед. </p>
+          <figure>
+            <img src="img/slack.png" alt="Slack">
+            <figcaption>Фигура 7. Начална страница на Slack</figcaption>
+          </figure>
+        </article>
+      </section>
+      <section>
+        <h2>Обобщение на свойствата</h2>
+        <figure>
+        <div class="tables">
+          <table>
+            <thead>
+              <tr>
+                <th>flex-direction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>row</td>
+              </tr>
+              <tr>
+                <td>row-reverse</td>
+              </tr>
+              <tr>
+                <td>column</td>
+              </tr>
+              <tr>
+                <td>column-reverse</td>
+              </tr>
+          </table>
+          <table>
+            <thead>
+            <tr>
+              <th>flex-wrap</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>wrap</td>
+              </tr>
+              <tr>
+                <td>nowrap</td>
+              </tr>
+              <tr>
+                <td>wrap-reverse</td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th>justify-content</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>flex-start</td>
+              </tr>
+              <tr>
+                <td>flex-end</td>
+              </tr>
+              <tr>
+                <td>center</td>
+              </tr>
+              <tr>
+                <td>space-between</td>
+              </tr>
+              <tr>
+                <td>space-around</td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th>align-content</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>flex-start</td>
+              </tr>
+              <tr>
+                <td>flex-end</td>
+              </tr>
+              <tr>
+                <td>center</td>
+              </tr>
+              <tr>
+                <td>stretch</td>
+              </tr>
+              <tr>
+                <td>space-between</td>
+              </tr>
+              <tr>
+                <td>space-around</td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th>align-items</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>flex-start</td>
+              </tr>
+              <tr>
+                <td>flex-end</td>
+              </tr>
+              <tr>
+                <td>center</td>
+              </tr>
+              <tr>
+                <td>stretch</td>
+              </tr>
+              <tr>
+                <td>baseline</td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th>align-self</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>auto</td>
+              </tr>
+              <tr>
+                <td>flex-start</td>
+              </tr>
+              <tr>
+                <td>flex-end</td>
+              </tr>
+              <tr>
+                <td>center</td>
+              </tr>
+              <tr>
+                <td>stretch</td>
+              </tr>
+              <tr>
+                <td>baseline</td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <tr>
+              <th>row-gap</th>
+            </tr>
+            <tr>
+              <td>измеримо <br>разстояние</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>column-gap</th>
+            </tr>
+            <tr>
+              <td>измеримо <br>разстояние</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>order</th>
+            </tr>
+            <tr>
+              <td>неотрицателно <br>цяло число</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>flex-basis</th>
+            </tr>
+            <tr>
+              <td>измеримо <br>разстояние</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>flex-grow</th>
+            </tr>
+            <tr>
+              <td>неотрицателно <br>цяло число</td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>flex-shrink</th>
+            </tr>
+            <tr>
+              <td>неотрицателно <br>цяло число</td>
+            </tr>
+          </table>
+        </div>
+        <figcaption>Фигура 8. Обобщение на свойсвата на CSS Flexbox</figcaption>
+        </figure>
+      </section>
+      <section>
+        <h2>Заключение. Бъдещето на CSS Flexbox</h2>
+        <p>CSS Flexbox е модерен и наистина удобен способ за представяне на съдържанието. Разнообразните му свойства позволяват мощен контрол върху поведението и подредбата на съдържанието на различни устройства особено когато това е необходимо само по една ос. Затова не е изненадващата употребата му в множество популярни Интернет страници, посещавани от милиони потребители всеки ден. </p>
+        <p>Разбира се, освен многобройните предимства на технологията, тя също има своите недостатъци, сред които различаващи се браузър имплементации, а и непълна поддръжка от всички браузъри. </p>
+        <p>Появата на CSS Grid решава част от тези проблеми, но не прави CSS Flexbox по-малко значима и необходима за съвременния уеб разработчик. Напротив – двете технологии използвани съвместно дават още по-добри резултати. </p>
+      </section>
+      <section id="sources">
+        <h2>Източници</h2>
+        <ol>
+          <li>The R Project. 2022. “Web layout history: How we got to grid and flex.” Web layout history. <a href="https://cran.r-project.org/web/packages/imola/vignettes/imola-why-flex-and-grid.html">www.cran.r-project.org/web/packages/imola/vignettes/imola-why-flex-and-grid.html</a>.</li>
+          <li>Joomla Team. 2018. “A brief history of HTML/CSS layouting.” Joomla Team. <a href="https://joom.team/en/a-brief-history-of-html-css-layouting">https://joom.team/en/a-brief-history-of-html-css-layouting</a>. </li>
+          <li>W3Schools. 2012. “HTML Block and Inline Elements.” W3Schools. <a href="https://www.w3schools.com/html/html_blocks.asp">https://www.w3schools.com/html/html_blocks.asp</a>.</li>
+          <li>Rendle, Robin. 2021. “Is CSS float deprecated? | CSS-Tricks.” CSS-Tricks. <a href="https://css-tricks.com/is-css-float-deprecated/">https://css-tricks.com/is-css-float-deprecated/</a>. </li>
+          <li>Coyier, Chris. 2013. “A Complete Guide to Flexbox | CSS-Tricks.” CSS-Tricks. <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/#aa-examples">https://css-tricks.com/snippets/css/a-guide-to-flexbox/#aa-examples</a>. </li>
+          <li>Mozilla. 2023. “Aligning items in a flex container - CSS: Cascading Style Sheets | MDN.” MDN Web Docs. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container">https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container</a>.</li>
+          <li>Varma, Anirudh. 2019. “Flexbox - Align Items vs Align Content.” DEV Community. <a href="https://dev.to/anirudhvarma12/flexbox-align-items-vs-align-content-3knl">https://dev.to/anirudhvarma12/flexbox-align-items-vs-align-content-3knl</a>.</li>
+          <li>Mozilla. 2023. “Ordering flex items - CSS: Cascading Style Sheets | MDN.” MDN Web Docs. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Ordering_Flex_Items">https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Ordering_Flex_Items</a>. </li>
+          <li>W3Schools. 2020. “CSS Flexbox Items.” W3Schools. <a href="https://www.w3schools.com/css/css3_flexbox_items.asp">https://www.w3schools.com/css/css3_flexbox_items.asp</a>. </li>
+          <li>Fireship. 2020. “CSS Flexbox in 100 Seconds.” YouTube. <a href="https://www.youtube.com/watch?v=K74l26pE4YA">https://www.youtube.com/watch?v=K74l26pE4YA</a>. </li>
+        </ol>
+        Източници в помощ за имплементацията:
+        <ul>
+          <li>“HTML numbering with brackets.” 2014. Stack Overflow. <a href="https://stackoverflow.com/questions/22530982/html-numbering-with-brackets">https://stackoverflow.com/questions/22530982/html-numbering-with-brackets</a>. </li>
+          <li>Christopher, Matthew, and Ates Goral. 2008. “Is there a JavaScript solution to generating a "table of contents" for a page?” Stack Overflow. <a href="https://stackoverflow.com/questions/187619/is-there-a-javascript-solution-to-generating-a-table-of-contents-for-a-page">https://stackoverflow.com/questions/187619/is-there-a-javascript-solution-to-generating-a-table-of-contents-for-a-page</a>. </li>
+        </ul>
+        Забележки:
+        <ul>
+          <li>Коментарите в интерактивните примери са на английски, защото коментари на български са лоша практика;</li>
+          <li>Интерактивните примери няма как да бъдат номерирани, защото се вграждат чрез скрипт, който се изпълнява асинхронно след зареждане на страницата. </li>
+        </ul>
+      </section>
+    </main>
+    <footer>
+      <p>Даниел Халачев, 62547 &copy; 2023</p>
+    </footer>
+  </body>
+</html>
