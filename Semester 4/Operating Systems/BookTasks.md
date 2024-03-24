@@ -37,8 +37,10 @@ cat /etc/passwd | sort -n -t':' -k 3 | head -n 201 | tail -n 1 | cut -d':' -f 4 
 ```bash
 egrep "^[^;]+;$(cat planets.txt | tail -n +2 | sort -n -t';' -k 3,3 | tail -n 1 | cut -d';' -f2)" planets.txt | sort -n -t ';' -k 3,3 | head -n 1 | awk -OF '\t' '{print $1, $4}'
 ```
-#### 10. 
-
+#### 10. 2019-SE-02
+```bash
+cat /etc/passwd | grep -E "$(find /home -maxdepth 1 -mindepth 1 -type d -printf "%p\\t%C@\\n" | awk -F "\t" '$2 > 1700000000 && $2 < 1720000000 {print $1}')" | cut -d ":" -f 1,5 | cut -d "," -f 1
+```
 #### 11. 2019-SE-03
 ```bash
 find /home/velin -type f -inum $(find /home/velin -type f -printf "%T@ %p %i\n" | sort -k 1 | head -n 1 | cut -d ' ' -f 3) | grep -o / | wc -l
