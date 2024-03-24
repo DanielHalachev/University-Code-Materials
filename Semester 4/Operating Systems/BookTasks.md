@@ -46,7 +46,10 @@ cat /etc/passwd | grep -E "$(find /home -maxdepth 1 -mindepth 1 -type d -printf 
 find /home/velin -type f -inum $(find /home/velin -type f -printf "%T@ %p %i\n" | sort -k 1 | head -n 1 | cut -d ' ' -f 3) | grep -o / | wc -l
 ```
 ```bash
-find /home/velin -maxdepth 1 -type f | sort -k 1 | head -n 1 | cut -d ' ' -f 3 | grep -o / | wc -l
+find /home/velin -samefile $(find /home/velin -type f -printf "%p|%T@\\n" | sort -t "|" -nr -k2 | head -n 1 | cut -d "|" -f 1)
+```
+```bash
+find /home/velin -type f | sort -k 1 | head -n 1 | cut -d ' ' -f 3 | grep -o / | wc -l
 ```
 #### 12. 2020-SE-01
 ```bash
