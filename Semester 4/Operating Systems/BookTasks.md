@@ -11,7 +11,7 @@ find / -uid $(id -u) 2>/dev/null
 find . -type f -size 0 | xargs -I {} rm {}
 ```
 ```bash
-find . -type f -printf "%p %s\n" | sort -nr -k 2 | head -n 5| xargs -I {} rm {}
+find . -type f -printf "%p|%s\\n" | sort -t "|" -nr -k 2 | head -n 5| awk -F "|" '{print $1} | 'xargs -I {} rm {}
 ```
 #### 4. 2017-IN-03
 ```bash
