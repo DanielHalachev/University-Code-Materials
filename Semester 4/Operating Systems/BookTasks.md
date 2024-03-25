@@ -114,10 +114,28 @@ exit 0
 #### 17.  2016-SE-0
 ```bash
 #!/usr/bin/bash
-if [ "$UEID"=0 ]
+if [ ! $(id --user) -eq 0 ]
 then
-    cat /etc/passwd | awk -F ':' '$6!~/home/{print $0}'
+  echo "Not running as root"
+  exit 1
 fi
+while IFS=: read -r user _ _ _ _ homeDir _ 
+do
+  if [[ ! ${homeDir} =~ "/home" ]]
+  then
+    echo ${user}
+  elif [[ ! -d ${homeDir} ]]
+  then
+    echo ${user}
+  else
+    permission=$(ls -ld ${homeDir} | cut -c 3)
+    if [[ ${permission} != "w" ]]
+    then 
+      echo ${user}
+    fi
+  fi
+done < /etc/passwd
+
 exit 0
 ```
 #### 18.  2016-SE-0
