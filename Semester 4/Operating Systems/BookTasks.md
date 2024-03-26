@@ -356,7 +356,8 @@ then
     find -L "$1" -type l
 elif [ $# -eq 2 ]
 then
-    find "$1" -type f -printf "%p %n" | awk -v limit=${2} '$2>=limit {print $1}'
+    # find "$1" -type f -printf "%p %n" | awk -v limit=${2} '$2>=limit {print $1}'
+    find $1 -type f -links +$2
 fi
 exit 0
 ```
