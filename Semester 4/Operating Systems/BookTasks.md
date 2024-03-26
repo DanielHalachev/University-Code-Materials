@@ -412,6 +412,50 @@ do
 done
 exit 0
 ```
+или
+```bash
+#!/usr/bin/env bash
+
+if [ $# -lt 3 ]
+then
+  echo "Please provide at least three parameters" >&2
+  exit 1
+fi
+
+if [ $(id --user) -ne 0 ]
+then
+  echo "Please run as root" >&2
+  exit 1
+fi
+
+if [ ! -d $1 ]
+then
+  echo "Source must be a directory" >&2
+  exit 1
+fi
+
+if [ ! -d $2 ]
+then
+  echo "Destination must be a directory" >&2
+  exit 1
+fi
+
+SRC=$1
+DST=$2
+STR=$3
+
+for file in $(find ${SRC} -type f -name "*${STR}*" -printf "%p|%h\n")
+do
+  fullPath=$(echo ${file} | cut -d "|" -f 1)
+  directories=$(echo ${file} | cut -d "|" -f 2 | sed -E "s/${SRC}[\/]?//g")
+  if [ ! -d ${DST}/${directories} ]
+  then
+    mkdir -p "${DST}/${directories}"
+  fi
+  mv "${fullPath}" "${DST}/${directories}"
+done
+exit 0
+```
 #### 26. 2017-SE-03
 ```bash
 #!/usr/bin/env bash
