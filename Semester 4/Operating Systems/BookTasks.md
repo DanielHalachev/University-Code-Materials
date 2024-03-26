@@ -280,6 +280,59 @@ AVERAGE=$(ps -e -o times= | awk -v sum=0 '{nr=NR;sum=sum+$1;}END{print sum=sum/n
 ps -e -o pid= -o times= | awk -v avg=${AVERAGE} '$2>2*avg{print $1;}' | xargs -I {} kill 9 {}
 exit 0
 ```
+или
+```bash
+#!/usr/bin/env bash
+
+if [ $# != 1 ]
+then
+  echo "Please supply exactly one parameter" >&2
+  exit 1
+fi
+
+inputUserProcesses=$(ps -u $1 -o pid=)
+minCount=$(echo ${inputUserProcesses} | wc -l)
+allProcesses=$(ps -e -o user=,pid=,time=)
+
+declare -A userProcessCount
+declare -A userProcessTime
+hours=0
+munites=0
+seconds=0
+
+while read -r user pid time
+do
+  hh=$(echo ${time} | cut -d ":" -f 1 | sed -E "s/^0{1}//g")
+  mm=$(echo ${time} | cut -d ":" -f 2 | sed -E "s/^0{1}//g")
+  ss=$(echo ${time} | cut -d ":" -f 3 | sed -E "s/^0{1}//g")
+  hours=$((${hours} + ${hh}))
+  minutes=$((${munites} + ${mm}))
+  seconds=$((${seconds} + ${ss}))
+  userProcessCount[${user}]=$(( userProcessCount[${user}] + 1 ))
+  userProcessTime[${pid}]=$(( userProcessTime[${pid}] + $((${hh} * 360 + ${mm} * 60 + ${ss}))))
+done < <(ps -e -o user=,pid=,time=)
+
+totalTime=$((${hours} * 360 + ${munites}*60 + ${seconds}))
+averageTime=$((${totalTime} / $(echo ${allProcesses} | wc -l)))
+for user in ${!userProcessCount[@]}
+do
+  if [ ${userProcessCount[${user}]} -gt ${minCount} ]
+  then
+    echo ${user}
+  fi
+done
+
+printf "%02d:%02d:%02d" $((${averageTime} / 3600)) $(((${averageTime} % 3600) / 60)) $((${averageTime} % 60))
+
+for pid in ${!userProcessTime[@]}
+do
+  if [ ${userProcessTime[${pid}]} -gt $((${averageTime} * 2)) ]
+  then
+    echo ${pid}
+  fi
+done
+exit 0
+```
 #### 23. 2017-IN-03 
 ```bash
 #!/usr/bin/env bash
