@@ -213,7 +213,7 @@ find /bin/ -maxdepth 1 -type f | xargs -I {} file {} | grep 'shell script' | wc 
 ```
 #### 21. Направете списък с директориите на вашата файлова система, до които нямате достъп. Понеже файловата система може да е много голяма, търсете до 3 нива на дълбочина.
 ```bash
-find / -maxdepth 3 -type d -readable 
+find / -maxdepth 3 -type d ! -readable 
 ```
 #### 22. Създайте следната файлова йерархия в home директорията ви:
 dir5/file1
