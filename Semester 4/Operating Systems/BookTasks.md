@@ -992,73 +992,86 @@ int main(int argc, char* argv[]){
 ```
 #### 52. 2017-IN-01
 ```c
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
+
 #include <err.h>
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-int main(int argc, char* argv[]){
-    struct tuple{
-        uint16_t shift;
-        uint8_t length;
-        uint8_t reserved;
-    }__attribute__((packed)) tuple;
-    
-    if (argc != 5){
-        errx(1, "Invalid number of parameters");
-    }
-    
-    int fd_dat1 = open(argv[1], O_RDONLY);
-    if (fd_dat1 == -1){
-        err(2, "%s", argv[1]);
-    }
-    int fd_idx1 = open(argv[2], O_RDONLY);
-    if (fd_idx1 == -1){
-        err(2, "%s", argv[2]);
-    }
-    int fd_dat2 = open(argv[3], O_CREAT|O_WRONLY|O_TRUNC,S_IRUSR|S_IWUSR);
-    if (fd_dat1 == -1){
-        err(2, "%s", argv[3]);
-    }
-    int fd_idx2 = open(argv[4], O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IWUSR);
-    if (fd_idx2 == -1){
-        err(2, "%s", argv[4]);
-    }
-    while(read(fd_idx1,&tuple, sizeof(tuple))==sizeof(tuple)){
-        if(lseek(fd_dat1, tuple.shift, SEEK_SET) == -1){
-            err(3, "Could not move in file");
-        }
-        char str[tuple.length];
-        if (str == NULL){
-            err(4, "Could not allocate memory");
-        }
-        if(read(fd_dat1, &str, tuple.length) != tuple.length){
-            err(4, "Could not read from file %s", argv[1]);
-        }
-        if (str[0] >= 0x41 && str[0] <= 0x5A){
-            if(write(fd_dat2, &str, tuple.length) != tuple.length){
-                err(5, "Could not write in file %s", argv[3]);
-            }
-            if(write(fd_idx2, &tuple, sizeof(tuple)) != sizeof(tuple)){
-                err(5, "Could not write in file %s", argv[4]);
-            }
-        }
-    }
+#define A 0x41
+#define Z 0x5A
+#define NUM_PARAMETERS 5
 
-    if(close(fd_dat1) != 0){
-        err(3, "%s", argv[1]);
+int main(int argc, char* argv[]) {
+  // argv[1]   f1data
+  // argv[2]   f1index
+  // argv[3]   f2data
+  // argv[4]   f2index
+  if (argc != NUM_PARAMETERS) {
+    errx(EXIT_FAILURE, "Please provide 4 parameters.");
+  }
+  int f1data = open(argv[1], O_RDONLY);
+  if (f1data < 0) {
+    err(EXIT_FAILURE, "Couldn't open file %s", argv[1]);
+  }
+  int f1index = open(argv[2], O_RDONLY);
+  if (f1index < 0) {
+    err(EXIT_FAILURE, "Couldn't open file %s", argv[2]);
+  }
+
+  int f2data =
+      open(argv[3], O_CREAT | O_TRUNC | O_WRONLY, S_IRWXU | S_IRGRP | S_IROTH);
+  if (f2data < 0) {
+    err(EXIT_FAILURE, "Couldn't open file %s", argv[3]);
+  }
+  int f2index =
+      open(argv[4], O_CREAT | O_TRUNC | O_WRONLY, S_IRWXU | S_IRGRP | S_IROTH);
+  if (f2index < 0) {
+    err(EXIT_FAILURE, "Couldn't open file %s", argv[4]);
+  }
+  struct triple {
+    uint16_t offset;
+    uint8_t length;
+    uint8_t reserved;
+  };
+  struct triple triple;
+  while (read(f1index, &triple, sizeof(triple)) == sizeof(triple)) {
+    if (lseek(f1data, triple.offset, SEEK_SET) == -1) {
+      err(EXIT_FAILURE, "Couldn't move cursor in file %s", argv[1]);
     }
-    if(close(fd_idx1) != 0){
-        err(3, "%s", argv[1]);
+    uint8_t* string = calloc(triple.length, sizeof(uint8_t));
+    if (string == NULL) {
+      err(EXIT_FAILURE, "Couldn't allocate memory");
     }
-    if(close(fd_dat2) != 0){
-        err(3, "%s", argv[1]);
+    if (read(f1data, string, triple.length * sizeof(uint8_t)) <
+        triple.length * sizeof(uint8_t)) {
+      errx(EXIT_FAILURE, "Couldn't read string from %s", argv[1]);
     }
-    if(close(fd_idx2) != 0){
-        err(3, "%s", argv[1]);
+    if (string[0] >= A && string[0] <= Z) {
+      if (write(f2data, string, triple.length * sizeof(uint8_t)) !=
+          triple.length * sizeof(uint8_t)) {
+        errx(EXIT_FAILURE, "Couldn't write in file %s", argv[3]);
+      }
+      off_t position = lseek(f2index, 0, SEEK_CUR);
+      if (position == -1) {
+        err(EXIT_FAILURE, "Couldn't find cursor in file %s", argv[3]);
+      }
+      triple.offset = position;
+      if (write(f2index, &triple, sizeof(triple)) < sizeof(triple)) {
+        errx(EXIT_FAILURE, "Couldn't write in file %s", argv[4]);
+      }
     }
+    free(string);
+  }
+  if (write(f2data, "\0", sizeof("\0")) != sizeof("\0")) {
+    errx(EXIT_FAILURE, "Couldn't write in file %s", argv[3]);
+  }
+  close(f1data);
+  close(f1index);
+  close(f2data);
+  close(f2index);
+  exit(EXIT_SUCCESS);
 }
 ```
 #### 53. 2017-SE-01
