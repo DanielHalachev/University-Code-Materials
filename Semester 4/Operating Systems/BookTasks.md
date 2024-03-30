@@ -1396,99 +1396,97 @@ int main (int argc, char* argv[]){
 ```
 #### 57. 2018-SE-01
 ```c
-#include <stdint.h>
+#include <err.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <err.h>
 #include <string.h>
+#include <unistd.h>
 
-int in(char* str, char c);
-int in(char* str, char c){
-    for(size_t i=0; i<strlen(str); i++){
-        if (c==str[i]){
-            return 1;
-        }
+#define CHAR_MAX_VALUE 256
+
+int in(char* str, char symbol);
+int in(char* str, char symbol) {
+  for (size_t i = 0; i < strlen(str); i++) {
+    if (symbol == str[i]) {
+      return 1;
     }
-    return 0;
+  }
+  return 0;
 }
 
-int main (int argc, char* argv[]){
-    char c1;
-    char c2;
-    struct pair{
-        char first;
-        char second;
-    };
+int main(int argc, char* argv[]) {
+  char char1;
+  char char2;
+  struct pair {
+    char first;
+    char second;
+  };
 
-    if (argc != 3){
-        errx(EXIT_FAILURE, "Invalid number of parameters");
+  if (argc != 3) {
+    errx(EXIT_FAILURE, "Invalid number of parameters");
+  }
+
+  if (strcmp(argv[1], "-s") == 0) {
+    char set1[strlen(argv[2]) + 1];
+    strcpy(set1, argv[2]);
+
+    if (read(STDIN_FILENO, &char1, sizeof(char1)) != sizeof(char1)) {
+      err(EXIT_FAILURE, "Could not write to STDOUT");
     }
-       
-    if (strcmp(argv[1], "-s") == 0){
-        char set1[strlen(argv[2])+1]; 
-        strcpy(set1,argv[2]);
-
-        if(read(STDIN_FILENO, &c1, sizeof(c1))!=sizeof(c1)){
-                err(EXIT_FAILURE, "Could not write to STDOUT");
-        }
-        if(write(STDOUT_FILENO, &c1, sizeof(c1))!=sizeof(c1)){
-                err(EXIT_FAILURE, "Could not write to STDOUT");
-        }
-
-        while(read(STDIN_FILENO, &c2, sizeof(c2))==sizeof(c2)){
-            if(c1 != c2 || in(set1, c1)==0){
-                c1=c2;
-                if (write(STDOUT_FILENO, &c2, sizeof(c2))!= sizeof(c2)){
-                    err(EXIT_FAILURE, "Could not write to STDOUT");
-                }
-            }
-        }
+    if (write(STDOUT_FILENO, &char1, sizeof(char1)) != sizeof(char1)) {
+      err(EXIT_FAILURE, "Could not write to STDOUT");
     }
-    else if(strcmp(argv[1], "-d") == 0){
-        char set1[strlen(argv[2])+1]; 
-        strcpy(set1,argv[2]);
 
-        if(read(STDIN_FILENO, &c1, sizeof(c1))!=sizeof(c1)){
-                err(EXIT_FAILURE, "Could not write to STDOUT");
+    while (read(STDIN_FILENO, &char2, sizeof(char2)) == sizeof(char2)) {
+      if (char1 != char2 || in(set1, char1) == 0) {
+        char1 = char2;
+        if (write(STDOUT_FILENO, &char2, sizeof(char2)) != sizeof(char2)) {
+          err(EXIT_FAILURE, "Could not write to STDOUT");
         }
-        if(write(STDOUT_FILENO, &c1, sizeof(c1))!=sizeof(c1)){
-                err(EXIT_FAILURE, "Could not write to STDOUT");
-        }
+      }
+    }
+    exit(EXIT_SUCCESS);
+  }
+  if (strcmp(argv[1], "-d") == 0) {
+    char set1[strlen(argv[2]) + 1];
+    strcpy(set1, argv[2]);
 
-        while(read(STDIN_FILENO, &c1, sizeof(c1))==sizeof(c1)){
-            if(in(set1, c1)==0){
-                if (write(STDOUT_FILENO, &c1, sizeof(c1))!= sizeof(c1)){
-                    err(EXIT_FAILURE, "Could not write to STDOUT");
-                }
-            }
-        }
+    if (read(STDIN_FILENO, &char1, sizeof(char1)) != sizeof(char1)) {
+      err(EXIT_FAILURE, "Could not write to STDOUT");
     }
-    else{
-        char set1[strlen(argv[1])+1]; 
-        strcpy(set1,argv[1]);
-        char set2[strlen(argv[2])+1]; 
-        strcpy(set2,argv[2]);
-        if (strlen(set1)!=strlen(set2)){
-            err(EXIT_FAILURE, "Set 1 and Set2 are not of equal length");
+
+    while (read(STDIN_FILENO, &char1, sizeof(char1)) == sizeof(char1)) {
+      if (in(set1, char1) == 0) {
+        if (write(STDOUT_FILENO, &char1, sizeof(char1)) != sizeof(char1)) {
+          err(EXIT_FAILURE, "Could not write to STDOUT");
         }
-        struct pair map[256];
-        for (int i=0; i<256; i++){
-            map[i].first=i;
-            map[i].second=i;
-        }
-        for(size_t i=0; i<strlen(set1); i++){
-            map[(int)set1[i]].second=set2[i]; 
-        } 
-        while(read(STDIN_FILENO, &c1, sizeof(c1))==sizeof(c1)){
-            c2 = map[(int)c1].second;
-            if (write(STDOUT_FILENO, &c2, sizeof(c2))!= sizeof(c2)){
-                err(EXIT_FAILURE, "Could not write to STDOUT");
-            }
-        }
+      }
     }
-    exit(0);
+    exit(EXIT_SUCCESS);
+  }
+  char set1[strlen(argv[1]) + 1];
+  strcpy(set1, argv[1]);
+  char set2[strlen(argv[2]) + 1];
+  strcpy(set2, argv[2]);
+  if (strlen(set1) != strlen(set2)) {
+    err(EXIT_FAILURE, "Set 1 and Set2 are not of equal length");
+  }
+  char map[CHAR_MAX_VALUE];
+  for (int i = 0; i < CHAR_MAX_VALUE; i++) {
+    map[i] = i;
+  }
+  for (size_t i = 0; i < strlen(set1); i++) {
+    map[set1[i]] = set2[i];
+  }
+  while (read(STDIN_FILENO, &char1, sizeof(char1)) == sizeof(char1)) {
+    char2 = map[char1];
+    if (write(STDOUT_FILENO, &char2, sizeof(char2)) != sizeof(char2)) {
+      err(EXIT_FAILURE, "Could not write to STDOUT");
+    }
+  }
+
+  exit(EXIT_SUCCESS);
 }
 ```
 #### 65. 2021-SE-01
