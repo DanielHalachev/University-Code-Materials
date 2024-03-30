@@ -1131,75 +1131,91 @@ int main(int argc, char* argv[]){
     }
 }
 ```
-#### 54. 2017-SE-02 ⚠️
+#### 54. 2017-SE-02
 ```c
-#include <stdint.h>
+
+#include <err.h>
+#include <fcntl.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <err.h>
-#include <stdbool.h>
 #include <string.h>
+#include <sys/bitypes.h>
+#include <unistd.h>
 
-int main(int argc, char* argv[]){
-    bool enumerating = false;
-    char c;
-    int line=1;
-    if (argc == 1){
-            if(read(0, &c, sizeof(c)) != sizeof(c)){
-                err(EXIT_FAILURE, "Could not read from stdin");
-            }
-            if (write(1, &c, sizeof(c)) != sizeof(c)){
-                err(EXIT_FAILURE, "Could not write to stdout"); 
-            }
-    }
-    int i=1;
-    if (strcmp(argv[1], "-n")==0){
-        enumerating = true;
-    }
-    for (;i <= argc; i++){
-        if (enumerating == true){
-            char str[2];
-            str[0]=line;
-            str[1]=(char)" ";
-            if(write(1, &str, sizeof(str)) != sizeof(str)){
-                err(EXIT_FAILURE, "Could not write to stdout");
-            } 
-            if(strcmp(argv[i], "-")==0){
+#define NUM_LENGTH 10
 
-            }else{
-                int fd=open(argv[i], O_RDONLY);
-                while(read(fd, &c, sizeof(c)) == sizeof(c)){
-                    if(write(1, &c, sizeof(c)) != sizeof(c)){
-                            err(EXIT_FAILURE, "Could not write to stdout");
-                    } 
-                    if(c=="\n"){
-                        line++;
-                        str[0]=line;
-                        if(write(1, &str, sizeof(str)) != sizeof(str)){
-                            err(EXIT_FAILURE, "Could not write to stdout");
-                        }           
-                    }
-                }
-                close(fd);
-            }
+int writeToStdOut(int input, bool lines, int lineCount) {
+  char previous = '\n';
+  char symbol = '\n';
+  if (lines) {
+    while (read(input, &symbol, sizeof(symbol)) == sizeof(symbol)) {
+      if (previous == '\n') {
+        char str[NUM_LENGTH];
+        sprintf(str, "%d\t", lineCount);
+        if (write(1, str, sizeof(char) * strlen(str)) !=
+            sizeof(char) * strlen(str)) {
+          errx(EXIT_FAILURE, "Couldn't write to stadard output");
         }
-        else{
-            if(strcmp(argv[i], "-")==0){
-
-            }
-            else{
-                int fd=open(argv[i], O_RDONLY);
-                while(read(fd, &c, sizeof(c)) == sizeof(c)){
-                    if(write(1, &c, sizeof(c)) != sizeof(c)){
-                            err(EXIT_FAILURE, "Could not write to stdout");
-                    } 
-                }
-                close(fd);
-            }
-        }
+        lineCount++;
+      }
+      if (write(1, &symbol, sizeof(symbol)) != sizeof(symbol)) {
+        errx(EXIT_FAILURE, "Couldn't write to stadard output");
+      }
+      previous = symbol;
     }
+  } else {
+    while (read(input, &symbol, sizeof(symbol)) == sizeof(symbol)) {
+      if (write(1, &symbol, sizeof(symbol)) != sizeof(symbol)) {
+        errx(EXIT_FAILURE, "Couldn't write to stadard output");
+      }
+    }
+  }
+  return lineCount;
+}
+
+int main(int argc, char* argv[]) {
+  bool lines = false;
+  int numFiles = argc;
+  int i = 1;
+  if (argc == 2) {
+    numFiles--;
+    if (strcmp(argv[i], "-n") == 0) {
+      i++;
+      lines = true;
+    }
+  } else if (argc > 2) {
+    numFiles--;
+    if (strcmp(argv[i], "-n") == 0) {
+      numFiles--;
+      i++;
+      lines = true;
+    }
+  }
+  int* inputs = calloc(numFiles, sizeof(int));
+  int j = 0;
+  for (; i < argc; i++) {
+    if (strcmp(argv[i], "-") != 0) {
+      inputs[j] = open(argv[i], O_RDONLY);
+      if (inputs[j] < 0) {
+        err(EXIT_FAILURE, "Couldn't read from file %s", argv[1]);
+      }
+    }
+    j++;
+  }
+  int lineCount = 0;
+  for (int j = 0; j < numFiles; j++) {
+    lineCount = writeToStdOut(inputs[j], lines, lineCount);
+    char newLine = '\n';
+    if (write(1, &newLine, sizeof(char)) != sizeof(char)) {
+      err(EXIT_FAILURE, "Couldn't write to stdout");
+    }
+    if (inputs[j] != 0) {
+      close(inputs[j]);
+    }
+  }
+  free(inputs);
+  exit(EXIT_SUCCESS);
 }
 ```
 ####  55. 2017-SE-03
