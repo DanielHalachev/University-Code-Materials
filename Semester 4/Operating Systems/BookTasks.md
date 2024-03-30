@@ -1290,6 +1290,69 @@ int main(int argc, char* argv[]){
     }
 }
 ```
+или
+```c
+
+#include <err.h>
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(int argc, char* argv[]) {
+  if (argc != 4) {
+    errx(EXIT_FAILURE, "Please provide 3 parameters");
+  }
+
+  int patchFile = open(argv[1], O_RDONLY);
+  if (patchFile < 0) {
+    err(EXIT_FAILURE, "Couldn't open file %s.", argv[1]);
+  }
+  int file1 = open(argv[2], O_RDONLY);
+  if (file1 < 0) {
+    err(EXIT_FAILURE, "Couldn't open file %s.", argv[2]);
+  }
+  int file2 =
+      open(argv[3], O_CREAT | O_TRUNC | O_RDWR, S_IRWXU | S_IRGRP | S_IROTH);
+  if (file2 < 0) {
+    err(EXIT_FAILURE, "Couldn't open file %s.", argv[3]);
+  }
+  struct triple {
+    uint16_t offset;
+    uint8_t original;
+    uint8_t new;
+  } triple;
+  uint8_t symbol;
+  while (read(file1, &symbol, sizeof(symbol)) == sizeof(symbol)) {
+    if (write(file2, &symbol, sizeof(symbol)) != sizeof(symbol)) {
+      err(EXIT_FAILURE, "Couldn't write to file %s", argv[3]);
+    }
+  }
+
+  while (read(patchFile, &triple, sizeof(triple)) == sizeof(triple)) {
+    if (lseek(file1, triple.offset, SEEK_SET) == -1) {
+      err(EXIT_FAILURE, "Couldn't move in file %s", argv[2]);
+    }
+    if (read(file1, &symbol, sizeof(symbol)) != sizeof(symbol)) {
+      err(EXIT_FAILURE, "Couldn't read from file %s", argv[2]);
+    }
+    if (symbol != triple.original) {
+      errx(EXIT_FAILURE, "Patch file and original not matching");
+    }
+    symbol = triple.new;
+    if (lseek(file2, triple.offset, SEEK_SET) == -1) {
+      err(EXIT_FAILURE, "Couldn't move in file %s", argv[2]);
+    }
+    if (write(file2, &symbol, sizeof(symbol)) != sizeof(symbol)) {
+      err(EXIT_FAILURE, "Couldn't write to file %s", argv[3]);
+    }
+  }
+  close(patchFile);
+  close(file1);
+  close(file2);
+  exit(EXIT_SUCCESS);
+}
+```
 #### 56. 2017-SE-04
 ```c
 #include <stdint.h>
