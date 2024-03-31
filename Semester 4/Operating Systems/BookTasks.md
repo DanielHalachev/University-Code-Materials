@@ -1746,3 +1746,78 @@ int main(int argc, char* argv[]) {
   exit(EXIT_SUCCESS);
 }
 ```
+#### 76. 2018-SE-01
+```c
+#include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+#define READ_END 0
+#define WRITE_END 1
+int main(int argc, char* argv[]) {
+  if (argc != 2) {
+    err(EXIT_FAILURE, "Please provide name of directory");
+  }
+  int findSortPipe[2];
+  if (pipe(findSortPipe)) {
+    err(EXIT_FAILURE, "Couldn't pipe");
+  }
+  pid_t findSortPid = fork();
+  if (findSortPid < 0) {
+    err(EXIT_FAILURE, "Couldn't fork");
+  }
+  // parent
+  if (findSortPid > 0) {
+    close(findSortPipe[READ_END]);
+    dup2(findSortPipe[WRITE_END], STDOUT_FILENO);
+    close(findSortPipe[WRITE_END]);
+    execlp("find", "find", argv[1], "-type", "f", "-printf", "\%p|%T@\n", NULL);
+  } else {
+    close(findSortPipe[WRITE_END]);
+    dup2(findSortPipe[READ_END], STDIN_FILENO);
+    close(findSortPipe[READ_END]);
+    int sortHeadPipe[2];
+    if (pipe(sortHeadPipe) < 0) {
+      err(EXIT_FAILURE, "Couldn't pipe");
+    }
+    pid_t sortHeadPid = fork();
+    if (sortHeadPid < 0) {
+      err(EXIT_FAILURE, "Couldn't fork");
+    }
+    if (sortHeadPid > 0) {
+      close(sortHeadPipe[READ_END]);
+      dup2(sortHeadPipe[WRITE_END], STDOUT_FILENO);
+      close(sortHeadPipe[WRITE_END]);
+      execlp("sort", "sort", "-t", "|", "-nr", "-k2", NULL);
+    } else {
+      close(sortHeadPipe[WRITE_END]);
+      dup2(sortHeadPipe[READ_END], STDIN_FILENO);
+      close(sortHeadPipe[READ_END]);
+      int headCutPipe[2];
+      if (pipe(headCutPipe) < 0) {
+        err(EXIT_FAILURE, "Couldn't pipe");
+      }
+      pid_t headCutPid = fork();
+      if (headCutPid < 0) {
+        err(EXIT_FAILURE, "Couldn't fork");
+      }
+      if (headCutPid > 0) {
+        close(headCutPipe[READ_END]);
+        dup2(headCutPipe[WRITE_END], STDOUT_FILENO);
+        close(headCutPipe[WRITE_END]);
+        execlp("head", "head", "-n", "1", NULL);
+      } else {
+        close(headCutPipe[WRITE_END]);
+        dup2(headCutPipe[READ_END], STDIN_FILENO);
+        close(headCutPipe[READ_END]);
+        execlp("cut", "cut", "-d", "|", "-f", "1", NULL);
+      }
+    }
+  }
+  exit(EXIT_SUCCESS);
+}
+```
