@@ -1910,3 +1910,79 @@ int main(int argc, char* argv[]) {
   execlp(argv[1], argv[1], NULL);
 }
 ```
+#### 80. 2020-SE-03
+```c
+#include <err.h>
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#define MAX_FILES 8
+#define READ_END 0
+#define WRITE_END 1
+
+int main(int argc, char* argv[]) {
+  if (argc != 2) {
+    err(EXIT_FAILURE, "Please provide a file");
+  }
+  int pipes[MAX_FILES][2];
+  int fileCount = -1;
+  struct triple {
+    char fileName[8];
+    uint32_t offset;
+    uint32_t length;
+  } triple;
+  int dataFile = open(argv[1], O_RDONLY);
+  while (read(dataFile, &triple, sizeof(triple)) == sizeof(triple)) {
+    fileCount++;
+    if (pipe(pipes[fileCount]) == -1) {
+      err(EXIT_FAILURE, "Couldn't pipe");
+    }
+    pid_t child = fork();
+    if (child < 0) {
+      err(EXIT_FAILURE, "Couldn't fork");
+    }
+    if (child == 0) {
+      close(pipes[fileCount][READ_END]);
+      uint16_t tempXOR = 0;
+      uint16_t number;
+      int file = open(triple.fileName, O_RDONLY);
+      if (file < 0) {
+        err(EXIT_FAILURE, "Couldn't open file %s", triple.fileName);
+      }
+      if (lseek(file, triple.offset, SEEK_SET) < 0) {
+        err(EXIT_FAILURE, "Couldn't lseek in file %s", triple.fileName);
+      }
+      for (int i = 0; i < triple.length; i++) {
+        if (read(file, &number, sizeof(number)) != sizeof(number)) {
+          err(EXIT_FAILURE, "Couldn't read from file");
+        }
+        tempXOR = tempXOR ^ number;
+      }
+      if (write(pipes[fileCount][WRITE_END], &tempXOR, sizeof(tempXOR)) !=
+          sizeof(tempXOR)) {
+        err(EXIT_FAILURE, "Couldn't write to pipe");
+      }
+      exit(EXIT_SUCCESS);
+    } else {
+      close(pipes[fileCount][WRITE_END]);
+    }
+  }
+  fileCount++;
+  uint16_t finalAnswer = 0;
+  uint16_t fileResult;
+  for (int i = 0; i < fileCount; i++) {
+    if (read(pipes[i][READ_END], &fileResult, sizeof(fileResult)) !=
+        sizeof(fileResult)) {
+      err(EXIT_FAILURE, "Couldn't read from pipe");
+    }
+    finalAnswer = finalAnswer ^ fileResult;
+  }
+  printf("%x", finalAnswer);
+  close(dataFile);
+  exit(EXIT_SUCCESS);
+}
+```
