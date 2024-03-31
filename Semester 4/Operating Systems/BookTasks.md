@@ -1821,3 +1821,42 @@ int main(int argc, char* argv[]) {
   exit(EXIT_SUCCESS);
 }
 ```
+#### 77. 2019-SE-01
+```c
+#include <err.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <time.h>
+#include <unistd.h>
+int main(int argc, char* argv[]) {
+  int durationLimit = argv[1][0] - '\0';
+  int counter = 0;
+  int lastFail = -1;
+  while (1) {
+    pid_t pid = fork();
+    if (pid < 0) {
+      err(EXIT_FAILURE, "Couldn't fork");
+    }
+    if (pid > 0) {
+      time_t startingTime;
+      time_t endingTime;
+      int status;
+      time(&startingTime);
+      waitpid(pid, &status, 0);
+      time(&endingTime);
+      counter++;
+      if (status != 0 && endingTime - startingTime < durationLimit) {
+        if (lastFail == counter - 1) {
+          break;
+        }
+        lastFail = counter;
+      }
+    } else {
+      execlp(argv[2], argv[2], &argv[3], NULL);
+      err(EXIT_FAILURE, "Couldn't execute command %s", argv[2]);
+    }
+  }
+}
+```
