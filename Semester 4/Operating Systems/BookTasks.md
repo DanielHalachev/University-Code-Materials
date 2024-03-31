@@ -1663,3 +1663,46 @@ int main(int argc, char* argv[]) {
     exit(0);
 }
 ```
+#### 72. 2016-SE-01
+```c
+#include <err.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#define READ_END 0
+#define WRITE_END 1
+int main(int argc, char* argv[]) {
+  if (argc != 2) {
+    errx(EXIT_FAILURE, "Please provide file to read from");
+  }
+  int fileDescriptors[2];
+  if (pipe(fileDescriptors) == -1) {
+    err(EXIT_FAILURE, "Couldn't create pipe");
+  }
+  pid_t process = fork();
+  // instead of synchronizing processes manually using wait, we rely on the
+  // pipes
+  if (process < 0) {
+    err(EXIT_FAILURE, "Couldn't create child process");
+  }
+  if (process > 0) {  // parent
+    close(fileDescriptors[READ_END]);
+    dup2(fileDescriptors[WRITE_END], STDOUT_FILENO);
+    close(fileDescriptors[WRITE_END]);
+    execlp("cat", "cat", argv[1], NULL);
+    // execlp replaces process with command process and only return if failed
+    exit(EXIT_SUCCESS);
+
+  } else {
+    close(fileDescriptors[WRITE_END]);
+    dup2(fileDescriptors[READ_END], STDIN_FILENO);
+    close(fileDescriptors[READ_END]);
+    execlp("sort", "sort", (char*)NULL);
+    // execlp replaces process with command process and only return if failed
+    exit(EXIT_FAILURE);
+  }
+  exit(EXIT_SUCCESS);
+}
+```
