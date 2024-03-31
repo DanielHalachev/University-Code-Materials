@@ -1489,6 +1489,111 @@ int main(int argc, char* argv[]) {
   exit(EXIT_SUCCESS);
 }
 ```
+#### 59. 2021-SE-03
+```c
+#include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define DEFAULT_FIELD_SIZE 10
+
+void parseFields(const char* string, int* start, int* end) {
+  if (strlen(string) == 1) {
+    *start = *end = string[0] - '0';
+  } else if (strlen(string) == 3) {
+    *start = string[0] - '0';
+    *end = string[2] - '0';
+  } else {
+    errx(EXIT_FAILURE, "Field should be [0-9] or [0-9]-[0-9]");
+  }
+}
+int main(int argc, char* argv[]) {
+  // ./main -c [0-9]
+  // ./main -c [0-9]-[0-9]
+  // ./main -d CHAR -f [0-9][-[0-9]]
+  if (argc < 3) {
+    errx(EXIT_FAILURE, "Usage: ./main.c -c NUM[-NUM] or ./main.c -d SYMBOL");
+  }
+
+  int start;
+  int end;
+  char symbol;
+  int position = 0;
+
+  if (strcmp(argv[1], "-c") == 0) {
+    parseFields(argv[2], &start, &end);
+    while (read(STDIN_FILENO, &symbol, sizeof(symbol)) == sizeof(symbol)) {
+      position++;
+      if (position < start || position > end) {
+        continue;
+      }
+      if (write(STDOUT_FILENO, &symbol, sizeof(symbol)) != sizeof(symbol)) {
+        err(EXIT_FAILURE, "Couldn't write to STDOUT");
+      }
+    }
+    // symbol = '\0';
+    // if (write(STDOUT_FILENO, &symbol, sizeof(symbol)) != sizeof(symbol)) {
+    //   err(EXIT_FAILURE, "Couldn't write to STDOUT");
+    // }
+    exit(EXIT_SUCCESS);
+  }
+
+  if (strcmp(argv[1], "-d") == 0) {
+    if (argc != 5 || strcmp(argv[3], "-f") != 0) {
+      errx(EXIT_FAILURE, "Usage: ./main.c -d CHAR -f [0-9][-[0-9]]");
+    }
+    const char SEPARATOR = argv[2][0];
+    parseFields(argv[4], &start, &end);
+    char* field = calloc(DEFAULT_FIELD_SIZE, sizeof(char));
+    if (field == NULL) {
+      err(EXIT_FAILURE, "Couldn't allocate memory");
+    }
+    size_t currentSize = 0;
+    size_t maxSize = DEFAULT_FIELD_SIZE;
+    while (read(STDIN_FILENO, &symbol, sizeof(symbol)) == sizeof(symbol)) {
+      if (currentSize == maxSize) {
+        field = reallocarray(field, currentSize * 2, sizeof(char));
+        maxSize = maxSize * 2;
+      }
+      field[currentSize] = symbol;
+      currentSize++;
+      if (symbol == SEPARATOR) {
+        position++;
+        if (position < start || position > end) {
+          currentSize = 0;
+          continue;
+        }
+        // remove field separator if final field
+        if (position == end) {
+          currentSize--;
+        }
+        if (write(STDOUT_FILENO, field, sizeof(char) * currentSize) !=
+            sizeof(char) * currentSize) {
+          err(EXIT_FAILURE, "Couldn't write to STDOUT");
+        }
+        currentSize = 0;
+      }
+    }
+    // handle case, where we want last field,
+    // but there is no separator to increment the count
+    if (position == end - 1) {
+      if (write(STDOUT_FILENO, field, sizeof(char) * currentSize) !=
+          sizeof(char) * currentSize) {
+        err(EXIT_FAILURE, "Couldn't write to STDOUT");
+      }
+    }
+    // symbol = '\0';
+    // if (write(STDOUT_FILENO, &symbol, sizeof(symbol)) != sizeof(symbol)) {
+    //   err(EXIT_FAILURE, "Couldn't write to STDOUT");
+    // }
+    free(field);
+    exit(EXIT_SUCCESS);
+  }
+  exit(EXIT_FAILURE);
+}
+```
 #### 65. 2021-SE-01
 ```c
 #include <err.h>     // for err and errx
