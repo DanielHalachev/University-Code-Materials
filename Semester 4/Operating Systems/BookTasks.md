@@ -1706,3 +1706,43 @@ int main(int argc, char* argv[]) {
   exit(EXIT_SUCCESS);
 }
 ```
+#### 73. 2016-SE-03
+```c
+#include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
+int main(int argc, char* argv[]) {
+  const char* prompt = "Enter command: ";
+  while (1) {
+    if (write(STDOUT_FILENO, prompt, strlen(prompt)) != strlen(prompt)) {
+      err(EXIT_FAILURE, "Couldn't write to STDOUT");
+    }
+    char cmd[50];
+    ssize_t bytesRead = read(STDIN_FILENO, cmd, 50);
+    if (bytesRead < 0) {
+      err(EXIT_FAILURE, "Couldn't read from STDIN");
+    }
+    // read doesn't put a terminating null at the end
+    cmd[bytesRead] = '\0';
+    if (strcmp(cmd, "exit\n") == 0) {
+      break;
+    }
+    pid_t pid = fork();
+    if (pid < 0) {
+      err(EXIT_FAILURE, "Couldn't create a child");
+    }
+    if (pid > 0) {
+      wait(NULL);
+    } else {
+      // find the position of the newline character and set it it \0
+      // otherwise execlp doesn't work
+      cmd[strcspn(cmd, "\n")] = '\0';
+      execlp(cmd, cmd, (char*)NULL);
+    }
+  }
+  exit(EXIT_SUCCESS);
+}
+```
