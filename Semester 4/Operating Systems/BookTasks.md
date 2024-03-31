@@ -1860,3 +1860,53 @@ int main(int argc, char* argv[]) {
   }
 }
 ```
+#### 78. 2020-SE-01
+ - `foo.c`
+```c
+#include <err.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#define FILE_NAME "Bruh"
+int main(int argc, char* argv[]) {
+  if (argc != 2) {
+    errx(EXIT_FAILURE, "Provide file");
+  }
+  if (mkfifo(FILE_NAME, S_IRWXU | S_IRWXG | S_IRWXO) < 0) {
+    err(EXIT_FAILURE, "Couldn't fifo");
+  }
+  int file = open(FILE_NAME, O_WRONLY);
+  if (file < 0) {
+    err(EXIT_FAILURE, "Couldn't open file");
+  }
+  dup2(file, STDOUT_FILENO);
+  close(file);
+
+  execlp("cat", "cat", argv[1], NULL);
+  err(EXIT_FAILURE, "Couldnt execute command");
+}
+```
+ - bar.c
+```c
+#include <err.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+#define FILE_NAME "Bruh"
+
+int main(int argc, char* argv[]) {
+  if (argc < 2) {
+    err(EXIT_FAILURE, "Please provide command to execute");
+  }
+  int file = open(FILE_NAME, O_RDONLY);
+  if (file < 0) {
+    err(EXIT_FAILURE, "Couldn't open file");
+  }
+  dup2(file, STDIN_FILENO);
+  close(file);
+  execlp(argv[1], argv[1], NULL);
+}
+```
